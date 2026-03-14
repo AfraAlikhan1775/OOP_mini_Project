@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="621.0" prefWidth="851.0" style="-fx-background-color: #FFF9F0;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text fill="GOLD" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to FoT Managment System" wrappingWidth="398.6660461425781">
+               <VBox.margin>
+                  <Insets left="240.0" top="20.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
+            <Text fill="FORESTGREEN" strokeType="OUTSIDE" strokeWidth="0.0" text="Login to Continue" wrappingWidth="162.6910171508789">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </VBox>
+   </top>
+</BorderPane>

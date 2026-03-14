@@ -1,0 +1,13 @@
+.root {
+    -fx-background-image: url("../Resources/bg.jpg");
+    -fx-background-size: cover;
+}
+
+.login-container {
+    -fx-background-color: rgba(255,225,255,0.1); /* Semi-transparent white */
+    -fx-background-radius: 20; /* This creates the rounded corners */
+    -fx-padding: 20;
+}
+
+
+
