@@ -6,19 +6,26 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
 public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/Login.fxml"));
         Parent root = loader.load();
-        Scene scene = new Scene(root, 600, 500);
+        Scene scene = new Scene(root, 923, 560);
         primaryStage.setTitle("Faculty Management System");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
     public static void main(String[] args) {
+
+        //System.out.println("Database Connected");
+
         launch(args);
+
+
+
     }
 }

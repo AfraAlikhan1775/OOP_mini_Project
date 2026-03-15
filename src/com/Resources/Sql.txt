@@ -1,0 +1,14 @@
+-- Base table for all users
+CREATE TABLE IF NOT EXISTS Users (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role ENUM('Admin', 'Lecturer', 'Student', 'Technical Officer') NOT NULL
+);
+
+
+INSERT INTO Users (username, password_hash, role) VALUES
+('admin', 'admin', 'Admin'),
+('Emp001', 'lecturer', 'Lecturer'),
+('TG1774', 'student', 'Student'),
+('Emp101', 'tech', 'Technical Officer');
