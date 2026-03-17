@@ -1,11 +1,11 @@
 package com.main;
 
+import com.database.DatabaseInitializer; // Import your initializer
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 
 public class MainApp extends Application {
 
@@ -20,12 +20,11 @@ public class MainApp extends Application {
     }
 
     public static void main(String[] args) {
+        // 1. Initialize the database before the UI starts
+        System.out.println("Initializing database...");
+        DatabaseInitializer.initialize();
 
-        //System.out.println("Database Connected");
-
+        // 2. Launch the JavaFX application
         launch(args);
-
-
-
     }
 }
