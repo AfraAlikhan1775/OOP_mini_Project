@@ -19,10 +19,10 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        // 1. Pass the inputs to the DAO
+
         User user = userDAO.validateLogin(username, password);
 
-        // 2. Check the result (The "Traffic Police" logic)
+
         if (user != null) {
             statusLabel.setText("Login Successful! Welcome, " + user.getRole());
             System.out.println("hi");
@@ -35,7 +35,7 @@ public class LoginController {
     }
 
     private void navigateToDashboard(User user) {
-        // Logic to switch screens (I can provide this code next)
+
         System.out.println("Redirecting to dashboard for role: " + user.getRole());
     }
 }

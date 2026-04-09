@@ -11,3 +11,39 @@
 
 
 
+.admin-card {
+    /* Glass Effect: White with 10% opacity */
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+
+    /* Rounded Corners */
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+
+    /* Subtle Glowing Border */
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 1.5;
+
+    /* Padding inside the card */
+    -fx-padding: 20;
+
+    /* Drop shadow for depth */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 8);
+}
+
+.admin-card:hover {
+    /* Slight glow and lift when hovering */
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-border-color: #00d2ff; /* A cyan/teal glow */
+    -fx-cursor: hand;
+}
+
+.card-title {
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.card-stats {
+    -fx-text-fill: #80cbc4; /* Soft teal color for the bottom text */
+    -fx-font-size: 12px;
+}

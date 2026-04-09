@@ -1,6 +1,6 @@
 package com.main;
 
-import com.database.DatabaseInitializer; // Import your initializer
+import com.database.DatabaseInitializer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,18 +13,17 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/Login.fxml"));
         Parent root = loader.load();
-        Scene scene = new Scene(root, 923, 560);
-        primaryStage.setTitle("Faculty Management System");
+        Scene scene = new Scene(root);
+        primaryStage.setTitle("FoT Management System");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
     public static void main(String[] args) {
-        // 1. Initialize the database before the UI starts
-        System.out.println("Initializing database...");
+
         DatabaseInitializer.initialize();
 
-        // 2. Launch the JavaFX application
+
         launch(args);
     }
 }

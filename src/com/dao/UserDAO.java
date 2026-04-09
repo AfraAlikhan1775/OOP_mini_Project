@@ -18,14 +18,14 @@ public class UserDAO {
 
             if (rs.next()) {
                 User user = new User();
-                user.setUserId(rs.getInt("user_id")); // Don't forget the ID!
+                user.setUserId(rs.getInt("user_id"));
                 user.setUserName(rs.getString("username"));
-                user.setRole(rs.getString("role")); // Important to set the role
-                return user; // Return the filled "Lunch Box"
+                user.setRole(rs.getString("role"));
+                return user;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null; // Return nothing if no user was found
+        return null;
     }
 }

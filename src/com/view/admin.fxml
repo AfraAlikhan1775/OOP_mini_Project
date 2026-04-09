@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" prefWidth="1200" prefHeight="800">
+
+
+    <left>
+        <VBox prefWidth="220" spacing="10" style="-fx-background-color:#0b1f36; -fx-padding:15;">
+            <children>
+                <Label text="FOT Management" style="-fx-text-fill:white; -fx-font-size:18;" />
+
+                <Label text="OVERVIEW" style="-fx-text-fill:#7f9bb3;" />
+                <Button text="Dashboard" />
+
+                <Label text="USERS" style="-fx-text-fill:#7f9bb3;" />
+                <Button text="User Profiles" />
+                <Button text="Lecturers" />
+                <Button text="Tech Officers" />
+                <Button text="Undergraduates" />
+
+                <Label text="ACADEMIC" style="-fx-text-fill:#7f9bb3;" />
+                <Button text="Courses" />
+                <Button text="Timetables" />
+                <Button text="Notices" />
+            </children>
+        </VBox>
+    </left>
+
+    <!-- 🔹 TOP BAR -->
+    <top>
+        <HBox spacing="10" style="-fx-background-color:#0f2a44; -fx-padding:10;">
+            <children>
+                <Label text="Dashboard" style="-fx-text-fill:white; -fx-font-size:20;" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label text="08 April 2026" style="-fx-text-fill:white;" />
+                <Label text="● Online" style="-fx-text-fill:#00ff99;" />
+            </children>
+        </HBox>
+    </top>
+
+    <!-- 🔹 MAIN CONTENT -->
+    <center>
+        <VBox spacing="20" style="-fx-padding:20;">
+
+            <!-- STAT CARDS -->
+            <HBox spacing="15">
+                <children>
+
+                    <VBox style="-fx-background-color:#122c4a; -fx-padding:15; -fx-background-radius:10;">
+                        <children>
+                            <Label text="Lecturers" style="-fx-text-fill:white;" />
+                            <Label text="5" style="-fx-text-fill:white; -fx-font-size:24;" />
+                            <Label text="Active faculty" style="-fx-text-fill:#9fb3c8;" />
+                        </children>
+                    </VBox>
+
+                    <VBox style="-fx-background-color:#122c4a; -fx-padding:15; -fx-background-radius:10;">
+                        <children>
+                            <Label text="Tech Officers" style="-fx-text-fill:white;" />
+                            <Label text="4" style="-fx-text-fill:white; -fx-font-size:24;" />
+                            <Label text="Registered" style="-fx-text-fill:#9fb3c8;" />
+                        </children>
+                    </VBox>
+
+                    <VBox style="-fx-background-color:#122c4a; -fx-padding:15; -fx-background-radius:10;">
+                        <children>
+                            <Label text="Undergraduates" style="-fx-text-fill:white;" />
+                            <Label text="20" style="-fx-text-fill:white; -fx-font-size:24;" />
+                            <Label text="Enrolled" style="-fx-text-fill:#9fb3c8;" />
+                        </children>
+                    </VBox>
+
+                    <VBox style="-fx-background-color:#122c4a; -fx-padding:15; -fx-background-radius:10;">
+                        <children>
+                            <Label text="Courses" style="-fx-text-fill:white;" />
+                            <Label text="8" style="-fx-text-fill:white; -fx-font-size:24;" />
+                            <Label text="This semester" style="-fx-text-fill:#9fb3c8;" />
+                        </children>
+                    </VBox>
+
+                </children>
+            </HBox>
+
+            <!-- USERS + NOTICES -->
+            <HBox spacing="20">
+                <children>
+
+                    <VBox spacing="10" prefWidth="400" style="-fx-background-color:#122c4a; -fx-padding:15; -fx-background-radius:10;">
+                        <children>
+                            <Label text="Recent Users" style="-fx-text-fill:white;" />
+                            <ListView prefHeight="200"/>
+                        </children>
+                    </VBox>
+
+                    <VBox spacing="10" prefWidth="400" style="-fx-background-color:#122c4a; -fx-padding:15; -fx-background-radius:10;">
+                        <children>
+                            <Label text="Recent Notices" style="-fx-text-fill:white;" />
+                            <ListView prefHeight="200"/>
+                        </children>
+                    </VBox>
+
+                </children>
+            </HBox>
+
+            <!-- COURSE TABLE -->
+            <VBox spacing="10" style="-fx-background-color:#122c4a; -fx-padding:15; -fx-background-radius:10;">
+                <children>
+                    <Label text="Course Overview" style="-fx-text-fill:white;" />
+
+                    <TableView prefHeight="200">
+                        <columns>
+                            <TableColumn text="Code" prefWidth="100"/>
+                            <TableColumn text="Course Name" prefWidth="200"/>
+                            <TableColumn text="Coordinator" prefWidth="150"/>
+                            <TableColumn text="Credits" prefWidth="80"/>
+                            <TableColumn text="Status" prefWidth="100"/>
+                        </columns>
+                    </TableView>
+
+                </children>
+            </VBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>

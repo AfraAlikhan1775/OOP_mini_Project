@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class DatabaseInitializer {
 
-    // Define constants here - change once, updates everywhere
+
     private static final String URL = "jdbc:mysql://localhost:33061/fms_db";
     private static final String USER = "root";
     private static final String PASSWORD = "Umes0820@@";
