@@ -7,6 +7,29 @@ public class User {
     private String password;
     private String role;
     private int user_id;
+    private String regPic;
+    private String profPic;
+
+
+
+    public String getRegPic() {
+        return regPic;
+    }
+
+    public void setRegPic(String regPic) {
+        this.regPic = regPic;
+    }
+
+    public String getProfPic() {
+        return profPic;
+    }
+
+    public void setProfPic(String profPic) {
+        this.profPic = profPic;
+    }
+
+
+
 
     public int getUserId() {
         return user_id;

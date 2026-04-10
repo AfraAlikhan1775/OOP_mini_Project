@@ -2,8 +2,14 @@ package com.controller;
 
 import com.dao.UserDAO;
 import com.model.User;
+
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class LoginController {
@@ -12,23 +18,23 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private Label statusLabel;
 
-    private UserDAO userDAO = new UserDAO();
+    private final UserDAO userDAO = new UserDAO();
 
     @FXML
     private void handleLogin() {
+
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-
+        // check user from database
         User user = userDAO.validateLogin(username, password);
 
-
         if (user != null) {
-            statusLabel.setText("Login Successful! Welcome, " + user.getRole());
-            System.out.println("hi");
 
-            // Navigate to the next screen here (e.g., Load Dashboard)
+            statusLabel.setText("Login Successful!");
+
             navigateToDashboard(user);
+
         } else {
             statusLabel.setText("Invalid username or password!");
         }
@@ -36,6 +42,29 @@ public class LoginController {
 
     private void navigateToDashboard(User user) {
 
-        System.out.println("Redirecting to dashboard for role: " + user.getRole());
+        try {
+
+            if (user.getRole().equalsIgnoreCase("admin")) {
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/admin.fxml"));
+                Parent root = loader.load();
+
+                Stage stage = (Stage) usernameField.getScene().getWindow();
+
+                Scene scene = new Scene(root);
+
+                stage.setScene(scene);
+                stage.setTitle("Admin Dashboard");
+                stage.show();
+
+            } else {
+
+                statusLabel.setText("Access denied! Not an admin.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            statusLabel.setText("Error loading dashboard!");
+        }
     }
 }

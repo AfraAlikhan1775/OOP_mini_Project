@@ -6,6 +6,10 @@ CREATE TABLE IF NOT EXISTS Users (
     role ENUM('Admin', 'Lecturer', 'Student', 'Technical Officer') NOT NULL
 );
 
+ALTER TABLE users
+ADD registration_pic VARCHAR(255),
+ADD profile_pic VARCHAR(255);
+
 
 INSERT INTO Users (username, password_hash, role) VALUES
 ('admin', 'admin', 'Admin'),
