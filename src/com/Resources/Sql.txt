@@ -16,3 +16,31 @@ INSERT INTO Users (username, password_hash, role) VALUES
 ('Emp001', 'lecturer', 'Lecturer'),
 ('TG1774', 'student', 'Student'),
 ('Emp101', 'tech', 'Technical Officer');
+
+
+#################################           Faculty Table
+
+CREATE TABLE faculty(Fac_id VARCHAR(5) PRIMARY KEY,
+Fac_name VARCHAR(30) NOT NULL,
+Dean VARCHAR(10));
+
+INSERT INTO faculty(Fac_id,Fac_name,Dean) VALUES('FAC07','Faculty of Technology','EMP0043');
+
+
+
+
+###############################             DEPARTMENT Table
+
+CREATE TABLE Department(Dep_id VARCHAR(5) PRIMARY KEY,
+Dep_name VARCHAR(50) NOT NULL,
+HOD VARCHAR(10) NOT NULL,
+Fac_id VARCHAR(5) NOT NULL,
+FOREIGN KEY(Fac_id) REFERENCES faculty(Fac_id) ON DELETE CASCADE);
+
+INSERT INTO department(Dep_id,Dep_name,HOD,Fac_id) VALUES
+('ICT','Information and Communication Technology','EMP0101','FAC07'),
+('BST','Bio System Technology','EMP0110','FAC07'),
+('ET','Engineering Technology','EMP0121','FAC07');
+
+
+

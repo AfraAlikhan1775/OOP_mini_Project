@@ -26,7 +26,7 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        // check user from database
+
         User user = userDAO.validateLogin(username, password);
 
         if (user != null) {
@@ -46,8 +46,11 @@ public class LoginController {
 
             if (user.getRole().equalsIgnoreCase("admin")) {
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/admin.fxml"));
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/admin/admin.fxml"));
                 Parent root = loader.load();
+
+
 
                 Stage stage = (Stage) usernameField.getScene().getWindow();
 
