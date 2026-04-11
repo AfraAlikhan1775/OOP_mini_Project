@@ -1,0 +1,12 @@
+.menu-button .arrow-button {
+    -fx-padding: 0;
+    -fx-opacity: 0;
+}
+
+.menu-button .arrow {
+    -fx-background-color: transparent;
+}
+
+.menu-button{
+    -fx-background-color: transparent;
+}
