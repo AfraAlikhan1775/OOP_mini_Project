@@ -43,4 +43,64 @@ INSERT INTO department(Dep_id,Dep_name,HOD,Fac_id) VALUES
 ('ET','Engineering Technology','EMP0121','FAC07');
 
 
+########################COURSE Table
+
+CREATE TABLE Course(
+   Course_id VARCHAR(5) PRIMARY KEY,
+   Course_name VARCHAR(50) NOT NULL,
+   Total_credits INT NOT NULL,
+   Dep_id VARCHAR(5) NOT NULL,
+   FOREIGN KEY(Dep_id) REFERENCES Department(Dep_id) ON DELETE CASCADE
+);
+
+INSERT INTO Course(Course_id,Course_name,Total_credits,Dep_id) VALUES
+('BICT','Bachelor of Information Communication Technology',120,'ICT'),
+('BBST','Bachelor of Biosystem Technology',120,'BST'),
+('BET','Bachelor of Engineering Technology',120,'ET');
+
+
+
+############################STUDENT Table
+
+CREATE TABLE student (
+    regno VARCHAR(12) UNIQUE NOT NULL PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    nic VARCHAR(20) UNIQUE NOT NULL,
+    dob DATE NOT NULL,
+    gender ENUM('Male', 'Female') NOT NULL,
+    district VARCHAR(50),
+    email VARCHAR(100) UNIQUE,
+    contact_no VARCHAR(15),
+    address TEXT,
+    photo VARCHAR(255),
+    year INT,
+    batch VARCHAR(20),
+    guardianname VARCHAR(50),
+    guardian_phoneno VARCHAR(15),
+    relationship VARCHAR(50),
+    mentor_id VARCHAR(12) NOT NULL,
+    Course_id VARCHAR(5) NOT NULL,
+    Dep_id VARCHAR(5) NOT NULL,
+    FOREIGN KEY(mentor_id) REFERENCES Lecturer(lec_id) ON DELETE CASCADE,
+    FOREIGN KEY(Course_id) REFERENCES Course(Course_id) ON DELETE CASCADE,
+    FOREIGN KEY(Dep_id) REFERENCES Department(Dep_id) ON DELETE CASCADE,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO student
+(regno, first_name, last_name, nic, dob, gender, district, email, contact_no, address, photo, year, batch, guardianname, guardian_phoneno, relationship, mentor_id, Course_id, Dep_id)
+VALUES
+('TG1775','Afra','AliKhan','200123456789','2002-05-10','Female','Batticaloa','afra@gmail.com','0712345678','batti 10','afra.jpg',2,'2023','AliKhan','0771234567','Father','EMP0101','BICT','ICT'),
+
+('TG1776','Nimal','Perera','200234567890','2001-08-15','Male','Gampaha','nimal@gmail.com','0723456789','Gampaha','nimal.jpg',3,'2022','Sunil Perera','0719876543','Father','EMP0110','BBST','BST'),
+
+('TG1777','Saman','Kumara','200345678901','2002-01-20','Male','Kandy','saman@gmail.com','0754567890','Kandy','saman.jpg',1,'2024','Kumara Silva','0761234567','Brother','EMP0121','BET','ET'),
+
+('TG1778','Ayesha','Fernando','200456789012','2003-03-12','Female','Kalutara','ayesha@gmail.com','0775678901','Kalutara','ayesha.jpg',2,'2023','Nimal Fernando','0759876543','Father','EMP0101','BICT','ICT'),
+
+('TG1779','Kasuni','Silva','200567890123','2002-11-05','Female','Matara','kasuni@gmail.com','0786789012','Matara','kasuni.jpg',3,'2022','Suneth Silva','0714567890','Mother','EMP0110','BBST','BST');
+
+
 
