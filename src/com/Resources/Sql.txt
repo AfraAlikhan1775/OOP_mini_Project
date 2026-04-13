@@ -43,4 +43,7 @@ INSERT INTO department(Dep_id,Dep_name,HOD,Fac_id) VALUES
 ('ET','Engineering Technology','EMP0121','FAC07');
 
 
+hello
+
+
 
