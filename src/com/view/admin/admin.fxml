@@ -16,18 +16,18 @@
                 <Label style="-fx-text-fill:white; -fx-font-size:18;" text="FOT Management" />
 
                 <Label style="-fx-text-fill:#7f9bb3;" text="OVERVIEW" />
-                <Button fx:id="dashboardBtn" onAction="#handleDashboard" text="Dashboard" />
+                <Button fx:id="dashboardBtn" onAction="#handleDashboard" prefHeight="26.0" prefWidth="151.0" text="Dashboard" />
 
                 <Label style="-fx-text-fill:#7f9bb3;" text="USERS" />
                 <Button onAction="#handleUserprofile" text="Student Management  🎓" />
-                <Button onAction="#handleLecturer" text="Lecturers" />
-                <Button onAction="#handleTO" text="Tech Officers" />
-                <Button onAction="#handleStudents" text="Undergraduates" />
+                <Button onAction="#handleLecturer" prefHeight="26.0" prefWidth="149.0" text="Lecturers" />
+                <Button onAction="#handleTO" prefHeight="26.0" prefWidth="151.0" text="Tech Officers" />
+                <Button onAction="#handleStudents" prefHeight="26.0" prefWidth="152.0" text="Undergraduates" />
 
                 <Label style="-fx-text-fill:#7f9bb3;" text="ACADEMIC" />
-                <Button onAction="#handleCourse" text="Courses" />
-                <Button onAction="#handleTimetable" text="Timetables" />
-                <Button onAction="#handleNotice" text="Notices" />
+                <Button onAction="#handleCourse" prefHeight="26.0" prefWidth="154.0" text="Courses" />
+                <Button onAction="#handleTimetable" prefHeight="26.0" prefWidth="154.0" text="Timetables" />
+                <Button onAction="#handleNotice" prefHeight="26.0" prefWidth="154.0" text="Notices" />
             </children>
         </VBox>
     </left>

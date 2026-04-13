@@ -58,6 +58,7 @@ public class LoginController {
 
                 stage.setScene(scene);
                 stage.setTitle("Admin Dashboard");
+                stage.setMaximized(true);
                 stage.show();
 
             } else {

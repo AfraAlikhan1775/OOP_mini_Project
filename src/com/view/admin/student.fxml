@@ -64,6 +64,30 @@
                      </styleClass>
                   </MenuItem>
                 <MenuItem mnemonicParsing="false" text="Add lecturer" />
+                  <MenuItem mnemonicParsing="false" onAction="#navigateAddStudent" text="Add Course">
+                     <styleClass>
+                        <String fx:value=".menu-button .arrow-button {    -fx-padding: 0;    -fx-opacity: 0;}" />
+                        <String fx:value=".menu-button .arrow {    -fx-background-color: transparent;}" />
+                     </styleClass>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#navigateAddStudent" text="Add TO">
+                     <styleClass>
+                        <String fx:value=".menu-button .arrow-button {    -fx-padding: 0;    -fx-opacity: 0;}" />
+                        <String fx:value=".menu-button .arrow {    -fx-background-color: transparent;}" />
+                     </styleClass>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#navigateAddStudent" text="Add Time table">
+                     <styleClass>
+                        <String fx:value=".menu-button .arrow-button {    -fx-padding: 0;    -fx-opacity: 0;}" />
+                        <String fx:value=".menu-button .arrow {    -fx-background-color: transparent;}" />
+                     </styleClass>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#navigateAddStudent" text="Add Notice">
+                     <styleClass>
+                        <String fx:value=".menu-button .arrow-button {    -fx-padding: 0;    -fx-opacity: 0;}" />
+                        <String fx:value=".menu-button .arrow {    -fx-background-color: transparent;}" />
+                     </styleClass>
+                  </MenuItem>
               </items>
                <opaqueInsets>
                   <Insets left="100.0" right="-100.0" top="-10.0" />

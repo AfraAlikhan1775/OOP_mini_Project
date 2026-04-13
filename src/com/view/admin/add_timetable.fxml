@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="700.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.admin.AddTimetableController">
+
+    <top>
+        <HBox alignment="CENTER" prefHeight="90.0" style="-fx-background-color:#0b1f36;">
+            <children>
+                <VBox alignment="CENTER" spacing="5">
+                    <children>
+                        <Label text="Add Timetable 📅" textFill="WHITE">
+                            <font>
+                                <Font size="20" />
+                            </font>
+                        </Label>
+                        <Label text="UoR - FoT" textFill="WHITE" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color:#eaf1f8;">
+            <content>
+
+                <VBox spacing="20" style="-fx-background-color:#eaf1f8;">
+                    <padding>
+                        <Insets bottom="20" left="20" right="20" top="20" />
+                    </padding>
+
+                    <VBox spacing="15" style="-fx-background-color:white; -fx-background-radius:10;">
+                        <padding>
+                            <Insets bottom="20" left="20" right="20" top="20" />
+                        </padding>
+
+                        <children>
+                            <Label style="-fx-font-size:16px; -fx-font-weight:bold;" text="General Information" />
+
+                            <GridPane hgap="15" vgap="15">
+                                <padding>
+                                    <Insets bottom="10" left="10" right="10" top="10" />
+                                </padding>
+
+                                <children>
+
+                                    <Label text="Department:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                    <ComboBox fx:id="department" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                        <items>
+                                            <FXCollections fx:factory="observableArrayList">
+                                                <String fx:value="ET" />
+                                                <String fx:value="ICT" />
+                                                <String fx:value="BST" />
+                                            </FXCollections>
+                                        </items>
+                                    </ComboBox>
+
+                                    <Label text="Level:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                                    <ComboBox fx:id="level" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                                        <items>
+                                            <FXCollections fx:factory="observableArrayList">
+                                                <String fx:value="1" />
+                                                <String fx:value="2" />
+                                                <String fx:value="3" />
+                                                <String fx:value="4" />
+                                            </FXCollections>
+                                        </items>
+                                    </ComboBox>
+
+                                    <Label text="Semester:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                    <ComboBox fx:id="semester" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                        <items>
+                                            <FXCollections fx:factory="observableArrayList">
+                                                <String fx:value="1" />
+                                                <String fx:value="2" />
+                                            </FXCollections>
+                                        </items>
+                                    </ComboBox>
+
+                                </children>
+                        <columnConstraints>
+                           <ColumnConstraints />
+                           <ColumnConstraints />
+                           <ColumnConstraints />
+                           <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints />
+                           <RowConstraints />
+                        </rowConstraints>
+                            </GridPane>
+                        </children>
+                    </VBox>
+
+                    <VBox spacing="15" style="-fx-background-color:white; -fx-background-radius:10;">
+                        <padding>
+                            <Insets bottom="20" left="20" right="20" top="20" />
+                        </padding>
+
+                        <children>
+
+                            <Label style="-fx-font-size:16px; -fx-font-weight:bold;" text="Add Session" />
+
+                            <GridPane hgap="15" vgap="15">
+                                <padding>
+                                    <Insets bottom="10" left="10" right="10" top="10" />
+                                </padding>
+
+                                <children>
+
+                                    <Label text="Subject:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                    <TextField fx:id="subject" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                                    <Label text="Day:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                                    <ComboBox fx:id="day" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                                        <items>
+                                            <FXCollections fx:factory="observableArrayList">
+                                                <String fx:value="Monday" />
+                                                <String fx:value="Tuesday" />
+                                                <String fx:value="Wednesday" />
+                                                <String fx:value="Thursday" />
+                                                <String fx:value="Friday" />
+                                            </FXCollections>
+                                        </items>
+                                    </ComboBox>
+
+                                    <Label text="Start Time:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                    <TextField fx:id="startTime" prefWidth="220" promptText="08:00" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                                    <Label text="End Time:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <TextField fx:id="endTime" prefWidth="220" promptText="10:00" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                                    <Label text="Lecturer:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                    <TextField fx:id="lecturer" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                                    <Label text="Room:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <TextField fx:id="room" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+
+                                    <Label text="Type:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                    <ComboBox fx:id="type" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                        <items>
+                                            <FXCollections fx:factory="observableArrayList">
+                                                <String fx:value="Lecture" />
+                                                <String fx:value="Practical" />
+                                                <String fx:value="Tutorial" />
+                                            </FXCollections>
+                                        </items>
+                                    </ComboBox>
+
+                                </children>
+                        <columnConstraints>
+                           <ColumnConstraints />
+                           <ColumnConstraints />
+                           <ColumnConstraints />
+                           <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints />
+                           <RowConstraints />
+                           <RowConstraints />
+                           <RowConstraints />
+                        </rowConstraints>
+                            </GridPane>
+
+                            <HBox alignment="CENTER_RIGHT">
+                                <children>
+                                    <Button fx:id="addSessionBtn" onAction="#handleAddSession" style="-fx-background-color:#28a745; -fx-text-fill:white;" text="➕ Add Session" />
+                                </children>
+                            </HBox>
+
+                        </children>
+                    </VBox>
+
+                    <VBox spacing="10" style="-fx-background-color:white; -fx-background-radius:10;">
+                        <padding>
+                            <Insets bottom="20" left="20" right="20" top="20" />
+                        </padding>
+
+                        <children>
+
+                            <Label style="-fx-font-size:16px; -fx-font-weight:bold;" text="Added Sessions" />
+
+                            <TableView fx:id="sessionTable" prefHeight="200">
+
+                                <columns>
+                                    <TableColumn fx:id="colSubject" prefWidth="120" text="Subject" />
+                                    <TableColumn fx:id="colDay" prefWidth="80" text="Day" />
+                                    <TableColumn fx:id="colTime" prefWidth="120" text="Time" />
+                                    <TableColumn fx:id="colLecturer" prefWidth="120" text="Lecturer" />
+                                    <TableColumn fx:id="colRoom" prefWidth="80" text="Room" />
+                                    <TableColumn fx:id="colType" prefWidth="100" text="Type" />
+                                </columns>
+
+                            </TableView>
+
+                        </children>
+                    </VBox>
+
+                    <HBox alignment="CENTER" spacing="15">
+                        <children>
+
+                            <Button fx:id="finishBtn" onAction="#handleFinish" prefWidth="120" style="-fx-background-color:#0b1f36; -fx-text-fill:white;" text="✔ Finish" />
+
+                            <Button fx:id="clearBtn" prefWidth="120" text="Clear" />
+
+                        </children>
+                    </HBox>
+
+                </VBox>
+
+            </content>
+        </ScrollPane>
+    </center>
+
+</BorderPane>
