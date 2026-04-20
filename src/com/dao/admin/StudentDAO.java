@@ -18,7 +18,7 @@ public class StudentDAO {
 
     public void createTable() {
 
-        String sql = """
+        String sql1 = """
                 CREATE TABLE IF NOT EXISTS student (
                     id INT PRIMARY KEY AUTO_INCREMENT,
                     first_name VARCHAR(100),
@@ -45,10 +45,15 @@ public class StudentDAO {
                 )
                 """;
 
+
+
+
         try (Connection conn = DatabaseInitializer.getConnection();
              Statement stmt = conn.createStatement()) {
 
-            stmt.execute(sql);
+
+            stmt.execute(sql1);
+
 
         } catch (Exception e) {
             e.printStackTrace();

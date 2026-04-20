@@ -7,18 +7,17 @@ public class User {
     private String password;
     private String role;
     private int user_id;
-    private String regPic;
     private String profPic;
 
 
-
-    public String getRegPic() {
-        return regPic;
+    public User(String userName,String role){
+        this.userName = userName;
+        this.role = role;
     }
 
-    public void setRegPic(String regPic) {
-        this.regPic = regPic;
-    }
+
+
+
 
     public String getProfPic() {
         return profPic;
@@ -64,4 +63,7 @@ public class User {
     public String getRole(){
         return role;
     }
+
+
+
 }
