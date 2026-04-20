@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="500.0" prefWidth="682.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
+    <children>
+        <Text fill="#0b1f36" layoutX="14.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit Your Profile">
+            <font>
+                <Font size="25.0" />
+            </font>
+        </Text>
+        <Text layoutX="14.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update your contact information and profile picture" wrappingWidth="279.84808349609375" />
+        <VBox layoutX="36.0" layoutY="85.0" prefHeight="290.0" prefWidth="264.0">
+            <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Personal Information">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Text>
+                <Line endX="100.0" startX="-100.0" />
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Full Name:-">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Text>
+                <Label prefHeight="19.0" prefWidth="191.0" style="-fx-border-color: gray;" text="JohnDoe" />
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email:-">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Text>
+                <Label prefHeight="19.0" prefWidth="190.0" style="-fx-border-color: gray;" text="john@gmail.com" />
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Course:-">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Text>
+                <Label style="-fx-border-color: gray;" text="Information Commmunication Technology" />
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Contact Number">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Text>
+                <Label prefHeight="19.0" prefWidth="190.0" style="-fx-border-color: gray;" text="075 555 5555" />
+            </children>
+        </VBox>
+        <VBox layoutX="358.0" layoutY="85.0" prefHeight="252.0" prefWidth="264.0">
+            <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Profile Picture">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </Text>
+                <Line endX="146.89292907714844" endY="0.8284446597099304" startX="-100.0" />
+                <ImageView fitHeight="140.0" fitWidth="142.0" pickOnBounds="true" preserveRatio="true">
+                    <VBox.margin>
+                        <Insets left="70.0" top="5.0" />
+                    </VBox.margin>
+                    <image>
+                        <Image url="@../../../icon/stu.png" />
+                    </image>
+                </ImageView>
+                <Label style="-fx-border-color: gray;" text="Choose Image">
+                    <VBox.margin>
+                        <Insets left="80.0" top="10.0" />
+                    </VBox.margin>
+                </Label>
+                <Text fill="#7e7474" strokeType="OUTSIDE" strokeWidth="0.0" text="JPG,PNG or JPEG">
+                    <font>
+                        <Font size="11.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets left="75.0" top="2.0" />
+                    </VBox.margin>
+                </Text>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

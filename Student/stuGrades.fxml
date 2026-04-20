@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.Icon?>
+<?import com.gluonhq.charm.glisten.control.ToggleButtonGroup?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="569.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
+    <children>
+        <Text fill="#0b1f36" layoutX="22.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Grades">
+            <font>
+                <Font size="25.0" />
+            </font>
+        </Text>
+        <Text layoutX="33.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subject:-" wrappingWidth="72.0120849609375" />
+        <ComboBox layoutX="82.0" layoutY="59.0" prefHeight="26.0" prefWidth="123.0" promptText="All" />
+        <Text layoutX="226.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Grade:-" />
+        <ComboBox layoutX="265.0" layoutY="60.0" prefHeight="26.0" prefWidth="99.0" promptText="CA grades" />
+        <ToggleButtonGroup layoutX="384.0" layoutY="61.0" selectionType="SINGLE">
+            <toggles>
+                <ToggleButton text="individual">
+                    <graphic>
+                        <Icon content="FORMAT_ALIGN_LEFT" />
+                    </graphic>
+                </ToggleButton>
+                <ToggleButton text="batch">
+                    <graphic>
+                        <Icon content="FORMAT_ALIGN_RIGHT" />
+                    </graphic>
+                </ToggleButton>
+            </toggles>
+        </ToggleButtonGroup>
+        <TableView layoutX="33.0" layoutY="100.0" prefHeight="163.0" prefWidth="223.0">
+            <columns>
+                <TableColumn prefWidth="88.79998779296875" text="Course Code" />
+                <TableColumn prefWidth="61.60003662109375" text="Credit" />
+                <TableColumn prefWidth="75.0" text="Grades" />
+            </columns>
+        </TableView>
+        <Text fill="#0b1f36" layoutX="38.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GPA">
+            <font>
+                <Font size="25.0" />
+            </font>
+        </Text>
+        <ToggleButtonGroup layoutX="42.0" layoutY="307.0" selectionType="SINGLE" />
+        <ToggleButton layoutX="44.0" layoutY="320.0" text="indivitual">
+            <graphic>
+                <Icon content="FORMAT_ALIGN_LEFT" />
+            </graphic>
+        </ToggleButton>
+        <ToggleButton layoutX="120.0" layoutY="320.0" text="batch">
+            <graphic>
+                <Icon content="FORMAT_ALIGN_RIGHT" />
+            </graphic>
+        </ToggleButton>
+        <TableView layoutX="45.0" layoutY="356.0" prefHeight="180.0" prefWidth="298.0">
+            <columns>
+                <TableColumn prefWidth="75.0" text="Reg_no" />
+                <TableColumn prefWidth="75.0" text="Course" />
+                <TableColumn prefWidth="75.0" text="SGPA" />
+                <TableColumn prefWidth="75.0" text="CGPA" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

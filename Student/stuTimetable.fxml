@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="807.0" prefWidth="1058.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
+    <children>
+        <AnchorPane prefHeight="807.0" prefWidth="1058.0">
+            <children>
+                <VBox layoutX="20.0" layoutY="56.0" prefHeight="534.0" prefWidth="830.0">
+                    <children>
+                        <Label prefHeight="39.0" prefWidth="451.0" text="Weekly TimeTable Level1 Semester2">
+                            <font>
+                                <Font size="27.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="200.0" />
+                            </VBox.margin>
+                        </Label>
+                        <GridPane prefHeight="190.0" prefWidth="1030.0" style="-fx-background-color: gray;">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.19998168945312" minWidth="10.0" prefWidth="88.00001220703125" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="188.8000244140625" minWidth="10.0" prefWidth="188.8000244140625" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="203.2" minWidth="10.0" prefWidth="196.7999755859375" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.40001220703118" minWidth="10.0" prefWidth="160.00002441406252" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="175.39997558593745" minWidth="10.0" prefWidth="141.39998779296877" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.5999755859375" minWidth="10.0" prefWidth="132.00001220703132" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <VBox.margin>
+                                <Insets top="20.0" />
+                            </VBox.margin>
+                            <children>
+                                <StackPane prefHeight="30.0" prefWidth="106.0">
+                                    <children>
+                                        <Label text="Time" />
+                                    </children>
+                                </StackPane>
+                                <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                    <children>
+                                        <Label text="Monday" />
+                                    </children>
+                                </StackPane>
+                                <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2">
+                                    <children>
+                                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                                            <children>
+                                                <Label text="Tuesday" />
+                                            </children>
+                                        </StackPane>
+                                    </children>
+                                </StackPane>
+                                <StackPane prefHeight="30.0" prefWidth="158.0" />
+                                <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3">
+                                    <children>
+                                        <Label text="Wednesday" />
+                                    </children>
+                                </StackPane>
+                                <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="4">
+                                    <children>
+                                        <Label text="Thursday" />
+                                    </children>
+                                </StackPane>
+                                <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="5">
+                                    <children>
+                                        <Label text="Friday" />
+                                    </children>
+                                </StackPane>
+                            </children>
+                        </GridPane>
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>
