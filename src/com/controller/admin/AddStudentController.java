@@ -1,7 +1,9 @@
 package com.controller.admin;
 
 import com.dao.admin.StudentDAO;
+import com.dao.UserDAO;
 import com.model.Student;
+import com.model.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -89,9 +91,15 @@ public class AddStudentController {
                 guardianRelationship.getText()
         );
 
-        boolean saved = studentDAO.saveStudent(s);
+        User u = new User(
+                regNo.getText(),
+                "Student"
+        );
 
-        if (saved) {
+        boolean saved1 = studentDAO.saveStudent(s);
+        boolean saved2 =
+
+        if (saved1) {
             System.out.println("Student saved successfully");
             handleClear();
         } else {
