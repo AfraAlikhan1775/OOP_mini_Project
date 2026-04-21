@@ -23,6 +23,10 @@ public class MainApp extends Application {
         DatabaseInitializer.initialize();
         new UserDAO();
         new StudentDAO();
+        new com.dao.admin.TechnicalOfficerDAO();
+        new com.dao.AttendanceDAO();
+        new com.dao.MedicalDAO();
+        new com.dao.NoticeDAO();
         launch(args);
     }
 }

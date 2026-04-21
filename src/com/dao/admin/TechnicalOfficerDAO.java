@@ -3,10 +3,9 @@ package com.dao.admin;
 import com.database.DatabaseInitializer;
 import com.model.TechnicalOfficer;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TechnicalOfficerDAO {
 
@@ -104,5 +103,108 @@ public class TechnicalOfficerDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public TechnicalOfficer getTOByEmpId(String empId) {
+        String sql = "SELECT * FROM technical_officer WHERE emp_id = ?";
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, empId);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return extractTechnicalOfficer(rs);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public boolean updateProfile(TechnicalOfficer t) {
+        String sql = """
+                UPDATE technical_officer
+                SET first_name = ?, last_name = ?, nic = ?, dob = ?,
+                    gender = ?, image_path = ?, district = ?,
+                    email = ?, phone = ?, address = ?,
+                    department = ?, position = ?, shift_type = ?, assigned_lab = ?
+                WHERE emp_id = ?
+                """;
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, t.getFirstName());
+            pst.setString(2, t.getLastName());
+            pst.setString(3, t.getNic());
+
+            if (t.getDob() != null) {
+                pst.setDate(4, java.sql.Date.valueOf(t.getDob()));
+            } else {
+                pst.setDate(4, null);
+            }
+
+            pst.setString(5, t.getGender());
+            pst.setString(6, t.getImagePath());
+            pst.setString(7, t.getDistrict());
+            pst.setString(8, t.getEmail());
+            pst.setString(9, t.getPhone());
+            pst.setString(10, t.getAddress());
+            pst.setString(11, t.getDepartment());
+            pst.setString(12, t.getPosition());
+            pst.setString(13, t.getShiftType());
+            pst.setString(14, t.getAssignedLab());
+            pst.setString(15, t.getEmpId());
+
+            return pst.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<TechnicalOfficer> getAllTechnicalOfficers() {
+        List<TechnicalOfficer> list = new ArrayList<>();
+        String sql = "SELECT * FROM technical_officer ORDER BY id DESC";
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                list.add(extractTechnicalOfficer(rs));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    private TechnicalOfficer extractTechnicalOfficer(ResultSet rs) throws SQLException {
+        TechnicalOfficer t = new TechnicalOfficer();
+        t.setFirstName(rs.getString("first_name"));
+        t.setLastName(rs.getString("last_name"));
+        t.setEmpId(rs.getString("emp_id"));
+        t.setNic(rs.getString("nic"));
+        t.setDob(rs.getDate("dob") != null ? rs.getDate("dob").toLocalDate() : null);
+        t.setGender(rs.getString("gender"));
+        t.setImagePath(rs.getString("image_path"));
+        t.setDistrict(rs.getString("district"));
+        t.setEmail(rs.getString("email"));
+        t.setPhone(rs.getString("phone"));
+        t.setAddress(rs.getString("address"));
+        t.setDepartment(rs.getString("department"));
+        t.setPosition(rs.getString("position"));
+        t.setShiftType(rs.getString("shift_type"));
+        t.setAssignedLab(rs.getString("assigned_lab"));
+        return t;
     }
 }
