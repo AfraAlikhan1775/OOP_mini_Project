@@ -55,25 +55,75 @@ public class Student {
         this.guardianRelationship = guardianRelationship;
     }
 
-    public String getFirstName() { return firstName; }
-    public String getLastName() { return lastName; }
-    public String getRegNo() { return regNo; }
-    public String getNic() { return nic; }
-    public LocalDate getDob() { return dob; }
-    public String getGender() { return gender; }
-    public String getImagePath() { return imagePath; }
-    public String getDistrict() { return district; }
+    public String getFirstName() {
+        return firstName;
+    }
 
-    public String getEmail() { return email; }
-    public String getPhone() { return phone; }
-    public String getAddress() { return address; }
+    public String getLastName() {
+        return lastName;
+    }
 
-    public String getDepartment() { return department; }
-    public String getCourse() { return course; }
-    public String getYear() { return year; }
-    public String getMentor() { return mentor; }
+    public String getRegNo() {
+        return regNo;
+    }
 
-    public String getGuardianName() { return guardianName; }
-    public String getGuardianPhone() { return guardianPhone; }
-    public String getGuardianRelationship() { return guardianRelationship; }
+    public String getNic() {
+        return nic;
+    }
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public String getCourse() {
+        return course;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public String getMentor() {
+        return mentor;
+    }
+
+    public String getGuardianName() {
+        return guardianName;
+    }
+
+    public String getGuardianPhone() {
+        return guardianPhone;
+    }
+
+    public String getGuardianRelationship() {
+        return guardianRelationship;
+    }
 }

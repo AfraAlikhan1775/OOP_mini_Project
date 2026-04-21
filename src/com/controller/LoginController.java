@@ -1,8 +1,7 @@
 package com.controller;
 
-import com.dao.UserDAO;
+import com.dao.admin.UserDAO;
 import com.model.User;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,53 +21,40 @@ public class LoginController {
 
     @FXML
     private void handleLogin() {
-
-        String username = usernameField.getText();
+        String username = usernameField.getText().trim();
         String password = passwordField.getText();
-
 
         User user = userDAO.validateLogin(username, password);
 
         if (user != null) {
+            statusLabel.setText("Login successful!");
 
-            statusLabel.setText("Login Successful!");
-
-            navigateToDashboard(user);
+            try {
+                if (user.getRole().equals("Admin")) {
+                    openPage("/com/view/admin/admin.fxml", "Admin Dashboard");
+                } else if (user.getRole().equals("Student")) {
+                    openPage("/com/view/student/student_main.fxml", "Student Dashboard");
+                } else if (user.getRole().equals("Lecturer")) {
+                    openPage("/com/view/lecturer/lecturer_dashboard.fxml", "Lecturer Dashboard");
+                } else if (user.getRole().equals("Technical Officer")) {
+                    openPage("/com/view/technicalofficer/technical_officer_dashboard.fxml", "Technical Officer Dashboard");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                statusLabel.setText("Dashboard loading error!");
+            }
 
         } else {
             statusLabel.setText("Invalid username or password!");
         }
     }
 
-    private void navigateToDashboard(User user) {
-
-        try {
-
-            if (user.getRole().equalsIgnoreCase("admin")) {
-
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/admin/admin.fxml"));
-                Parent root = loader.load();
-
-
-
-                Stage stage = (Stage) usernameField.getScene().getWindow();
-
-                Scene scene = new Scene(root);
-
-                stage.setScene(scene);
-                stage.setTitle("Admin Dashboard");
-                stage.setMaximized(true);
-                stage.show();
-
-            } else {
-
-                statusLabel.setText("Access denied! Not an admin.");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            statusLabel.setText("Error loading dashboard!");
-        }
+    private void openPage(String fxmlPath, String title) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+        Stage stage = (Stage) usernameField.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle(title);
+        stage.setMaximized(true);
+        stage.show();
     }
 }

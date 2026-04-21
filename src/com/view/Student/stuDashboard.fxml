@@ -2,10 +2,6 @@
 
 <?import com.gluonhq.charm.glisten.control.TextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Rectangle2D?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -16,8 +12,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Arc?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -122,7 +116,7 @@
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
-                                        <Image url="@../../Resources/images/icon/course.png" />
+                                        <Image url="@../../Resources/images/icon/timetable.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -169,21 +163,6 @@
                     <children>
                         <VBox layoutX="640.0" layoutY="23.0" prefHeight="350.0" prefWidth="318.0" style="-fx-background-color: #0b1f36;" AnchorPane.rightAnchor="24.0">
                             <children>
-                                <VBox prefHeight="200.0" prefWidth="351.0">
-                                    <children>
-                                        <ImageView fitHeight="200.0" fitWidth="119.0" pickOnBounds="true" preserveRatio="true">
-                                            <viewport>
-                                                <Rectangle2D />
-                                            </viewport>
-                                            <VBox.margin>
-                                                <Insets left="120.0" top="10.0" />
-                                            </VBox.margin>
-                                            <image>
-                                                <Image url="@../../Resources/images/icon/stu.png" />
-                                            </image>
-                                        </ImageView>
-                                    </children></VBox>
-                                <VBox prefHeight="200.0" prefWidth="351.0" />
                                 <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                     <children>
                                         <Label contentDisplay="CENTER" layoutX="133.0" layoutY="-5.0" prefHeight="34.0" prefWidth="102.0" text="Name" textFill="WHITE">
@@ -198,14 +177,7 @@
                                             </padding>
                                         </Label>
                                     </children></AnchorPane>
-                                <VBox prefHeight="200.0" prefWidth="100.0">
-                                    <children>
-                                        <Label contentDisplay="CENTER" text="abcsomething@gmail.com" textAlignment="CENTER" textFill="WHITE">
-                                            <VBox.margin>
-                                                <Insets left="100.0" top="8.0" />
-                                            </VBox.margin>
-                                        </Label>
-                                    </children></VBox>
+                                <VBox prefHeight="200.0" prefWidth="100.0" />
                                 <Label contentDisplay="CENTER" text="Course: ICT" textFill="WHITE">
                                     <VBox.margin>
                                         <Insets left="100.0" top="8.0" />
@@ -243,40 +215,13 @@
                             </children>
                         </VBox>
                         <TextField floatText="\@Faculty of Technology,Universuty of ruhuna" layoutX="238.0" layoutY="689.0" maxLength="20" prefHeight="26.0" prefWidth="530.0" />
-                        <VBox layoutX="54.0" layoutY="56.0" prefHeight="294.0" prefWidth="426.0">
-                            <children>
-                                <BarChart legendSide="TOP" prefHeight="268.0" prefWidth="422.0" title="Attendance State" titleSide="LEFT">
-                                    <xAxis>
-                                        <CategoryAxis side="BOTTOM" />
-                                    </xAxis>
-                                    <yAxis>
-                                        <NumberAxis side="LEFT" />
-                                    </yAxis>
-                                </BarChart>
-                                <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="131.0" style="-fx-background-color: #0b1f36; -fx-border-color: black;" text="View Details" textFill="WHITE">
-                                    <VBox.margin>
-                                        <Insets bottom="2.0" left="270.0" />
-                                    </VBox.margin>
-                                </Button>
-                            </children>
-                        </VBox>
-                        <Circle fill="#98a1a9" layoutX="603.0" layoutY="538.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Arc fill="#0b1f36" layoutX="603.0" layoutY="538.0" length="270.0" radiusX="100.0" radiusY="100.0" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
-                        <Label layoutX="536.0" layoutY="529.0" text="3.18" textFill="WHITE">
-                            <font>
-                                <Font size="28.0" />
-                            </font>
-                        </Label>
-                        <Text fill="#131f46" layoutX="461.0" layoutY="467.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current GPA" />
-                        <Button layoutX="685.0" layoutY="600.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="78.0" style="-fx-background-color: #0b1f36; -fx-border-color: black;" text="See Grades" textFill="WHITE" />
-                        <Button layoutX="28.0" layoutY="677.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="54.0" style="-fx-background-color: #0b1f36; -fx-border-color: black;" text="View" textFill="WHITE" />
                         <Button layoutX="874.0" layoutY="706.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="108.0" style="-fx-background-color: black;" text="LogOut" textFill="WHITE" />
                         <ImageView fitHeight="30.0" fitWidth="61.0" layoutX="844.0" layoutY="704.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../../../icon/logout.png" />
                             </image>
                         </ImageView>
-                        <Text layoutX="714.0" layoutY="401.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Mentor Details" wrappingWidth="191.67816162109375">
+                        <Text layoutX="714.0" layoutY="401.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="191.67816162109375">
                             <font>
                                 <Font size="19.0" />
                             </font>

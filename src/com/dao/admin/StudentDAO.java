@@ -17,7 +17,6 @@ public class StudentDAO {
     }
 
     public void createTable() {
-
         String sql = """
                 CREATE TABLE IF NOT EXISTS student (
                     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -29,16 +28,13 @@ public class StudentDAO {
                     gender VARCHAR(10),
                     image_path VARCHAR(255),
                     district VARCHAR(50),
-
                     email VARCHAR(100),
                     phone VARCHAR(20),
                     address TEXT,
-
                     department VARCHAR(50),
                     course VARCHAR(50),
                     year_no VARCHAR(10),
                     mentor_id VARCHAR(50),
-
                     guardian_name VARCHAR(100),
                     guardian_phone VARCHAR(20),
                     guardian_relationship VARCHAR(50)
@@ -47,16 +43,33 @@ public class StudentDAO {
 
         try (Connection conn = DatabaseInitializer.getConnection();
              Statement stmt = conn.createStatement()) {
-
             stmt.execute(sql);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public boolean saveStudent(Student s) {
+    public boolean existsByRegNo(String regNo) {
+        String sql = "SELECT COUNT(*) FROM student WHERE reg_no = ?";
 
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, regNo);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean saveStudent(Student s) {
         String sql = """
                 INSERT INTO student (
                     first_name, last_name, reg_no, nic, dob, gender, image_path, district,
@@ -83,16 +96,13 @@ public class StudentDAO {
             pst.setString(6, s.getGender());
             pst.setString(7, s.getImagePath());
             pst.setString(8, s.getDistrict());
-
             pst.setString(9, s.getEmail());
             pst.setString(10, s.getPhone());
             pst.setString(11, s.getAddress());
-
             pst.setString(12, s.getDepartment());
             pst.setString(13, s.getCourse());
             pst.setString(14, s.getYear());
             pst.setString(15, s.getMentor());
-
             pst.setString(16, s.getGuardianName());
             pst.setString(17, s.getGuardianPhone());
             pst.setString(18, s.getGuardianRelationship());
@@ -107,9 +117,7 @@ public class StudentDAO {
     }
 
     public List<Student> getAllStudents() {
-
         List<Student> students = new ArrayList<>();
-
         String sql = "SELECT * FROM student ORDER BY id DESC";
 
         try (Connection conn = DatabaseInitializer.getConnection();
@@ -117,28 +125,7 @@ public class StudentDAO {
              ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
-                Student student = new Student(
-                        rs.getString("first_name"),
-                        rs.getString("last_name"),
-                        rs.getString("reg_no"),
-                        rs.getString("nic"),
-                        rs.getDate("dob") != null ? rs.getDate("dob").toLocalDate() : null,
-                        rs.getString("gender"),
-                        rs.getString("image_path"),
-                        rs.getString("district"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getString("address"),
-                        rs.getString("department"),
-                        rs.getString("course"),
-                        rs.getString("year_no"),
-                        rs.getString("mentor_id"),
-                        rs.getString("guardian_name"),
-                        rs.getString("guardian_phone"),
-                        rs.getString("guardian_relationship")
-                );
-
-                students.add(student);
+                students.add(extractStudent(rs));
             }
 
         } catch (Exception e) {
@@ -149,7 +136,6 @@ public class StudentDAO {
     }
 
     public List<Student> searchStudents(String keyword) {
-
         List<Student> students = new ArrayList<>();
 
         String sql = """
@@ -175,28 +161,7 @@ public class StudentDAO {
 
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
-                    Student student = new Student(
-                            rs.getString("first_name"),
-                            rs.getString("last_name"),
-                            rs.getString("reg_no"),
-                            rs.getString("nic"),
-                            rs.getDate("dob") != null ? rs.getDate("dob").toLocalDate() : null,
-                            rs.getString("gender"),
-                            rs.getString("image_path"),
-                            rs.getString("district"),
-                            rs.getString("email"),
-                            rs.getString("phone"),
-                            rs.getString("address"),
-                            rs.getString("department"),
-                            rs.getString("course"),
-                            rs.getString("year_no"),
-                            rs.getString("mentor_id"),
-                            rs.getString("guardian_name"),
-                            rs.getString("guardian_phone"),
-                            rs.getString("guardian_relationship")
-                    );
-
-                    students.add(student);
+                    students.add(extractStudent(rs));
                 }
             }
 
@@ -208,9 +173,7 @@ public class StudentDAO {
     }
 
     public List<Student> filterByDepartment(String department) {
-
         List<Student> students = new ArrayList<>();
-
         String sql = "SELECT * FROM student WHERE department = ? ORDER BY id DESC";
 
         try (Connection conn = DatabaseInitializer.getConnection();
@@ -220,28 +183,7 @@ public class StudentDAO {
 
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
-                    Student student = new Student(
-                            rs.getString("first_name"),
-                            rs.getString("last_name"),
-                            rs.getString("reg_no"),
-                            rs.getString("nic"),
-                            rs.getDate("dob") != null ? rs.getDate("dob").toLocalDate() : null,
-                            rs.getString("gender"),
-                            rs.getString("image_path"),
-                            rs.getString("district"),
-                            rs.getString("email"),
-                            rs.getString("phone"),
-                            rs.getString("address"),
-                            rs.getString("department"),
-                            rs.getString("course"),
-                            rs.getString("year_no"),
-                            rs.getString("mentor_id"),
-                            rs.getString("guardian_name"),
-                            rs.getString("guardian_phone"),
-                            rs.getString("guardian_relationship")
-                    );
-
-                    students.add(student);
+                    students.add(extractStudent(rs));
                 }
             }
 
@@ -250,5 +192,28 @@ public class StudentDAO {
         }
 
         return students;
+    }
+
+    private Student extractStudent(ResultSet rs) throws Exception {
+        return new Student(
+                rs.getString("first_name"),
+                rs.getString("last_name"),
+                rs.getString("reg_no"),
+                rs.getString("nic"),
+                rs.getDate("dob") != null ? rs.getDate("dob").toLocalDate() : null,
+                rs.getString("gender"),
+                rs.getString("image_path"),
+                rs.getString("district"),
+                rs.getString("email"),
+                rs.getString("phone"),
+                rs.getString("address"),
+                rs.getString("department"),
+                rs.getString("course"),
+                rs.getString("year_no"),
+                rs.getString("mentor_id"),
+                rs.getString("guardian_name"),
+                rs.getString("guardian_phone"),
+                rs.getString("guardian_relationship")
+        );
     }
 }
