@@ -1,7 +1,7 @@
 package com.controller.admin;
 
 import com.dao.admin.StudentDAO;
-import com.dao.UserDAO;
+import com.dao.admin.UserDAO;
 import com.model.Student;
 import com.model.User;
 import javafx.fxml.FXML;
@@ -41,7 +41,9 @@ public class AddStudentController {
     @FXML private TextField guardianRelationship;
 
     private File selectedFile;
+
     private final StudentDAO studentDAO = new StudentDAO();
+    private final UserDAO userDAO = new UserDAO();
 
     @FXML
     private void uploadImage() {
@@ -61,49 +63,80 @@ public class AddStudentController {
     @FXML
     private void register() {
 
+        String registrationNumber = regNo.getText().trim();
+
+        if (registrationNumber.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Validation Error", "Registration number is required.");
+            return;
+        }
+
+        if (firstName.getText().trim().isEmpty() || lastName.getText().trim().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Validation Error", "First name and last name are required.");
+            return;
+        }
+
+        if (studentDAO.existsByRegNo(registrationNumber)) {
+            showAlert(Alert.AlertType.ERROR, "Duplicate Error", "Registration number already exists.");
+            return;
+        }
+
+        if (userDAO.existsByUsername(registrationNumber)) {
+            showAlert(Alert.AlertType.ERROR, "Duplicate Error", "Username already exists.");
+            return;
+        }
+
         String gender = null;
-        if (male.isSelected()) gender = "Male";
-        else if (female.isSelected()) gender = "Female";
+        if (male.isSelected()) {
+            gender = "Male";
+        } else if (female.isSelected()) {
+            gender = "Female";
+        }
 
         String imagePath = (selectedFile != null) ? selectedFile.getAbsolutePath() : null;
 
         Student s = new Student(
-                firstName.getText(),
-                lastName.getText(),
-                regNo.getText(),
-                nic.getText(),
+                firstName.getText().trim(),
+                lastName.getText().trim(),
+                registrationNumber,
+                nic.getText().trim(),
                 dob.getValue(),
                 gender,
                 imagePath,
                 district.getValue(),
-
-                email.getText(),
-                phone.getText(),
-                address.getText(),
-
+                email.getText().trim(),
+                phone.getText().trim(),
+                address.getText().trim(),
                 department.getValue(),
                 course.getValue(),
-                year.getText(),
-                mentor.getText(),
-
-                guardianName.getText(),
-                guardianPhone.getText(),
-                guardianRelationship.getText()
+                year.getText().trim(),
+                mentor.getText().trim(),
+                guardianName.getText().trim(),
+                guardianPhone.getText().trim(),
+                guardianRelationship.getText().trim()
         );
 
         User u = new User(
-                regNo.getText(),
-                "Student"
+                registrationNumber,
+                "12345",
+                "Student",
+                imagePath
         );
 
-        boolean saved1 = studentDAO.saveStudent(s);
-        boolean saved2 =
+        boolean userSaved = userDAO.saveUser(u);
 
-        if (saved1) {
-            System.out.println("Student saved successfully");
+        if (!userSaved) {
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to create user account.");
+            return;
+        }
+
+        boolean studentSaved = studentDAO.saveStudent(s);
+
+        if (studentSaved) {
+            showAlert(Alert.AlertType.INFORMATION, "Success",
+                    "Student registered successfully.\nUsername: " + registrationNumber + "\nPassword: 12345");
             handleClear();
         } else {
-            System.out.println("Error saving student");
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to save student details.");
         }
     }
 
@@ -133,5 +166,13 @@ public class AddStudentController {
         guardianName.clear();
         guardianPhone.clear();
         guardianRelationship.clear();
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
