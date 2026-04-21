@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.technicalofficer.MainLayoutController"
+      prefWidth="1100" prefHeight="620"
+      style="-fx-background-color: #f0f2f5;">
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--                  SIDEBAR                   -->
+    <!-- ═══════════════════════════════════════════ -->
+    <VBox prefWidth="200" minWidth="200" maxWidth="200"
+          style="-fx-background-color: #1e2433;">
+
+        <!-- Brand -->
+        <VBox spacing="3" style="-fx-padding: 20 16 16 16; -fx-border-color: transparent transparent #2d3548 transparent; -fx-border-width: 0 0 1 0;">
+            <Label text="Technical Officer"
+                   style="-fx-text-fill: #ffffff; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+            <Label text="University of Ruhuna"
+                   style="-fx-text-fill: #7a8296; -fx-font-size: 11px;"/>
+        </VBox>
+
+        <!-- Nav Items -->
+        <VBox fx:id="navContainer" spacing="2" style="-fx-padding: 12 0 12 0;" VBox.vgrow="ALWAYS">
+
+            <!-- Dashboard -->
+            <HBox fx:id="navDashboard" spacing="10" alignment="CENTER_LEFT"
+                  style="-fx-padding: 10 16 10 16; -fx-background-color: #3b6ad4; -fx-cursor: hand;"
+                  onMouseClicked="#handleDashboard">
+                <Label text="⊞" style="-fx-text-fill: #ffffff; -fx-font-size: 14px;"/>
+                <Label text="Dashboard" style="-fx-text-fill: #ffffff; -fx-font-size: 13px;"/>
+            </HBox>
+
+            <!-- Attendance -->
+            <HBox fx:id="navAttendance" spacing="10" alignment="CENTER_LEFT"
+                  style="-fx-padding: 10 16 10 16; -fx-background-color: transparent; -fx-cursor: hand;"
+                  onMouseClicked="#handleAttendance"
+                  onMouseEntered="#handleNavHoverIn"
+                  onMouseExited="#handleNavHoverOut">
+                <Label text="📅" style="-fx-text-fill: #7a8296; -fx-font-size: 14px;"/>
+                <Label text="Attendance" style="-fx-text-fill: #7a8296; -fx-font-size: 13px;"/>
+            </HBox>
+
+            <!-- Medical -->
+            <HBox fx:id="navMedical" spacing="10" alignment="CENTER_LEFT"
+                  style="-fx-padding: 10 16 10 16; -fx-background-color: transparent; -fx-cursor: hand;"
+                  onMouseClicked="#handleMedical"
+                  onMouseEntered="#handleNavHoverIn"
+                  onMouseExited="#handleNavHoverOut">
+                <Label text="➕" style="-fx-text-fill: #7a8296; -fx-font-size: 14px;"/>
+                <Label text="Medical" style="-fx-text-fill: #7a8296; -fx-font-size: 13px;"/>
+            </HBox>
+
+            <!-- Notices -->
+            <HBox fx:id="navNotices" spacing="10" alignment="CENTER_LEFT"
+                  style="-fx-padding: 10 16 10 16; -fx-background-color: transparent; -fx-cursor: hand;"
+                  onMouseClicked="#handleNotices"
+                  onMouseEntered="#handleNavHoverIn"
+                  onMouseExited="#handleNavHoverOut">
+                <Label text="📋" style="-fx-text-fill: #7a8296; -fx-font-size: 14px;"/>
+                <Label text="Notices" style="-fx-text-fill: #7a8296; -fx-font-size: 13px;"/>
+            </HBox>
+
+            <!-- Timetable -->
+            <HBox fx:id="navTimetable" spacing="10" alignment="CENTER_LEFT"
+                  style="-fx-padding: 10 16 10 16; -fx-background-color: transparent; -fx-cursor: hand;"
+                  onMouseClicked="#handleTimetable"
+                  onMouseEntered="#handleNavHoverIn"
+                  onMouseExited="#handleNavHoverOut">
+                <Label text="⊞" style="-fx-text-fill: #7a8296; -fx-font-size: 14px;"/>
+                <Label text="Timetable" style="-fx-text-fill: #7a8296; -fx-font-size: 13px;"/>
+            </HBox>
+
+            <!-- Profile -->
+            <HBox fx:id="navProfile" spacing="10" alignment="CENTER_LEFT"
+                  style="-fx-padding: 10 16 10 16; -fx-background-color: transparent; -fx-cursor: hand;"
+                  onMouseClicked="#handleProfile"
+                  onMouseEntered="#handleNavHoverIn"
+                  onMouseExited="#handleNavHoverOut">
+                <Label text="👤" style="-fx-text-fill: #7a8296; -fx-font-size: 14px;"/>
+                <Label text="Profile" style="-fx-text-fill: #7a8296; -fx-font-size: 13px;"/>
+            </HBox>
+
+        </VBox>
+
+        <!-- Logout -->
+        <VBox style="-fx-border-color: #2d3548 transparent transparent transparent; -fx-border-width: 1 0 0 0;">
+            <HBox fx:id="logoutBtn" spacing="10" alignment="CENTER_LEFT"
+                  style="-fx-padding: 12 16 12 16; -fx-cursor: hand;"
+                  onMouseClicked="#handleLogout"
+                  onMouseEntered="#handleLogoutHoverIn"
+                  onMouseExited="#handleLogoutHoverOut">
+                <Label fx:id="logoutIcon" text="↪" style="-fx-text-fill: #7a8296; -fx-font-size: 14px;"/>
+                <Label fx:id="logoutLabel" text="Log Out" style="-fx-text-fill: #7a8296; -fx-font-size: 13px;"/>
+            </HBox>
+        </VBox>
+
+    </VBox>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--                 MAIN AREA                  -->
+    <!-- ═══════════════════════════════════════════ -->
+    <VBox HBox.hgrow="ALWAYS" style="-fx-background-color: #f0f2f5;">
+
+        <!-- Top Bar -->
+        <HBox prefHeight="52" minHeight="52" maxHeight="52"
+              alignment="CENTER_LEFT"
+              style="-fx-background-color: #ffffff; -fx-padding: 0 24 0 24; -fx-border-color: transparent transparent #e5e7eb transparent; -fx-border-width: 0 0 1 0;">
+
+            <Label fx:id="topbarTitle" text="Dashboard"
+                   style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #111827;"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Label text="T.O. Kamal Silva"
+                       style="-fx-font-size: 13px; -fx-text-fill: #6b7280;"/>
+                <StackPane>
+                    <Circle fx:id="avatarCircle" radius="16" fill="#3b6ad4"/>
+                    <Label text="KS"
+                           style="-fx-text-fill: #ffffff; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+                </StackPane>
+            </HBox>
+        </HBox>
+
+        <!-- Content Area -->
+        <StackPane fx:id="contentArea" VBox.vgrow="ALWAYS"
+                   style="-fx-background-color: #f0f2f5; -fx-padding: 24;">
+            <Label text="Dashboard content will go here"
+                   style="-fx-text-fill: #9ca3af; -fx-font-size: 14px;"/>
+        </StackPane>
+
+    </VBox>
+
+</HBox>
