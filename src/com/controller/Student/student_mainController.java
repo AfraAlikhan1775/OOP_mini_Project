@@ -5,14 +5,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 
-public class StuDashboardController {
+public class student_mainController {
 
     @FXML
     private StackPane contentArea;
 
     @FXML
     public void initialize() {
-        loadUI("/com/view/student/stuDashboard.fxml");
+        loadUI("/com/view/student/student_main.fxml");
     }
 
     private void loadUI(String fxml) {
