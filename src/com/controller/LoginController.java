@@ -72,7 +72,16 @@ public class LoginController {
                 openPage("/com/Resources/view/admin/lecturer.fxml", "Lecturer Dashboard");
 
             } else if ("Technical Officer".equals(user.getRole())) {
-                openPage("/com/Resources/view/admin/to.fxml", "Technical Officer Dashboard");
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/techOfficer/to_dashboard.fxml"));
+                Parent root = loader.load();
+                com.controller.techOfficerControllers.TODashboardController controller = loader.getController();
+                controller.setLoggedInUser(username);
+
+                Stage stage = (Stage) usernameField.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Technical Officer Dashboard");
+                stage.setMaximized(true);
+                stage.show();
 
             } else {
                 statusLabel.setText("Unknown role!");
