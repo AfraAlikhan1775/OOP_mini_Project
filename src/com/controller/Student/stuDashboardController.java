@@ -49,4 +49,20 @@ public class StuDashboardController {
     private void handleGrades() {
         loadUI("/com/view/student/stuGrades.fxml");
     }
+
+    @FXML
+    private void handleCourse() {
+        loadUI("/com/view/student/stuCourse.fxml");
+    }
+
+    @FXML
+    private void handleMedical() {
+        loadUI("/com/view/student/stuMedical.fxml");
+    }
+
+    @FXML
+    private void handleProfile() {
+        loadUI("/com/view/student/stuProfile.fxml");
+    }
+
 }
