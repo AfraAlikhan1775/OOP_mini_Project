@@ -1,29 +1,28 @@
 package com.main;
 
+import com.dao.admin.StudentDAO;
+import com.dao.admin.UserDAO;
 import com.database.DatabaseInitializer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/Login.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        primaryStage.setTitle("FoT Management System");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        Scene scene = new Scene(loader.load());
+        stage.setScene(scene);
+        stage.setTitle("FMS Login");
+        stage.show();
     }
 
     public static void main(String[] args) {
-
         DatabaseInitializer.initialize();
-
-
+        new UserDAO();
+        new StudentDAO();
         launch(args);
     }
 }

@@ -1,4 +1,4 @@
-package com.controller.student;
+package com.controller.Student;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +10,7 @@ public class StudentController {
     @FXML
     private StackPane contentArea;
 
+    @FXML
     public void initialize() {
         loadUI("/com/view/student/stuDashboard.fxml");
     }
@@ -19,14 +20,13 @@ public class StudentController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Parent root = loader.load();
             contentArea.getChildren().setAll(root);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @FXML
-    private void gotoCourse() {
+    private void handleDashboard() {
         loadUI("/com/view/student/stuDashboard.fxml");
     }
 
@@ -48,14 +48,5 @@ public class StudentController {
     @FXML
     private void handleGrades() {
         loadUI("/com/view/student/stuGrades.fxml");
-    }
-
-    @FXML
-    private void handleMedical() {
-        loadUI("/com/view/student/stuMedical.fxml");
-    }
-    @FXML
-    private void handleYourDetails() {
-        loadUI("/com/view/student/stuDetails.fxml");
     }
 }

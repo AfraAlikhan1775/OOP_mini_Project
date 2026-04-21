@@ -66,7 +66,7 @@ public class StudentController {
             return;
         }
 
-        renderStudents(studentDAO.searchStudents(keyword));
+        renderStudents(studentDAO.searchStudents(keyword.trim()));
     }
 
     @FXML
