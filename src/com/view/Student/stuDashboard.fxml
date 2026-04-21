@@ -1,31 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.gluonhq.charm.glisten.control.TextField?>
 <?import javafx.geometry.Insets?>
+<<<<<<< HEAD
 <?import javafx.geometry.Rectangle2D?>
+=======
+>>>>>>> 5f2e0ee0f087c04a484e94f2bae0bbc96ecca90f
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
+<<<<<<< HEAD
 <AnchorPane prefHeight="785.0" prefWidth="1086.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainFormController">
+=======
+<AnchorPane prefHeight="700.0" prefWidth="1000.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            style="-fx-background-color:#f5f7fa;">
+
+>>>>>>> 5f2e0ee0f087c04a484e94f2bae0bbc96ecca90f
     <children>
-        <BorderPane layoutX="14.0" prefHeight="200.0" prefWidth="200.0" />
-        <BorderPane layoutX="-2.0" layoutY="-1.0" prefHeight="786.0" prefWidth="1086.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="-1.0">
-            <left>
-                <VBox prefHeight="786.0" prefWidth="149.0" spacing="10.0" style="-fx-background-color: #0b1f36;" BorderPane.alignment="CENTER">
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
+
+        <!-- Profile Card -->
+        <VBox layoutX="720.0" layoutY="25.0" prefHeight="250.0" prefWidth="230.0"
+              style="-fx-background-color: #0b1f36; -fx-background-radius: 12; -fx-padding: 20;"
+              spacing="10">
+
+            <children>
+                <ImageView fitHeight="120.0" fitWidth="120.0" preserveRatio="true"/>
+                <Label text="Student Name" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="20.0"/>
+                    </font>
+                </Label>
+                <Label text="student@email.com" textFill="WHITE"/>
+                <Label text="Course: ICT" textFill="WHITE"/>
+                <Label text="Phone: 0771234567" textFill="WHITE"/>
+            </children>
+        </VBox>
+
+        <!-- Recent Notices -->
+        <VBox layoutX="30.0" layoutY="25.0" prefHeight="250.0" prefWidth="640.0"
+              style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18; -fx-border-color:#d9e2ec; -fx-border-radius:12;"
+              spacing="10">
+
+            <children>
+                <Label text="Recent Notices">
+                    <font>
+                        <Font name="System Bold" size="24.0"/>
+                    </font>
+                </Label>
+
+                <Label text="• Semester exam timetable will be released next week"/>
+                <Label text="• Mentor meeting on Friday at 10.00 AM"/>
+                <Label text="• Assignment submission deadline extended to Monday"/>
+
+                <Button text="View All Notices"
+                        prefWidth="150"
+                        style="-fx-background-color:#0b1f36; -fx-text-fill:white;"/>
+            </children>
+        </VBox>
+
+        <!-- Today Timetable -->
+        <VBox layoutX="30.0" layoutY="310.0" prefHeight="260.0" prefWidth="450.0"
+              style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18; -fx-border-color:#d9e2ec; -fx-border-radius:12;"
+              spacing="10">
+
+            <children>
+                <Label text="Today's Timetable">
+                    <font>
+                        <Font name="System Bold" size="24.0"/>
+                    </font>
+                </Label>
+
+                <TableView prefHeight="190.0" prefWidth="410.0">
+                    <columns>
+                        <TableColumn prefWidth="100.0" text="Time"/>
+                        <TableColumn prefWidth="110.0" text="Course Code"/>
+                        <TableColumn prefWidth="120.0" text="Course"/>
+                        <TableColumn prefWidth="80.0" text="Type"/>
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+
+        <!-- Mentor Details -->
+        <VBox layoutX="510.0" layoutY="310.0" prefHeight="125.0" prefWidth="440.0"
+              style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18; -fx-border-color:#d9e2ec; -fx-border-radius:12;"
+              spacing="8">
+
+            <children>
+                <Label text="Mentor Details">
+                    <font>
+                        <Font name="System Bold" size="22.0"/>
+                    </font>
+                </Label>
+
+                <Label text="Name: Mr. John Silva"/>
+                <Label text="Department: ICT"/>
+                <Label text="Email: john.silva@fot.com"/>
+                <Label text="Contact: 0712345678"/>
+            </children>
+        </VBox>
+
+        <!-- Course Timetable / Quick Access -->
+        <VBox layoutX="510.0" layoutY="455.0" prefHeight="115.0" prefWidth="440.0"
+              style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18; -fx-border-color:#d9e2ec; -fx-border-radius:12;"
+              spacing="10">
+
+            <children>
+                <Label text="Course Timetable & Quick Access">
+                    <font>
+                        <Font name="System Bold" size="22.0"/>
+                    </font>
+                </Label>
+
+                <HBox spacing="12">
                     <children>
+<<<<<<< HEAD
                         <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="129.0" style="-fx-background-color: #0b1f36;" text="Dashboard" textAlignment="CENTER" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
@@ -281,5 +378,15 @@
                 </AnchorPane>
             </center>
         </BorderPane>
+=======
+                        <Button text="View Full Timetable" style="-fx-background-color:#0b1f36; -fx-text-fill:white;"/>
+                        <Button text="My Courses" style="-fx-background-color:#0b1f36; -fx-text-fill:white;"/>
+                        <Button text="Results" style="-fx-background-color:#0b1f36; -fx-text-fill:white;"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+>>>>>>> 5f2e0ee0f087c04a484e94f2bae0bbc96ecca90f
     </children>
 </AnchorPane>

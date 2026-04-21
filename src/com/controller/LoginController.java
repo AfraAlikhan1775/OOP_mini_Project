@@ -11,6 +11,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.net.URL;
+
 public class LoginController {
 
     @FXML private TextField usernameField;
@@ -24,33 +26,74 @@ public class LoginController {
         String username = usernameField.getText().trim();
         String password = passwordField.getText();
 
+        if (username.isEmpty() || password.isEmpty()) {
+            statusLabel.setText("Please enter username and password!");
+            return;
+        }
+
         User user = userDAO.validateLogin(username, password);
 
-        if (user != null) {
-            statusLabel.setText("Login successful!");
+        if (user == null) {
+            statusLabel.setText("Invalid username or password!");
+            return;
+        }
 
-            try {
-                if (user.getRole().equals("Admin")) {
-                    openPage("/com/view/admin/admin.fxml", "Admin Dashboard");
-                } else if (user.getRole().equals("Student")) {
-                    openPage("/com/view/student/student_main.fxml", "Student Dashboard");
-                } else if (user.getRole().equals("Lecturer")) {
-                    openPage("/com/view/lecturer/lecturer_dashboard.fxml", "Lecturer Dashboard");
-                } else if (user.getRole().equals("Technical Officer")) {
-                    openPage("/com/view/technicalofficer/technical_officer_dashboard.fxml", "Technical Officer Dashboard");
+        try {
+            if ("Admin".equals(user.getRole())) {
+                openPage("/com/view/admin/admin.fxml", "Admin Dashboard");
+
+            } else if ("Student".equals(user.getRole())) {
+
+                if (userDAO.isDefaultPassword(username)) {
+                    URL resource = getClass().getResource("/com/view/Student/change_password.fxml");
+
+                    if (resource == null) {
+                        statusLabel.setText("Change password page not found!");
+                        return;
+                    }
+
+                    FXMLLoader loader = new FXMLLoader(resource);
+                    Parent root = loader.load();
+
+                    com.controller.Student.ChangePasswordController controller = loader.getController();
+                    controller.setUsername(username);
+
+                    Stage stage = (Stage) usernameField.getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Change Password");
+                    stage.setResizable(false);
+                    stage.show();
+
+                } else {
+                    openPage("/com/Resources/view/Student/student_main.fxml", "Student Dashboard");
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                statusLabel.setText("Dashboard loading error!");
+
+            } else if ("Lecturer".equals(user.getRole())) {
+                openPage("/com/Resources/view/admin/lecturer.fxml", "Lecturer Dashboard");
+
+            } else if ("Technical Officer".equals(user.getRole())) {
+                openPage("/com/Resources/view/admin/to.fxml", "Technical Officer Dashboard");
+
+            } else {
+                statusLabel.setText("Unknown role!");
             }
 
-        } else {
-            statusLabel.setText("Invalid username or password!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            statusLabel.setText("Dashboard loading error: " + e.getMessage());
         }
     }
 
     private void openPage(String fxmlPath, String title) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+        URL resource = getClass().getResource(fxmlPath);
+
+        if (resource == null) {
+            throw new IllegalArgumentException("FXML file not found: " + fxmlPath);
+        }
+
+        FXMLLoader loader = new FXMLLoader(resource);
+        Parent root = loader.load();
+
         Stage stage = (Stage) usernameField.getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.setTitle(title);
