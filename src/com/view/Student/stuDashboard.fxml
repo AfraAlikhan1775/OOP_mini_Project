@@ -21,7 +21,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="785.0" prefWidth="1086.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainFormController">
+<AnchorPane prefHeight="785.0" prefWidth="1086.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.Student.StudentController">
     <children>
         <BorderPane layoutX="14.0" prefHeight="200.0" prefWidth="200.0" />
         <BorderPane layoutX="-2.0" layoutY="-1.0" prefHeight="786.0" prefWidth="1086.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="-1.0">
@@ -35,7 +35,7 @@
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
-                                        <Image url="@../../../icon/dashboard.png" />
+                                        <Image url="" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -50,7 +50,7 @@
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
-                                        <Image url="@../../../icon/attendance.png" />
+                                        <Image url="" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -65,7 +65,7 @@
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="29.0">
                                     <image>
-                                        <Image url="@../src/com/Resources/images/icon/notes.png" />
+                                        <Image url="" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -80,7 +80,7 @@
                             <graphic>
                                 <ImageView fitHeight="26.0" fitWidth="29.0">
                                     <image>
-                                        <Image url="@../../../icon/grade.png" />
+                                        <Image url="" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -94,7 +94,7 @@
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20.0">
                                     <image>
-                                        <Image url="@../../../icon/medical.png" />
+                                        <Image url="" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -108,7 +108,7 @@
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
-                                        <Image url="@../../../icon/timetable.png" />
+                                        <Image url="" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -118,11 +118,11 @@
                             <padding>
                                 <Insets right="20.0" top="10.0" />
                             </padding></Button>
-                        <Button fx:id="btnNotice" mnemonicParsing="false" onAction="#GoToNotice" prefHeight="26.0" prefWidth="181.0" style="-fx-background-color: #0b1f36;" text="YourDetails" textFill="WHITE">
+                        <Button fx:id="btnNotice" mnemonicParsing="false"  prefHeight="26.0" prefWidth="181.0" style="-fx-background-color: #0b1f36;" text="YourDetails" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
-                                        <Image url="@../../../icon/notes.png" />
+                                        <Image url="" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -147,7 +147,7 @@
                             </font></Label>
                         <ImageView fitHeight="64.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../icon/stu.png" />
+                                <Image url="" />
                             </image>
                         </ImageView>
                         <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="72.0" style="-fx-background-color: black;" text="Edit Profile" textFill="#ccd9ea">
@@ -176,7 +176,7 @@
                                                 <Insets left="120.0" top="10.0" />
                                             </VBox.margin>
                                             <image>
-                                                <Image url="@../../../icon/stu.png" />
+                                                <Image url="" />
                                             </image>
                                         </ImageView>
                                     </children></VBox>
@@ -239,7 +239,6 @@
                                 </TableView>
                             </children>
                         </VBox>
-                        <TextField floatText="\@Faculty of Technology,Universuty of ruhuna" layoutX="238.0" layoutY="689.0" maxLength="20" prefHeight="26.0" prefWidth="530.0" />
                         <VBox layoutX="54.0" layoutY="56.0" prefHeight="294.0" prefWidth="426.0">
                             <children>
                                 <BarChart legendSide="TOP" prefHeight="268.0" prefWidth="422.0" title="Attendance State" titleSide="LEFT">
@@ -270,7 +269,7 @@
                         <Button layoutX="874.0" layoutY="706.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="108.0" style="-fx-background-color: black;" text="LogOut" textFill="WHITE" />
                         <ImageView fitHeight="30.0" fitWidth="61.0" layoutX="844.0" layoutY="704.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../icon/logout.png" />
+                                <Image url="" />
                             </image>
                         </ImageView>
                         <Text layoutX="714.0" layoutY="401.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Mentor Details" wrappingWidth="191.67816162109375">
