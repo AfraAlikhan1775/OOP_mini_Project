@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="12" style="-fx-padding:20;"
+      xmlns="http://javafx.com/javafx/25"
+      xmlns:fx="http://javafx.com/fxml/1">
+
+    <Label text="Notices" style="-fx-font-size:20;" />
+
+    <TableView>
+        <columns>
+            <TableColumn text="Title" />
+            <TableColumn text="Description" />
+            <TableColumn text="Date" />
+        </columns>
+    </TableView>
+
+    <HBox spacing="10">
+        <Button text="Add Notice" />
+        <Button text="Delete Notice" />
+    </HBox>
+
+</VBox>

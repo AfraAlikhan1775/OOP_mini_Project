@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -15,17 +14,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="748.0" prefWidth="1300.0"
-            stylesheets="@adminstyle.css"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.controller.admin.StudentController">
+<BorderPane prefHeight="748.0" prefWidth="1300.0" stylesheets="@adminstyle.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.admin.StudentController">
 
     <top>
-        <HBox alignment="CENTER_LEFT"
-              prefHeight="46.0"
-              spacing="12.0"
-              style="-fx-background-color: #0b1f36; -fx-padding: 10 20 10 20;">
+        <HBox alignment="CENTER_LEFT" prefHeight="46.0" spacing="12.0" style="-fx-background-color: #0b1f36; -fx-padding: 10 20 10 20;">
             <children>
                 <Label text="Student Management 🎓" textFill="WHITE">
                     <font>
@@ -46,13 +38,10 @@
 
                 <ComboBox fx:id="categoryComboBox" onAction="#handleFilter" prefHeight="26.0" prefWidth="158.0" />
 
-                <MenuButton mnemonicParsing="false"
-                            text="➕"
-                            textFill="WHITE"
-                            style="-fx-background-color: #122c4a; -fx-font-size: 18px;">
+                <MenuButton mnemonicParsing="false" style="-fx-background-color: #122c4a; -fx-font-size: 18px;" text="➕" textFill="WHITE">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#navigateAddStudent" text="Add student" />
-                        <MenuItem mnemonicParsing="false" text="Add lecturer" />
+                        <MenuItem mnemonicParsing="false" onAction="#navigateAddLecturer" text="Add lecturer" />
                         <MenuItem mnemonicParsing="false" text="Add Course" />
                         <MenuItem mnemonicParsing="false" text="Add TO" />
                         <MenuItem mnemonicParsing="false" text="Add Time table" />
@@ -66,11 +55,9 @@
     <center>
         <ScrollPane fitToWidth="true" pannable="true" style="-fx-background-color:#eaf1f8;">
             <content>
-                <VBox fx:id="studentCardContainer"
-                      spacing="18.0"
-                      style="-fx-background-color:#eaf1f8;">
+                <VBox fx:id="studentCardContainer" spacing="18.0" style="-fx-background-color:#eaf1f8;">
                     <padding>
-                        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                     </padding>
                 </VBox>
             </content>

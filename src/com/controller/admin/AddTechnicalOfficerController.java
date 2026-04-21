@@ -1,8 +1,8 @@
 package com.controller.admin;
 
-import com.dao.admin.StudentDAO;
+import com.dao.admin.TechnicalOfficerDAO;
 import com.dao.admin.UserDAO;
-import com.model.Student;
+import com.model.TechnicalOfficer;
 import com.model.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -12,11 +12,11 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 
-public class AddStudentController {
+public class AddTechnicalOfficerController {
 
     @FXML private TextField firstName;
     @FXML private TextField lastName;
-    @FXML private TextField regNo;
+    @FXML private TextField empId;
     @FXML private TextField nic;
     @FXML private DatePicker dob;
 
@@ -25,24 +25,20 @@ public class AddStudentController {
     @FXML private ToggleGroup genderGroup;
 
     @FXML private ComboBox<String> district;
-    @FXML private ImageView studentImageView;
+    @FXML private ImageView officerImageView;
 
     @FXML private TextField email;
     @FXML private TextField phone;
     @FXML private TextArea address;
 
     @FXML private ComboBox<String> department;
-    @FXML private ComboBox<String> course;
-    @FXML private TextField year;
-    @FXML private TextField mentor;
-
-    @FXML private TextField guardianName;
-    @FXML private TextField guardianPhone;
-    @FXML private TextField guardianRelationship;
+    @FXML private TextField position;
+    @FXML private ComboBox<String> shiftType;
+    @FXML private TextField assignedLab;
 
     private File selectedFile;
 
-    private final StudentDAO studentDAO = new StudentDAO();
+    private final TechnicalOfficerDAO technicalOfficerDAO = new TechnicalOfficerDAO();
     private final UserDAO userDAO = new UserDAO();
 
     @FXML
@@ -52,21 +48,20 @@ public class AddStudentController {
                 new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg")
         );
 
-        File file = fc.showOpenDialog(studentImageView.getScene().getWindow());
+        File file = fc.showOpenDialog(officerImageView.getScene().getWindow());
 
         if (file != null) {
             selectedFile = file;
-            studentImageView.setImage(new Image(file.toURI().toString()));
+            officerImageView.setImage(new Image(file.toURI().toString()));
         }
     }
 
     @FXML
     private void register() {
+        String employeeId = empId.getText().trim();
 
-        String registrationNumber = regNo.getText().trim();
-
-        if (registrationNumber.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Validation Error", "Registration number is required.");
+        if (employeeId.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Validation Error", "Employee ID is required.");
             return;
         }
 
@@ -75,29 +70,26 @@ public class AddStudentController {
             return;
         }
 
-        if (studentDAO.existsByRegNo(registrationNumber)) {
-            showAlert(Alert.AlertType.ERROR, "Duplicate Error", "Registration number already exists.");
+        if (technicalOfficerDAO.existsByEmpId(employeeId)) {
+            showAlert(Alert.AlertType.ERROR, "Duplicate Error", "Employee ID already exists.");
             return;
         }
 
-        if (userDAO.existsByUsername(registrationNumber)) {
+        if (userDAO.existsByUsername(employeeId)) {
             showAlert(Alert.AlertType.ERROR, "Duplicate Error", "Username already exists.");
             return;
         }
 
         String gender = null;
-        if (male.isSelected()) {
-            gender = "Male";
-        } else if (female.isSelected()) {
-            gender = "Female";
-        }
+        if (male.isSelected()) gender = "Male";
+        else if (female.isSelected()) gender = "Female";
 
         String imagePath = (selectedFile != null) ? selectedFile.getAbsolutePath() : null;
 
-        Student s = new Student(
+        TechnicalOfficer officer = new TechnicalOfficer(
                 firstName.getText().trim(),
                 lastName.getText().trim(),
-                registrationNumber,
+                employeeId,
                 nic.getText().trim(),
                 dob.getValue(),
                 gender,
@@ -107,36 +99,27 @@ public class AddStudentController {
                 phone.getText().trim(),
                 address.getText().trim(),
                 department.getValue(),
-                course.getValue(),
-                year.getText().trim(),
-                mentor.getText().trim(),
-                guardianName.getText().trim(),
-                guardianPhone.getText().trim(),
-                guardianRelationship.getText().trim()
+                position.getText().trim(),
+                shiftType.getValue(),
+                assignedLab.getText().trim()
         );
 
-        User u = new User(
-                registrationNumber,
-                "12345",
-                "Student",
-                imagePath
-        );
+        User user = new User(employeeId, "12345", "Technical Officer", imagePath);
 
-        boolean userSaved = userDAO.saveUser(u);
-
+        boolean userSaved = userDAO.saveUser(user);
         if (!userSaved) {
             showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to create user account.");
             return;
         }
 
-        boolean studentSaved = studentDAO.saveStudent(s);
+        boolean officerSaved = technicalOfficerDAO.saveTechnicalOfficer(officer);
 
-        if (studentSaved) {
+        if (officerSaved) {
             showAlert(Alert.AlertType.INFORMATION, "Success",
-                    "Student registered successfully.\nUsername: " + registrationNumber + "\nPassword: 12345");
+                    "Technical Officer registered successfully.\nUsername: " + employeeId + "\nPassword: 12345");
             handleClear();
         } else {
-            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to save student details.");
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to save technical officer details.");
         }
     }
 
@@ -144,14 +127,12 @@ public class AddStudentController {
     private void handleClear() {
         firstName.clear();
         lastName.clear();
-        regNo.clear();
+        empId.clear();
         nic.clear();
         dob.setValue(null);
-
         genderGroup.selectToggle(null);
-
         district.setValue(null);
-        studentImageView.setImage(null);
+        officerImageView.setImage(null);
         selectedFile = null;
 
         email.clear();
@@ -159,13 +140,9 @@ public class AddStudentController {
         address.clear();
 
         department.setValue(null);
-        course.setValue(null);
-        year.clear();
-        mentor.clear();
-
-        guardianName.clear();
-        guardianPhone.clear();
-        guardianRelationship.clear();
+        position.clear();
+        shiftType.setValue(null);
+        assignedLab.clear();
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {

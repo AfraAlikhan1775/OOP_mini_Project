@@ -1,41 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.gluonhq.charm.glisten.control.TextField?>
 <?import javafx.geometry.Insets?>
+<<<<<<< HEAD
 <?import javafx.geometry.Rectangle2D?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
+=======
+>>>>>>> 5f2e0ee0f087c04a484e94f2bae0bbc96ecca90f
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Arc?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 <AnchorPane prefHeight="785.0" prefWidth="1086.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainFormController">
+=======
+<AnchorPane prefHeight="700.0" prefWidth="1000.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            style="-fx-background-color:#f5f7fa;">
+
+>>>>>>> 5f2e0ee0f087c04a484e94f2bae0bbc96ecca90f
+=======
+<StackPane prefHeight="785.0" prefWidth="1086.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainFormController">
+>>>>>>> afra
     <children>
-        <BorderPane layoutX="14.0" prefHeight="200.0" prefWidth="200.0" />
-        <BorderPane layoutX="-2.0" layoutY="-1.0" prefHeight="786.0" prefWidth="1086.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="-1.0">
-            <left>
-                <VBox prefHeight="786.0" prefWidth="149.0" spacing="10.0" style="-fx-background-color: #0b1f36;" BorderPane.alignment="CENTER">
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
+
+        <!-- Profile Card -->
+        <VBox layoutX="720.0" layoutY="25.0" prefHeight="250.0" prefWidth="230.0"
+              style="-fx-background-color: #0b1f36; -fx-background-radius: 12; -fx-padding: 20;"
+              spacing="10">
+
+            <children>
+                <ImageView fitHeight="120.0" fitWidth="120.0" preserveRatio="true"/>
+                <Label text="Student Name" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="20.0"/>
+                    </font>
+                </Label>
+                <Label text="student@email.com" textFill="WHITE"/>
+                <Label text="Course: ICT" textFill="WHITE"/>
+                <Label text="Phone: 0771234567" textFill="WHITE"/>
+            </children>
+        </VBox>
+
+        <!-- Recent Notices -->
+        <VBox layoutX="30.0" layoutY="25.0" prefHeight="250.0" prefWidth="640.0"
+              style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18; -fx-border-color:#d9e2ec; -fx-border-radius:12;"
+              spacing="10">
+
+            <children>
+                <Label text="Recent Notices">
+                    <font>
+                        <Font name="System Bold" size="24.0"/>
+                    </font>
+                </Label>
+
+                <Label text="• Semester exam timetable will be released next week"/>
+                <Label text="• Mentor meeting on Friday at 10.00 AM"/>
+                <Label text="• Assignment submission deadline extended to Monday"/>
+
+                <Button text="View All Notices"
+                        prefWidth="150"
+                        style="-fx-background-color:#0b1f36; -fx-text-fill:white;"/>
+            </children>
+        </VBox>
+
+        <!-- Today Timetable -->
+        <VBox layoutX="30.0" layoutY="310.0" prefHeight="260.0" prefWidth="450.0"
+              style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18; -fx-border-color:#d9e2ec; -fx-border-radius:12;"
+              spacing="10">
+
+            <children>
+                <Label text="Today's Timetable">
+                    <font>
+                        <Font name="System Bold" size="24.0"/>
+                    </font>
+                </Label>
+
+                <TableView prefHeight="190.0" prefWidth="410.0">
+                    <columns>
+                        <TableColumn prefWidth="100.0" text="Time"/>
+                        <TableColumn prefWidth="110.0" text="Course Code"/>
+                        <TableColumn prefWidth="120.0" text="Course"/>
+                        <TableColumn prefWidth="80.0" text="Type"/>
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+
+        <!-- Mentor Details -->
+        <VBox layoutX="510.0" layoutY="310.0" prefHeight="125.0" prefWidth="440.0"
+              style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18; -fx-border-color:#d9e2ec; -fx-border-radius:12;"
+              spacing="8">
+
+            <children>
+                <Label text="Mentor Details">
+                    <font>
+                        <Font name="System Bold" size="22.0"/>
+                    </font>
+                </Label>
+
+                <Label text="Name: Mr. John Silva"/>
+                <Label text="Department: ICT"/>
+                <Label text="Email: john.silva@fot.com"/>
+                <Label text="Contact: 0712345678"/>
+            </children>
+        </VBox>
+
+        <!-- Course Timetable / Quick Access -->
+        <VBox layoutX="510.0" layoutY="455.0" prefHeight="115.0" prefWidth="440.0"
+              style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18; -fx-border-color:#d9e2ec; -fx-border-radius:12;"
+              spacing="10">
+
+            <children>
+                <Label text="Course Timetable & Quick Access">
+                    <font>
+                        <Font name="System Bold" size="22.0"/>
+                    </font>
+                </Label>
+
+                <HBox spacing="12">
                     <children>
+<<<<<<< HEAD
+<<<<<<< HEAD
                         <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="129.0" style="-fx-background-color: #0b1f36;" text="Dashboard" textAlignment="CENTER" textFill="WHITE">
+=======
+                        <Button mnemonicParsing="false" onAction="#handleDashboard" prefHeight="26.0" prefWidth="129.0" style="-fx-background-color: #0b1f36;" text="Dashboard" textAlignment="CENTER" textFill="WHITE">
+>>>>>>> afra
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
-                                        <Image url="@../../../icon/dashboard.png" />
+                                        <Image url="@../../Resources/images/icon/dashboard.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -46,11 +147,11 @@
                                 <Insets right="20.0" top="10.0" />
                             </padding>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="158.0" style="-fx-background-color: #0b1f36;" text="Attendance" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#handleAttendance" prefHeight="26.0" prefWidth="158.0" style="-fx-background-color: #0b1f36;" text="Attendance" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
-                                        <Image url="@../../../icon/attendance.png" />
+                                        <Image url="@../../Resources/images/icon/attendance.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -61,11 +162,11 @@
                                 <Insets left="3.0" right="20.0" top="10.0" />
                             </padding>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: #0b1f36;" text="Course" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#handleNotice" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: #0b1f36;" text="Notice" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="29.0">
                                     <image>
-                                        <Image url="@../../../icon/course.png" />
+                                        <Image url="@../../Resources/images/icon/notes.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -76,11 +177,11 @@
                                 <Insets right="40.0" top="10.0" />
                             </padding>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="174.0" style="-fx-background-color: #0b1f36;" text="Grades" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#handleGrades" prefHeight="26.0" prefWidth="174.0" style="-fx-background-color: #0b1f36;" text="Grades" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="26.0" fitWidth="29.0">
                                     <image>
-                                        <Image url="@../../../icon/grade.png" />
+                                        <Image url="@../../Resources/images/icon/grade.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -90,11 +191,11 @@
                             <padding>
                                 <Insets right="42.0" top="10.0" />
                             </padding></Button>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="148.0" style="-fx-background-color: #0b1f36;" text="Medical" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#handleMedical" prefHeight="26.0" prefWidth="148.0" style="-fx-background-color: #0b1f36;" text="Medical" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20.0">
                                     <image>
-                                        <Image url="@../../../icon/medical.png" />
+                                        <Image url="@../../Resources/images/icon/medical.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -104,11 +205,11 @@
                             <padding>
                                 <Insets right="40.0" top="10.0" />
                             </padding></Button>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="198.0" style="-fx-background-color: #0b1f36;" text="Timetable" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#handleTimetable" prefHeight="26.0" prefWidth="198.0" style="-fx-background-color: #0b1f36;" text="Timetable" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
-                                        <Image url="@../../../icon/timetable.png" />
+                                        <Image url="@../../Resources/images/icon/timetable.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -118,11 +219,11 @@
                             <padding>
                                 <Insets right="20.0" top="10.0" />
                             </padding></Button>
-                        <Button fx:id="btnNotice" mnemonicParsing="false" onAction="#GoToNotice" prefHeight="26.0" prefWidth="181.0" style="-fx-background-color: #0b1f36;" text="Notice" textFill="WHITE">
+                        <Button fx:id="btnNotice" mnemonicParsing="false" onAction="#handleCourse" prefHeight="26.0" prefWidth="181.0" style="-fx-background-color: #0b1f36;" text="Course" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
-                                        <Image url="@../../../icon/notes.png" />
+                                        <Image url="@../../Resources/images/icon/course.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -136,7 +237,7 @@
                 </VBox>
             </left>
             <top>
-                <HBox alignment="CENTER_LEFT" prefHeight="54.0" prefWidth="1132.0" spacing="10.0" style="-fx-border-color: #122c4a;" BorderPane.alignment="CENTER_LEFT">
+                <HBox alignment="CENTER_LEFT" prefHeight="54.0" prefWidth="1132.0" spacing="10.0" style="-fx-border-color: #122c4a; -fx-background-color: #122c4a;" BorderPane.alignment="CENTER_LEFT">
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
@@ -147,10 +248,10 @@
                             </font></Label>
                         <ImageView fitHeight="64.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../icon/stu.png" />
+                                <Image url="@../../Resources/images/icon/stu.png" />
                             </image>
                         </ImageView>
-                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="72.0" style="-fx-background-color: black;" text="Edit Profile" textFill="#ccd9ea">
+                        <Button mnemonicParsing="false" onAction="#handleProfile" prefHeight="32.0" prefWidth="72.0" style="-fx-background-color: black;" text="Edit Profile" textFill="#ccd9ea">
                             <padding>
                                 <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                             </padding>
@@ -176,7 +277,7 @@
                                                 <Insets left="120.0" top="10.0" />
                                             </VBox.margin>
                                             <image>
-                                                <Image url="@../../../icon/stu.png" />
+                                                <Image url="@../../Resources/images/icon/stu.png" />
                                             </image>
                                         </ImageView>
                                     </children></VBox>
@@ -242,30 +343,22 @@
                         <TextField floatText="\@Faculty of Technology,Universuty of ruhuna" layoutX="238.0" layoutY="689.0" maxLength="20" prefHeight="26.0" prefWidth="530.0" />
                         <VBox layoutX="54.0" layoutY="56.0" prefHeight="294.0" prefWidth="426.0">
                             <children>
-                                <BarChart legendSide="TOP" prefHeight="268.0" prefWidth="422.0" title="Attendance State" titleSide="LEFT">
-                                    <xAxis>
-                                        <CategoryAxis side="BOTTOM" />
-                                    </xAxis>
-                                    <yAxis>
-                                        <NumberAxis side="LEFT" />
-                                    </yAxis>
-                                </BarChart>
-                                <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="131.0" style="-fx-background-color: #0b1f36; -fx-border-color: black;" text="View Details" textFill="WHITE">
+                                <Label text="RecentNotice">
                                     <VBox.margin>
-                                        <Insets bottom="2.0" left="270.0" />
+                                        <Insets left="10.0" top="15.0" />
                                     </VBox.margin>
-                                </Button>
+                                </Label>
+                                <TableView prefHeight="290.0" prefWidth="326.0">
+                                    <columns>
+                                        <TableColumn prefWidth="103.99999237060547" text="Date" />
+                                        <TableColumn prefWidth="322.39990234375" text="Description" />
+                                    </columns>
+                                    <VBox.margin>
+                                        <Insets left="100.0" />
+                                    </VBox.margin>
+                                </TableView>
                             </children>
                         </VBox>
-                        <Circle fill="#98a1a9" layoutX="603.0" layoutY="538.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Arc fill="#0b1f36" layoutX="603.0" layoutY="538.0" length="270.0" radiusX="100.0" radiusY="100.0" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
-                        <Label layoutX="536.0" layoutY="529.0" text="3.18" textFill="WHITE">
-                            <font>
-                                <Font size="28.0" />
-                            </font>
-                        </Label>
-                        <Text fill="#131f46" layoutX="461.0" layoutY="467.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current GPA" />
-                        <Button layoutX="685.0" layoutY="600.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="78.0" style="-fx-background-color: #0b1f36; -fx-border-color: black;" text="See Grades" textFill="WHITE" />
                         <Button layoutX="28.0" layoutY="677.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="54.0" style="-fx-background-color: #0b1f36; -fx-border-color: black;" text="View" textFill="WHITE" />
                         <Button layoutX="874.0" layoutY="706.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="108.0" style="-fx-background-color: black;" text="LogOut" textFill="WHITE" />
                         <ImageView fitHeight="30.0" fitWidth="61.0" layoutX="844.0" layoutY="704.0" pickOnBounds="true" preserveRatio="true">
@@ -282,5 +375,19 @@
                 </AnchorPane>
             </center>
         </BorderPane>
+=======
+                        <Button text="View Full Timetable" style="-fx-background-color:#0b1f36; -fx-text-fill:white;"/>
+                        <Button text="My Courses" style="-fx-background-color:#0b1f36; -fx-text-fill:white;"/>
+                        <Button text="Results" style="-fx-background-color:#0b1f36; -fx-text-fill:white;"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+>>>>>>> 5f2e0ee0f087c04a484e94f2bae0bbc96ecca90f
     </children>
+<<<<<<< HEAD
 </AnchorPane>
+=======
+</StackPane>
+>>>>>>> afra

@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 public class DatabaseInitializer {
 
-
     private static final String URL = "jdbc:mysql://localhost:33061/fms_db";
     private static final String USER = "root";
     private static final String PASSWORD = "Umes0820@@";
@@ -16,7 +15,6 @@ public class DatabaseInitializer {
     }
 
     public static void initialize() {
-        // Use the getConnection() method we just defined!
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement()) {
 
@@ -35,6 +33,7 @@ public class DatabaseInitializer {
                 }
                 System.out.println("Database initialized successfully.");
             }
+
         } catch (SQLException e) {
             System.err.println("Error during database initialization: " + e.getMessage());
         }
