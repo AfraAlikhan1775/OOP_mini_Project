@@ -2,41 +2,106 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/25"
+<BorderPane prefHeight="786.0" prefWidth="1366.0"
+            xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.controller.Student.StudentController">
+            fx:controller="com.controller.Student.StudentController"
+            style="-fx-background-color: #f4f6f8;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT"
+              prefHeight="70.0"
+              spacing="12.0"
+              style="-fx-background-color: #122c4a; -fx-padding: 10 18 10 18;">
+            <children>
+
+                <Region prefWidth="30.0" />
+
+                <Label text="WELCOME TO FOT MANAGEMENT SYSTEM......"
+                       textFill="WHITE">
+                    <font>
+                        <Font name="Times New Roman Bold" size="24.0"/>
+                    </font>
+                </Label>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button text="Edit Profile"
+                        prefHeight="35.0"
+                        prefWidth="95.0"
+                        style="-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 6;"/>
+            </children>
+        </HBox>
+    </top>
 
     <left>
-        <VBox spacing="10" style="-fx-background-color: #0b1f36;" prefWidth="180">
-            <padding>
-                <Insets top="20" right="10" bottom="20" left="10"/>
-            </padding>
-
+        <VBox prefWidth="180.0"
+              spacing="18.0"
+              style="-fx-background-color: #031f45; -fx-padding: 28 12 20 18;">
             <children>
-                <Button text="Attendance" onAction="#handleAttendance"
-                        style="-fx-background-color: #0b1f36; -fx-text-fill: white;"/>
-                <Button text="Timetable" onAction="#handleTimetable"
-                        style="-fx-background-color: #0b1f36; -fx-text-fill: white;"/>
-                <Button text="Notice" onAction="#handleNotice"
-                        style="-fx-background-color: #0b1f36; -fx-text-fill: white;"/>
-                <Button text="Grades" onAction="#handleGrades"
-                        style="-fx-background-color: #0b1f36; -fx-text-fill: white;"/>
+
+                <Button text="Dashboard"
+                        onAction="#handleDashboard"
+                        prefWidth="150.0"
+                        prefHeight="35.0"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 15px; -fx-alignment: CENTER-LEFT;"/>
+
+                <Button text="Attendance"
+                        onAction="#handleAttendance"
+                        prefWidth="150.0"
+                        prefHeight="35.0"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 15px; -fx-alignment: CENTER-LEFT;"/>
+
+                <Button text="Notice"
+                        onAction="#handleNotice"
+                        prefWidth="150.0"
+                        prefHeight="35.0"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 15px; -fx-alignment: CENTER-LEFT;"/>
+
+                <Button text="Grades"
+                        onAction="#handleGrades"
+                        prefWidth="150.0"
+                        prefHeight="35.0"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 15px; -fx-alignment: CENTER-LEFT;"/>
+
+                <Button text="Timetable"
+                        onAction="#handleTimetable"
+                        prefWidth="150.0"
+                        prefHeight="35.0"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 15px; -fx-alignment: CENTER-LEFT;"/>
+
+                <Region VBox.vgrow="ALWAYS"/>
+
+                <Button text="LogOut"
+                        prefWidth="150.0"
+                        prefHeight="38.0"
+                        style="-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-size: 14px;"/>
             </children>
         </VBox>
     </left>
 
-    <top>
-        <HBox style="-fx-background-color: #122c4a; -fx-padding: 15;">
-        </HBox>
-    </top>
-
     <center>
-        <StackPane fx:id="contentArea"/>
+        <StackPane fx:id="contentArea"
+                   style="-fx-background-color: #f4f6f8; -fx-padding: 18;"/>
     </center>
+
+    <bottom>
+        <HBox alignment="CENTER"
+              prefHeight="35.0"
+              style="-fx-background-color: #f4f6f8; -fx-padding: 5 0 8 0;">
+            <children>
+                <Label text="@Faculty of Technology, University of Ruhuna"
+                       style="-fx-text-fill: #444; -fx-font-size: 13px;"/>
+            </children>
+        </HBox>
+    </bottom>
 
 </BorderPane>

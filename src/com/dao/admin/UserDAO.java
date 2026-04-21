@@ -47,17 +47,18 @@ public class UserDAO {
              PreparedStatement checkPst = conn.prepareStatement(checkSql)) {
 
             checkPst.setString(1, "admin");
-            ResultSet rs = checkPst.executeQuery();
 
-            if (rs.next() && rs.getInt(1) == 0) {
-                try (PreparedStatement insertPst = conn.prepareStatement(insertSql)) {
-                    insertPst.setString(1, "admin");
-                    insertPst.setString(2, "admin");
-                    insertPst.setString(3, "Admin");
-                    insertPst.setString(4, null);
-                    insertPst.executeUpdate();
+            try (ResultSet rs = checkPst.executeQuery()) {
+                if (rs.next() && rs.getInt(1) == 0) {
+                    try (PreparedStatement insertPst = conn.prepareStatement(insertSql)) {
+                        insertPst.setString(1, "admin");
+                        insertPst.setString(2, "admin");
+                        insertPst.setString(3, "Admin");
+                        insertPst.setString(4, null);
+                        insertPst.executeUpdate();
 
-                    System.out.println("Default admin created successfully.");
+                        System.out.println("Default admin created successfully.");
+                    }
                 }
             }
 
@@ -73,10 +74,11 @@ public class UserDAO {
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setString(1, username);
-            ResultSet rs = pst.executeQuery();
 
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
             }
 
         } catch (Exception e) {
@@ -86,7 +88,7 @@ public class UserDAO {
         return false;
     }
 
-    public boolean saveUser(User u) {
+    public boolean saveUser(User user) {
         String sql = """
                 INSERT INTO users (username, password, role, profile_pic)
                 VALUES (?, ?, ?, ?)
@@ -95,13 +97,13 @@ public class UserDAO {
         try (Connection conn = DatabaseInitializer.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
-            pst.setString(1, u.getUserName());
-            pst.setString(2, u.getPassword());
-            pst.setString(3, u.getRole());
-            pst.setString(4, u.getProfPic());
+            pst.setString(1, user.getUserName());
+            pst.setString(2, user.getPassword());
+            pst.setString(3, user.getRole());
+            pst.setString(4, user.getProfPic());
 
-            pst.executeUpdate();
-            return true;
+            int rows = pst.executeUpdate();
+            return rows > 0;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,15 +120,78 @@ public class UserDAO {
             pst.setString(1, username);
             pst.setString(2, password);
 
-            ResultSet rs = pst.executeQuery();
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User();
+                    user.setUserId(rs.getInt("user_id"));
+                    user.setUserName(rs.getString("username"));
+                    user.setPassword(rs.getString("password"));
+                    user.setRole(rs.getString("role"));
+                    user.setProfPic(rs.getString("profile_pic"));
+                    return user;
+                }
+            }
 
-            if (rs.next()) {
-                User user = new User();
-                user.setUserId(rs.getInt("user_id"));
-                user.setUserName(rs.getString("username"));
-                user.setRole(rs.getString("role"));
-                user.setProfPic(rs.getString("profile_pic"));
-                return user;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public boolean isDefaultPassword(String username) {
+        String sql = "SELECT COUNT(*) FROM users WHERE username = ? AND password = ?";
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, username);
+            pst.setString(2, "12345");
+
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean updatePassword(String username, String newPassword) {
+        String sql = "UPDATE users SET password = ? WHERE username = ?";
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, newPassword);
+            pst.setString(2, username);
+
+            int rows = pst.executeUpdate();
+            return rows > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public String getRoleByUsername(String username) {
+        String sql = "SELECT role FROM users WHERE username = ?";
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, username);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("role");
+                }
             }
 
         } catch (Exception e) {
