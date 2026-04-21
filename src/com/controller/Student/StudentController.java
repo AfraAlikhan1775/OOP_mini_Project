@@ -5,9 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 
+<<<<<<< HEAD
 import java.net.URL;
 
 public class StudentController {
+=======
+public class StuDashboardController {
+>>>>>>> afra
 
     @FXML
     private StackPane contentArea;

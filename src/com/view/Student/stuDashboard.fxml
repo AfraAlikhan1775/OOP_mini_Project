@@ -12,9 +12,11 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <AnchorPane prefHeight="785.0" prefWidth="1086.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainFormController">
 =======
@@ -24,6 +26,9 @@
             style="-fx-background-color:#f5f7fa;">
 
 >>>>>>> 5f2e0ee0f087c04a484e94f2bae0bbc96ecca90f
+=======
+<StackPane prefHeight="785.0" prefWidth="1086.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainFormController">
+>>>>>>> afra
     <children>
 
         <!-- Profile Card -->
@@ -123,7 +128,11 @@
                 <HBox spacing="12">
                     <children>
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="129.0" style="-fx-background-color: #0b1f36;" text="Dashboard" textAlignment="CENTER" textFill="WHITE">
+=======
+                        <Button mnemonicParsing="false" onAction="#handleDashboard" prefHeight="26.0" prefWidth="129.0" style="-fx-background-color: #0b1f36;" text="Dashboard" textAlignment="CENTER" textFill="WHITE">
+>>>>>>> afra
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
@@ -138,7 +147,7 @@
                                 <Insets right="20.0" top="10.0" />
                             </padding>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="158.0" style="-fx-background-color: #0b1f36;" text="Attendance" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#handleAttendance" prefHeight="26.0" prefWidth="158.0" style="-fx-background-color: #0b1f36;" text="Attendance" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
@@ -153,7 +162,7 @@
                                 <Insets left="3.0" right="20.0" top="10.0" />
                             </padding>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: #0b1f36;" text="Notice" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#handleNotice" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: #0b1f36;" text="Notice" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="29.0">
                                     <image>
@@ -168,7 +177,7 @@
                                 <Insets right="40.0" top="10.0" />
                             </padding>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="174.0" style="-fx-background-color: #0b1f36;" text="Grades" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#handleGrades" prefHeight="26.0" prefWidth="174.0" style="-fx-background-color: #0b1f36;" text="Grades" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="26.0" fitWidth="29.0">
                                     <image>
@@ -182,7 +191,7 @@
                             <padding>
                                 <Insets right="42.0" top="10.0" />
                             </padding></Button>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="148.0" style="-fx-background-color: #0b1f36;" text="Medical" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#handleMedical" prefHeight="26.0" prefWidth="148.0" style="-fx-background-color: #0b1f36;" text="Medical" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20.0">
                                     <image>
@@ -196,7 +205,7 @@
                             <padding>
                                 <Insets right="40.0" top="10.0" />
                             </padding></Button>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="198.0" style="-fx-background-color: #0b1f36;" text="Timetable" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#handleTimetable" prefHeight="26.0" prefWidth="198.0" style="-fx-background-color: #0b1f36;" text="Timetable" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
@@ -210,21 +219,7 @@
                             <padding>
                                 <Insets right="20.0" top="10.0" />
                             </padding></Button>
-                        <Button fx:id="btnNotice" mnemonicParsing="false" onAction="#GoToNotice" prefHeight="26.0" prefWidth="181.0" style="-fx-background-color: #0b1f36;" text="Notice" textFill="WHITE">
-                            <graphic>
-                                <ImageView fitHeight="20" fitWidth="20">
-                                    <image>
-                                        <Image url="@../../Resources/images/icon/notes.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                            <padding>
-                                <Insets right="40.0" top="10.0" />
-                            </padding></Button>
-                        <Button mnemonicParsing="false" style="-fx-background-color: #0b1f36;" text="Course" textFill="WHITE">
+                        <Button fx:id="btnNotice" mnemonicParsing="false" onAction="#handleCourse" prefHeight="26.0" prefWidth="181.0" style="-fx-background-color: #0b1f36;" text="Course" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
@@ -235,7 +230,9 @@
                             <font>
                                 <Font size="16.0" />
                             </font>
-                        </Button>
+                            <padding>
+                                <Insets right="40.0" top="10.0" />
+                            </padding></Button>
                     </children>
                 </VBox>
             </left>
@@ -254,7 +251,7 @@
                                 <Image url="@../../Resources/images/icon/stu.png" />
                             </image>
                         </ImageView>
-                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="72.0" style="-fx-background-color: black;" text="Edit Profile" textFill="#ccd9ea">
+                        <Button mnemonicParsing="false" onAction="#handleProfile" prefHeight="32.0" prefWidth="72.0" style="-fx-background-color: black;" text="Edit Profile" textFill="#ccd9ea">
                             <padding>
                                 <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                             </padding>
@@ -389,4 +386,8 @@
 
 >>>>>>> 5f2e0ee0f087c04a484e94f2bae0bbc96ecca90f
     </children>
+<<<<<<< HEAD
 </AnchorPane>
+=======
+</StackPane>
+>>>>>>> afra
