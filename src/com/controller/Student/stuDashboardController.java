@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 
-public class StudentController {
+public class StuDashboardController {
 
     @FXML
     private StackPane contentArea;

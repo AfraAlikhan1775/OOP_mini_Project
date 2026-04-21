@@ -31,11 +31,11 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
                     <children>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="129.0" style="-fx-background-color: #0b1f36;" text="Course" textAlignment="CENTER" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#handleCourse" prefHeight="26.0" prefWidth="129.0" style="-fx-background-color: #0b1f36;" text="Course" textAlignment="CENTER" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
-                                        <Image url="@../../../icon/dashboard.png" />
+                                        <Image url="@../../Resources/images/icon/dashboard.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -50,7 +50,7 @@
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
-                                        <Image url="@../../../icon/attendance.png" />
+                                        <Image url="@../../Resources/images/icon/attendance.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -65,7 +65,7 @@
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="29.0">
                                     <image>
-                                        <Image url="@../src/com/Resources/images/icon/notes.png" />
+                                        <Image url="@../../Resources/images/icon/notes.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -80,7 +80,7 @@
                             <graphic>
                                 <ImageView fitHeight="26.0" fitWidth="29.0">
                                     <image>
-                                        <Image url="@../../../icon/grade.png" />
+                                        <Image url="@../../Resources/images/icon/grade.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -90,11 +90,11 @@
                             <padding>
                                 <Insets right="42.0" top="10.0" />
                             </padding></Button>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="148.0" style="-fx-background-color: #0b1f36;" text="Medical" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#handleMedical" prefHeight="26.0" prefWidth="148.0" style="-fx-background-color: #0b1f36;" text="Medical" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20.0">
                                     <image>
-                                        <Image url="@../../../icon/medical.png" />
+                                        <Image url="@../../Resources/images/icon/medical.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -108,7 +108,7 @@
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
-                                        <Image url="@../../../icon/timetable.png" />
+                                        <Image url="@../../Resources/images/icon/timetable.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -118,11 +118,11 @@
                             <padding>
                                 <Insets right="20.0" top="10.0" />
                             </padding></Button>
-                        <Button fx:id="btnNotice" mnemonicParsing="false" onAction="#GoToNotice" prefHeight="26.0" prefWidth="181.0" style="-fx-background-color: #0b1f36;" text="YourDetails" textFill="WHITE">
+                        <Button fx:id="btnNotice" mnemonicParsing="false" onAction="#handleYourDetails" prefHeight="26.0" prefWidth="181.0" style="-fx-background-color: #0b1f36;" text="YourDetails" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
-                                        <Image url="@../../../icon/notes.png" />
+                                        <Image url="@../../Resources/images/icon/course.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -144,10 +144,13 @@
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="929.0" style="-fx-background-color: #122c4a;" text="Welcome to FOT Managment System......" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                             <font>
                                 <Font name="Castellar" size="21.0" />
-                            </font></Label>
-                        <ImageView fitHeight="64.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                            </font>
+                     <image>
+                        <Image url="@../../Resources/images/icon/stu.png" />
+                     </image></Label>
+                        <ImageView fitHeight="64.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../icon/stu.png" />
+                                <Image url="@../../Resources/images/icon/stu.png" />
                             </image>
                         </ImageView>
                         <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="72.0" style="-fx-background-color: black;" text="Edit Profile" textFill="#ccd9ea">
@@ -176,7 +179,7 @@
                                                 <Insets left="120.0" top="10.0" />
                                             </VBox.margin>
                                             <image>
-                                                <Image url="@../../../icon/stu.png" />
+                                                <Image url="@../../Resources/images/icon/stu.png" />
                                             </image>
                                         </ImageView>
                                     </children></VBox>
