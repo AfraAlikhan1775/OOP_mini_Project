@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="246.0" prefWidth="271.0" spacing="15" style="-fx-padding:20;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+
+    <Label style="-fx-font-size:20;" text="My Profile" />
+
+    <Label text="Name: W.Kamal" />
+    <Label text="Email: lecturer@fot.ac.lk" />
+    <Label text="Department: ICT" />
+
+    <Button text="Edit Profile" />
+
+</VBox>
