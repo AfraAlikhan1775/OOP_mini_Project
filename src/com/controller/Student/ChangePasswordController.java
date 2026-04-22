@@ -48,7 +48,7 @@ public class ChangePasswordController {
 
         if (updated) {
             try {
-                URL resource = getClass().getResource("/com/Resources/view/Student/student_main.fxml");
+                URL resource = getClass().getResource("/com/view/Student/student_main.fxml");
 
                 if (resource == null) {
                     messageLabel.setText("Student main page not found.");

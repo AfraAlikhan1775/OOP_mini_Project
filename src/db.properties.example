@@ -1,0 +1,3 @@
+db.url=jdbc:mysql://localhost:33061/fms_db
+db.user=root
+db.password=CHANGE_ME

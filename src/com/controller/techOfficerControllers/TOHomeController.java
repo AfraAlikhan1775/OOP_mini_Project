@@ -4,7 +4,7 @@ import com.dao.AttendanceDAO;
 import com.dao.MedicalDAO;
 import com.dao.NoticeDAO;
 import com.dao.admin.StudentDAO;
-import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -24,21 +24,42 @@ public class TOHomeController {
     }
 
     private void loadDashboardData() {
-        Platform.runLater(() -> {
-            welcomeLabel.setText("Welcome back, " + empId + "!");
+        welcomeLabel.setText("Welcome back, " + empId + "!");
 
-            StudentDAO studentDAO = new StudentDAO();
-            totalStudentsLabel.setText(String.valueOf(studentDAO.getAllStudents().size()));
+        Task<DashboardCounts> task = new Task<>() {
+            @Override
+            protected DashboardCounts call() {
+                DashboardCounts counts = new DashboardCounts();
+                counts.students = new StudentDAO().getAllStudents().size();
+                counts.attendance = new AttendanceDAO().getAllAttendance().size();
+                counts.medicals = new MedicalDAO().getAllMedicals().size();
+                counts.notices = new NoticeDAO().getNoticesForRole("Technical Officer").size();
+                return counts;
+            }
+        };
 
-            AttendanceDAO attendanceDAO = new AttendanceDAO();
-            // Count total attendance records as a simple metric
-            todayAttendanceLabel.setText(String.valueOf(attendanceDAO.getAllAttendance().size()));
-
-            MedicalDAO medicalDAO = new MedicalDAO();
-            medicalCountLabel.setText(String.valueOf(medicalDAO.getAllMedicals().size()));
-
-            NoticeDAO noticeDAO = new NoticeDAO();
-            noticeCountLabel.setText(String.valueOf(noticeDAO.getNoticesForRole("Technical Officer").size()));
+        task.setOnSucceeded(e -> {
+            DashboardCounts counts = task.getValue();
+            totalStudentsLabel.setText(String.valueOf(counts.students));
+            todayAttendanceLabel.setText(String.valueOf(counts.attendance));
+            medicalCountLabel.setText(String.valueOf(counts.medicals));
+            noticeCountLabel.setText(String.valueOf(counts.notices));
         });
+
+        task.setOnFailed(e -> {
+            Throwable ex = task.getException();
+            if (ex != null) ex.printStackTrace();
+        });
+
+        Thread thread = new Thread(task, "to-home-dashboard-loader");
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    private static class DashboardCounts {
+        int students;
+        int attendance;
+        int medicals;
+        int notices;
     }
 }

@@ -41,7 +41,7 @@ public class LecturerController {
     @FXML
     private void navigateAddLecturer() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/Resources/view/admin/add_lecturer.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/admin/add_lecturer.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
@@ -61,7 +61,7 @@ public class LecturerController {
     @FXML
     private void navigateAddStudent() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/Resources/view/admin/add_student.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/admin/add_student.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
@@ -79,7 +79,7 @@ public class LecturerController {
     @FXML
     private void navigateAddTechnicalOfficer() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/Resources/view/admin/add_technicalofficer.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/admin/add_technicalofficer.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();

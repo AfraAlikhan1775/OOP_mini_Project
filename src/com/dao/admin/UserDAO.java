@@ -2,6 +2,7 @@ package com.dao.admin;
 
 import com.database.DatabaseInitializer;
 import com.model.User;
+import com.util.PasswordHasher;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -52,7 +53,7 @@ public class UserDAO {
                 if (rs.next() && rs.getInt(1) == 0) {
                     try (PreparedStatement insertPst = conn.prepareStatement(insertSql)) {
                         insertPst.setString(1, "admin");
-                        insertPst.setString(2, "admin");
+                        insertPst.setString(2, PasswordHasher.hash("admin"));
                         insertPst.setString(3, "Admin");
                         insertPst.setString(4, null);
                         insertPst.executeUpdate();
@@ -98,7 +99,9 @@ public class UserDAO {
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setString(1, user.getUserName());
-            pst.setString(2, user.getPassword());
+            pst.setString(2, PasswordHasher.isHashed(user.getPassword())
+                    ? user.getPassword()
+                    : PasswordHasher.hash(user.getPassword()));
             pst.setString(3, user.getRole());
             pst.setString(4, user.getProfPic());
 
@@ -112,22 +115,30 @@ public class UserDAO {
     }
 
     public User validateLogin(String username, String password) {
-        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+        String sql = "SELECT * FROM users WHERE username = ?";
 
         try (Connection conn = DatabaseInitializer.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setString(1, username);
-            pst.setString(2, password);
 
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
+                    String stored = rs.getString("password");
+                    if (!PasswordHasher.matches(password, stored)) {
+                        return null;
+                    }
+
                     User user = new User();
                     user.setUserId(rs.getInt("user_id"));
                     user.setUserName(rs.getString("username"));
-                    user.setPassword(rs.getString("password"));
+                    user.setPassword(stored);
                     user.setRole(rs.getString("role"));
                     user.setProfPic(rs.getString("profile_pic"));
+
+                    if (!PasswordHasher.isHashed(stored)) {
+                        updatePassword(username, password);
+                    }
                     return user;
                 }
             }
@@ -140,17 +151,16 @@ public class UserDAO {
     }
 
     public boolean isDefaultPassword(String username) {
-        String sql = "SELECT COUNT(*) FROM users WHERE username = ? AND password = ?";
+        String sql = "SELECT password FROM users WHERE username = ?";
 
         try (Connection conn = DatabaseInitializer.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setString(1, username);
-            pst.setString(2, "12345");
 
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0;
+                    return PasswordHasher.matches("12345", rs.getString("password"));
                 }
             }
 
@@ -167,7 +177,7 @@ public class UserDAO {
         try (Connection conn = DatabaseInitializer.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
-            pst.setString(1, newPassword);
+            pst.setString(1, PasswordHasher.hash(newPassword));
             pst.setString(2, username);
 
             int rows = pst.executeUpdate();
