@@ -5,18 +5,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 
-
 import java.net.URL;
 
-public class StuDashboardController {
-
+public class StudentController {
 
     @FXML
     private StackPane contentArea;
 
     @FXML
     public void initialize() {
-        loadUI("/com/Resources/view/Student/stuDashboard.fxml");
+        loadUI("/com/view/Student/stuDashboard.fxml");
     }
 
     private void loadUI(String fxml) {
@@ -24,7 +22,7 @@ public class StuDashboardController {
             URL resource = getClass().getResource(fxml);
 
             if (resource == null) {
-                System.out.println("FXML not found: " + fxml);
+                System.err.println("FXML not found: " + fxml);
                 return;
             }
 
@@ -39,26 +37,26 @@ public class StuDashboardController {
 
     @FXML
     private void handleDashboard() {
-        loadUI("/com/Resources/view/Student/stuDashboard.fxml");
+        loadUI("/com/view/Student/stuDashboard.fxml");
     }
 
     @FXML
     private void handleAttendance() {
-        loadUI("/com/Resources/view/Student/stuAttendance.fxml");
+        loadUI("/com/view/Student/stuAttendance.fxml");
     }
 
     @FXML
     private void handleTimetable() {
-        loadUI("/com/Resources/view/Student/stuTimetable.fxml");
+        loadUI("/com/view/Student/stuTimetable.fxml");
     }
 
     @FXML
     private void handleNotice() {
-        loadUI("/com/Resources/view/Student/stuNotice.fxml");
+        loadUI("/com/view/Student/stuNotice.fxml");
     }
 
     @FXML
     private void handleGrades() {
-        loadUI("/com/Resources/view/Student/stuGrades.fxml");
+        loadUI("/com/view/Student/stuGrades.fxml");
     }
 }

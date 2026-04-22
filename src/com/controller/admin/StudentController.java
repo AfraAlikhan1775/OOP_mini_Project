@@ -141,7 +141,7 @@ public class StudentController {
         title.setStyle("-fx-font-size:18px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;");
 
         Label department = new Label("Department: " + valueOrEmpty(student.getDepartment()));
-        Label course = new Label("Course: " + valueOrEmpty(student.getDegrea()));
+        Label course = new Label("Course: " + valueOrEmpty(student.getCourse()));
         Label year = new Label("Year: " + valueOrEmpty(student.getYear()));
         Label district = new Label("District: " + valueOrEmpty(student.getDistrict()));
 

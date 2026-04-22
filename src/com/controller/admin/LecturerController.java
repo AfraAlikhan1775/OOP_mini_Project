@@ -1,13 +1,16 @@
 package com.controller.admin;
 
-import com.model.Lecturer;
 import com.dao.admin.LecturerDAO;
+import com.model.Lecturer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -52,7 +55,6 @@ public class LecturerController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Cannot open Add Lecturer page.");
         }
     }
 
@@ -71,7 +73,6 @@ public class LecturerController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Cannot open Add Student page.");
         }
     }
 
@@ -90,7 +91,6 @@ public class LecturerController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Cannot open Add Technical Officer page.");
         }
     }
 
@@ -123,17 +123,15 @@ public class LecturerController {
     }
 
     private void renderLecturers(List<Lecturer> lecturers) {
-        lecturerCardContainer.getChildren().clear();
-
-        if (lecturers == null || lecturers.isEmpty()) {
-            Label emptyLabel = new Label("No lecturers found.");
-            emptyLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #555;");
-            lecturerCardContainer.getChildren().add(emptyLabel);
+        if (lecturerCardContainer == null) {
             return;
         }
 
+        lecturerCardContainer.getChildren().clear();
+
         for (Lecturer lecturer : lecturers) {
-            lecturerCardContainer.getChildren().add(createLecturerCard(lecturer));
+            HBox card = createLecturerCard(lecturer);
+            lecturerCardContainer.getChildren().add(card);
         }
     }
 
@@ -148,8 +146,8 @@ public class LecturerController {
         imageView.setFitHeight(90);
         imageView.setPreserveRatio(true);
 
-        if (lecturer.getRegPic() != null && !lecturer.getRegPic().isBlank()) {
-            File file = new File(lecturer.getRegPic());
+        if (lecturer.getImagePath() != null && !lecturer.getImagePath().isBlank()) {
+            File file = new File(lecturer.getImagePath());
             if (file.exists()) {
                 imageView.setImage(new Image(file.toURI().toString()));
             }
@@ -157,20 +155,15 @@ public class LecturerController {
 
         VBox detailsBox = new VBox(8);
 
-        Label nameLabel = new Label(lecturer.getFirstName() + " " + lecturer.getLastName());
-        nameLabel.setStyle("-fx-font-size:18px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;");
+        Label title = new Label(lecturer.getEmpId() + " - " + lecturer.getFirstName() + " " + lecturer.getLastName());
+        title.setStyle("-fx-font-size:18px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;");
 
-        Label empIdLabel = new Label("Employee ID: " + valueOrEmpty(lecturer.getEmployeeId()));
-        Label departmentLabel = new Label("Department: " + valueOrEmpty(lecturer.getDepartment()));
-        Label statusLabel = new Label("Status: " + valueOrEmpty(lecturer.getStatus()));
+        Label department = new Label("Department: " + valueOrEmpty(lecturer.getDepartment()));
+        Label specialization = new Label("Specialization: " + valueOrEmpty(lecturer.getSpecialization()));
+        Label designation = new Label("Designation: " + valueOrEmpty(lecturer.getDesignation()));
+        Label email = new Label("Email: " + valueOrEmpty(lecturer.getEmail()));
 
-        if ("Active".equalsIgnoreCase(lecturer.getStatus())) {
-            statusLabel.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
-        } else {
-            statusLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
-        }
-
-        detailsBox.getChildren().addAll(nameLabel, empIdLabel, departmentLabel, statusLabel);
+        detailsBox.getChildren().addAll(title, department, specialization, designation, email);
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -178,12 +171,10 @@ public class LecturerController {
         Button viewBtn = new Button("View");
         viewBtn.setPrefWidth(100);
         viewBtn.setStyle("-fx-background-color:#0b1f36; -fx-text-fill:white;");
-        viewBtn.setOnAction(e -> openViewLecturer(lecturer));
 
         Button removeBtn = new Button("Remove");
         removeBtn.setPrefWidth(100);
         removeBtn.setStyle("-fx-background-color:#b22222; -fx-text-fill:white;");
-        removeBtn.setOnAction(e -> handleRemoveLecturer(lecturer));
 
         VBox buttonBox = new VBox(10, viewBtn, removeBtn);
         buttonBox.setAlignment(Pos.CENTER_RIGHT);
@@ -193,58 +184,7 @@ public class LecturerController {
         return card;
     }
 
-    private void openViewLecturer(Lecturer lecturer) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/admin/view_lecturer.fxml"));
-            Parent root = loader.load();
-
-            ViewLecturerController controller = loader.getController();
-            controller.setLecturer(lecturer);
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setResizable(false);
-            stage.setTitle("Lecturer Details");
-            stage.showAndWait();
-
-            loadLecturers();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Cannot open lecturer details page.");
-        }
-    }
-
-    private void handleRemoveLecturer(Lecturer lecturer) {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Remove Lecturer");
-        confirm.setHeaderText(null);
-        confirm.setContentText("Are you sure you want to remove lecturer " + lecturer.getFirstName() + "?");
-
-        confirm.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                boolean deleted = lecturerDAO.deleteLecturerByEmpId(lecturer.getEmployeeId());
-
-                if (deleted) {
-                    loadLecturers();
-                    showAlert(Alert.AlertType.INFORMATION, "Success", "Lecturer removed successfully.");
-                } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to remove lecturer.");
-                }
-            }
-        });
-    }
-
     private String valueOrEmpty(String value) {
         return value == null ? "" : value;
-    }
-
-    private void showAlert(Alert.AlertType type, String title, String message) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

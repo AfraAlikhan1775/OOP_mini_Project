@@ -16,39 +16,30 @@ public class AddLecturerController {
 
     @FXML private TextField firstName;
     @FXML private TextField lastName;
+    @FXML private TextField empId;
     @FXML private TextField nic;
     @FXML private DatePicker dob;
-    @FXML private ComboBox<String> gender;
+
+    @FXML private RadioButton male;
+    @FXML private RadioButton female;
+    @FXML private ToggleGroup genderGroup;
+
+    @FXML private ComboBox<String> district;
     @FXML private ImageView lecturerImageView;
 
-    @FXML private TextField contactNumber;
     @FXML private TextField email;
-    @FXML private TextField emergencyContact;
-    @FXML private ComboBox<String> district;
+    @FXML private TextField phone;
     @FXML private TextArea address;
 
-    @FXML private TextField employeeId;
     @FXML private ComboBox<String> department;
-    @FXML private ComboBox<String> lecturerType;
-    @FXML private DatePicker appointmentDate;
     @FXML private TextField specialization;
-    @FXML private TextField experienceYears;
-    @FXML private TextArea degrees;
-
-    @FXML private ComboBox<String> status;
-    @FXML private TextField linkedUsername;
+    @FXML private TextField designation;
+    @FXML private TextField qualification;
 
     private File selectedFile;
 
     private final LecturerDAO lecturerDAO = new LecturerDAO();
     private final UserDAO userDAO = new UserDAO();
-
-    @FXML
-    public void initialize() {
-        employeeId.textProperty().addListener((obs, oldValue, newValue) -> {
-            linkedUsername.setText(newValue.trim());
-        });
-    }
 
     @FXML
     private void uploadImage() {
@@ -67,9 +58,9 @@ public class AddLecturerController {
 
     @FXML
     private void register() {
-        String empIdValue = employeeId.getText().trim();
+        String employeeId = empId.getText().trim();
 
-        if (empIdValue.isEmpty()) {
+        if (employeeId.isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Employee ID is required.");
             return;
         }
@@ -79,59 +70,41 @@ public class AddLecturerController {
             return;
         }
 
-        if (department.getValue() == null) {
-            showAlert(Alert.AlertType.ERROR, "Validation Error", "Department is required.");
-            return;
-        }
-
-        if (lecturerType.getValue() == null) {
-            showAlert(Alert.AlertType.ERROR, "Validation Error", "Lecturer type is required.");
-            return;
-        }
-
-        if (lecturerDAO.existsByEmpId(empIdValue)) {
+        if (lecturerDAO.existsByEmpId(employeeId)) {
             showAlert(Alert.AlertType.ERROR, "Duplicate Error", "Employee ID already exists.");
             return;
         }
 
-        if (userDAO.existsByUsername(empIdValue)) {
+        if (userDAO.existsByUsername(employeeId)) {
             showAlert(Alert.AlertType.ERROR, "Duplicate Error", "Username already exists.");
             return;
         }
 
-        int experience = 0;
-        if (!experienceYears.getText().trim().isEmpty()) {
-            try {
-                experience = Integer.parseInt(experienceYears.getText().trim());
-            } catch (NumberFormatException e) {
-                showAlert(Alert.AlertType.ERROR, "Validation Error", "Experience must be a number.");
-                return;
-            }
-        }
+        String gender = null;
+        if (male.isSelected()) gender = "Male";
+        else if (female.isSelected()) gender = "Female";
 
-        String regPicPath = selectedFile != null ? selectedFile.getAbsolutePath() : null;
+        String imagePath = (selectedFile != null) ? selectedFile.getAbsolutePath() : null;
 
-        Lecturer lecturer = new Lecturer();
-        lecturer.setFirstName(firstName.getText().trim());
-        lecturer.setLastName(lastName.getText().trim());
-        lecturer.setEmployeeId(empIdValue);
-        lecturer.setNic(nic.getText().trim());
-        lecturer.setDob(dob.getValue());
-        lecturer.setGender(gender.getValue());
-        lecturer.setRegPic(regPicPath);
-        lecturer.setContactNumber(contactNumber.getText().trim());
-        lecturer.setEmail(email.getText().trim());
-        lecturer.setEmergencyContact(emergencyContact.getText().trim());
-        lecturer.setDistrict(district.getValue());
-        lecturer.setAddress(address.getText().trim());
-        lecturer.setDepartment(department.getValue());
-        lecturer.setLecturerType(lecturerType.getValue());
-        lecturer.setAppointmentDate(appointmentDate.getValue());
-        lecturer.setSpecialization(specialization.getText().trim());
-        lecturer.setExperienceYears(experience);
-        lecturer.setStatus(status.getValue());
+        Lecturer lecturer = new Lecturer(
+                firstName.getText().trim(),
+                lastName.getText().trim(),
+                employeeId,
+                nic.getText().trim(),
+                dob.getValue(),
+                gender,
+                imagePath,
+                district.getValue(),
+                email.getText().trim(),
+                phone.getText().trim(),
+                address.getText().trim(),
+                department.getValue(),
+                specialization.getText().trim(),
+                designation.getText().trim(),
+                qualification.getText().trim()
+        );
 
-        User user = new User(empIdValue, "12345", "Lecturer", regPicPath);
+        User user = new User(employeeId, "12345", "Lecturer", imagePath);
 
         boolean userSaved = userDAO.saveUser(user);
         if (!userSaved) {
@@ -140,57 +113,36 @@ public class AddLecturerController {
         }
 
         boolean lecturerSaved = lecturerDAO.saveLecturer(lecturer);
-        if (!lecturerSaved) {
+
+        if (lecturerSaved) {
+            showAlert(Alert.AlertType.INFORMATION, "Success",
+                    "Lecturer registered successfully.\nUsername: " + employeeId + "\nPassword: 12345");
+            handleClear();
+        } else {
             showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to save lecturer details.");
-            return;
         }
-
-        String degreeText = degrees.getText().trim();
-        if (!degreeText.isEmpty()) {
-            String[] degreeList = degreeText.split("\\r?\\n");
-            for (String degree : degreeList) {
-                String cleanedDegree = degree.trim();
-                if (!cleanedDegree.isEmpty()) {
-                    lecturerDAO.saveLecturerDegree(empIdValue, cleanedDegree);
-                }
-            }
-        }
-
-        showAlert(
-                Alert.AlertType.INFORMATION,
-                "Success",
-                "Lecturer registered successfully.\nUsername: " + empIdValue + "\nPassword: 12345"
-        );
-
-        handleClear();
     }
 
     @FXML
     private void handleClear() {
         firstName.clear();
         lastName.clear();
+        empId.clear();
         nic.clear();
         dob.setValue(null);
-        gender.setValue(null);
+        genderGroup.selectToggle(null);
+        district.setValue(null);
         lecturerImageView.setImage(null);
         selectedFile = null;
 
-        contactNumber.clear();
         email.clear();
-        emergencyContact.clear();
-        district.setValue(null);
+        phone.clear();
         address.clear();
 
-        employeeId.clear();
         department.setValue(null);
-        lecturerType.setValue(null);
-        appointmentDate.setValue(null);
         specialization.clear();
-        experienceYears.clear();
-        degrees.clear();
-
-        status.setValue(null);
-        linkedUsername.clear();
+        designation.clear();
+        qualification.clear();
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {

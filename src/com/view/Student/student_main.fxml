@@ -1,45 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.gluonhq.charm.glisten.control.TextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<<<<<<< HEAD
+=======
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+>>>>>>> afra
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<<<<<<< HEAD
 
-<StackPane xmlns="http://javafx.com/javafx/25"
-           xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.controller.Student.student_mainController">
+<BorderPane prefHeight="786.0" prefWidth="1366.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.controller.Student.StudentController"
+            style="-fx-background-color: #f4f6f8;">
 
+    <top>
+        <HBox alignment="CENTER_LEFT"
+              prefHeight="70.0"
+              spacing="12.0"
+              style="-fx-background-color: #122c4a; -fx-padding: 10 18 10 18;">
+            <children>
+
+                <Region prefWidth="30.0" />
+
+                <Label text="WELCOME TO FOT MANAGEMENT SYSTEM......"
+                       textFill="WHITE">
+                    <font>
+                        <Font name="Times New Roman Bold" size="24.0"/>
+                    </font>
+                </Label>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button text="Edit Profile"
+                        prefHeight="35.0"
+                        prefWidth="95.0"
+                        style="-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 6;"/>
+            </children>
+        </HBox>
+    </top>
+
+    <left>
+        <VBox prefWidth="180.0"
+              spacing="18.0"
+              style="-fx-background-color: #031f45; -fx-padding: 28 12 20 18;">
+            <children>
+
+                <Button text="Dashboard"
+                        onAction="#handleDashboard"
+                        prefWidth="150.0"
+                        prefHeight="35.0"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 15px; -fx-alignment: CENTER-LEFT;"/>
+
+                <Button text="Attendance"
+                        onAction="#handleAttendance"
+                        prefWidth="150.0"
+                        prefHeight="35.0"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 15px; -fx-alignment: CENTER-LEFT;"/>
+
+                <Button text="Notice"
+                        onAction="#handleNotice"
+                        prefWidth="150.0"
+                        prefHeight="35.0"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 15px; -fx-alignment: CENTER-LEFT;"/>
+
+                <Button text="Grades"
+                        onAction="#handleGrades"
+                        prefWidth="150.0"
+                        prefHeight="35.0"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 15px; -fx-alignment: CENTER-LEFT;"/>
+
+                <Button text="Timetable"
+                        onAction="#handleTimetable"
+                        prefWidth="150.0"
+                        prefHeight="35.0"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 15px; -fx-alignment: CENTER-LEFT;"/>
+
+                <Region VBox.vgrow="ALWAYS"/>
+
+                <Button text="LogOut"
+                        prefWidth="150.0"
+                        prefHeight="38.0"
+                        style="-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-size: 14px;"/>
+            </children>
+        </VBox>
+    </left>
+
+    <center>
+        <StackPane fx:id="contentArea"
+                   style="-fx-background-color: #f4f6f8; -fx-padding: 18;"/>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER"
+              prefHeight="35.0"
+              style="-fx-background-color: #f4f6f8; -fx-padding: 5 0 8 0;">
+            <children>
+                <Label text="@Faculty of Technology, University of Ruhuna"
+                       style="-fx-text-fill: #444; -fx-font-size: 13px;"/>
+            </children>
+        </HBox>
+    </bottom>
+
+</BorderPane>
+=======
+<?import javafx.scene.text.Text?>
+
+<StackPane prefHeight="785.0" prefWidth="1086.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainFormController">
     <children>
         <BorderPane layoutX="14.0" prefHeight="200.0" prefWidth="200.0" />
-
-        <BorderPane layoutX="-2.0" layoutY="-1.0" prefHeight="786.0" prefWidth="1086.0"
-                    AnchorPane.bottomAnchor="0.0"
-                    AnchorPane.leftAnchor="-2.0"
-                    AnchorPane.rightAnchor="2.0"
-                    AnchorPane.topAnchor="-1.0">
-
+        <BorderPane layoutX="-2.0" layoutY="-1.0" prefHeight="786.0" prefWidth="1086.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="-1.0">
             <left>
-                <VBox prefHeight="786.0" prefWidth="149.0" spacing="10.0"
-                      style="-fx-background-color: #0b1f36;"
-                      BorderPane.alignment="CENTER">
+                <VBox prefHeight="786.0" prefWidth="149.0" spacing="10.0" style="-fx-background-color: #0b1f36;" BorderPane.alignment="CENTER">
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
                     <children>
-                        <Button mnemonicParsing="false"
-                                prefHeight="26.0" prefWidth="129.0"
-                                style="-fx-background-color: #0b1f36;"
-                                text="Dashboard" textAlignment="CENTER" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#handleDashboard" prefHeight="26.0" prefWidth="129.0" style="-fx-background-color: #0b1f36;" text="Dashboard" textAlignment="CENTER" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
@@ -54,11 +144,7 @@
                                 <Insets right="20.0" top="10.0" />
                             </padding>
                         </Button>
-
-                        <Button mnemonicParsing="false"
-                                prefHeight="26.0" prefWidth="158.0"
-                                style="-fx-background-color: #0b1f36;"
-                                text="Attendance" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#handleAttendance" prefHeight="26.0" prefWidth="158.0" style="-fx-background-color: #0b1f36;" text="Attendance" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
@@ -73,11 +159,7 @@
                                 <Insets left="3.0" right="20.0" top="10.0" />
                             </padding>
                         </Button>
-
-                        <Button mnemonicParsing="false"
-                                prefHeight="26.0" prefWidth="155.0"
-                                style="-fx-background-color: #0b1f36;"
-                                text="Notice" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#handleNotice" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: #0b1f36;" text="Notice" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="29.0">
                                     <image>
@@ -92,11 +174,7 @@
                                 <Insets right="40.0" top="10.0" />
                             </padding>
                         </Button>
-
-                        <Button mnemonicParsing="false"
-                                prefHeight="26.0" prefWidth="174.0"
-                                style="-fx-background-color: #0b1f36;"
-                                text="Grades" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#handleGrades" prefHeight="26.0" prefWidth="174.0" style="-fx-background-color: #0b1f36;" text="Grades" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="26.0" fitWidth="29.0">
                                     <image>
@@ -109,13 +187,8 @@
                             </font>
                             <padding>
                                 <Insets right="42.0" top="10.0" />
-                            </padding>
-                        </Button>
-
-                        <Button mnemonicParsing="false"
-                                prefHeight="26.0" prefWidth="148.0"
-                                style="-fx-background-color: #0b1f36;"
-                                text="Medical" textFill="WHITE">
+                            </padding></Button>
+                        <Button mnemonicParsing="false" onAction="#handleMedical" prefHeight="26.0" prefWidth="148.0" style="-fx-background-color: #0b1f36;" text="Medical" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20.0">
                                     <image>
@@ -128,13 +201,8 @@
                             </font>
                             <padding>
                                 <Insets right="40.0" top="10.0" />
-                            </padding>
-                        </Button>
-
-                        <Button mnemonicParsing="false"
-                                prefHeight="26.0" prefWidth="198.0"
-                                style="-fx-background-color: #0b1f36;"
-                                text="Timetable" textFill="WHITE">
+                            </padding></Button>
+                        <Button mnemonicParsing="false" onAction="#handleTimetable" prefHeight="26.0" prefWidth="198.0" style="-fx-background-color: #0b1f36;" text="Timetable" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
@@ -147,13 +215,8 @@
                             </font>
                             <padding>
                                 <Insets right="20.0" top="10.0" />
-                            </padding>
-                        </Button>
-
-                        <Button fx:id="btnNotice" mnemonicParsing="false"
-                                prefHeight="26.0" prefWidth="181.0"
-                                style="-fx-background-color: #0b1f36;"
-                                text="Course" textFill="WHITE">
+                            </padding></Button>
+                        <Button fx:id="btnNotice" mnemonicParsing="false" onAction="#handleCourse" prefHeight="26.0" prefWidth="181.0" style="-fx-background-color: #0b1f36;" text="Course" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="20" fitWidth="20">
                                     <image>
@@ -166,42 +229,26 @@
                             </font>
                             <padding>
                                 <Insets right="40.0" top="10.0" />
-                            </padding>
-                        </Button>
+                            </padding></Button>
                     </children>
                 </VBox>
             </left>
-
             <top>
-                <HBox alignment="CENTER_LEFT" prefHeight="54.0" prefWidth="1132.0"
-                      spacing="10.0"
-                      style="-fx-border-color: #122c4a; -fx-background-color: #122c4a;"
-                      BorderPane.alignment="CENTER_LEFT">
+                <HBox alignment="CENTER_LEFT" prefHeight="54.0" prefWidth="1132.0" spacing="10.0" style="-fx-border-color: #122c4a; -fx-background-color: #122c4a;" BorderPane.alignment="CENTER_LEFT">
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER"
-                               prefHeight="54.0" prefWidth="929.0"
-                               style="-fx-background-color: #122c4a;"
-                               text="Welcome to FOT Managment System......"
-                               textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="929.0" style="-fx-background-color: #122c4a;" text="Welcome to FOT Managment System......" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                             <font>
                                 <Font name="Castellar" size="21.0" />
-                            </font>
-                        </Label>
-
-                        <ImageView fitHeight="64.0" fitWidth="30.0"
-                                   pickOnBounds="true" preserveRatio="true">
+                            </font></Label>
+                        <ImageView fitHeight="64.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../../Resources/images/icon/stu.png" />
                             </image>
                         </ImageView>
-
-                        <Button mnemonicParsing="false"
-                                prefHeight="32.0" prefWidth="72.0"
-                                style="-fx-background-color: black;"
-                                text="Edit Profile" textFill="#ccd9ea">
+                        <Button mnemonicParsing="false" onAction="#handleProfile" prefHeight="32.0" prefWidth="72.0" style="-fx-background-color: black;" text="Edit Profile" textFill="#ccd9ea">
                             <padding>
                                 <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                             </padding>
@@ -212,17 +259,14 @@
                     </children>
                 </HBox>
             </top>
-
             <center>
                 <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <children>
-                        <VBox layoutX="640.0" layoutY="23.0" prefHeight="350.0" prefWidth="318.0"
-                              style="-fx-background-color: #0b1f36;" AnchorPane.rightAnchor="24.0">
+                        <VBox layoutX="640.0" layoutY="23.0" prefHeight="350.0" prefWidth="318.0" style="-fx-background-color: #0b1f36;" AnchorPane.rightAnchor="24.0">
                             <children>
                                 <VBox prefHeight="200.0" prefWidth="351.0">
                                     <children>
-                                        <ImageView fitHeight="200.0" fitWidth="119.0"
-                                                   pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fitHeight="200.0" fitWidth="119.0" pickOnBounds="true" preserveRatio="true">
                                             <viewport>
                                                 <Rectangle2D />
                                             </viewport>
@@ -233,16 +277,11 @@
                                                 <Image url="@../../Resources/images/icon/stu.png" />
                                             </image>
                                         </ImageView>
-                                    </children>
-                                </VBox>
-
+                                    </children></VBox>
                                 <VBox prefHeight="200.0" prefWidth="351.0" />
-
                                 <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                     <children>
-                                        <Label contentDisplay="CENTER" layoutX="133.0" layoutY="-5.0"
-                                               prefHeight="34.0" prefWidth="102.0"
-                                               text="Name" textFill="WHITE">
+                                        <Label contentDisplay="CENTER" layoutX="133.0" layoutY="-5.0" prefHeight="34.0" prefWidth="102.0" text="Name" textFill="WHITE">
                                             <opaqueInsets>
                                                 <Insets left="10.0" top="20.0" />
                                             </opaqueInsets>
@@ -253,27 +292,20 @@
                                                 <Insets left="10.0" />
                                             </padding>
                                         </Label>
-                                    </children>
-                                </AnchorPane>
-
+                                    </children></AnchorPane>
                                 <VBox prefHeight="200.0" prefWidth="100.0">
                                     <children>
-                                        <Label contentDisplay="CENTER"
-                                               text="abcsomething@gmail.com"
-                                               textAlignment="CENTER" textFill="WHITE">
+                                        <Label contentDisplay="CENTER" text="abcsomething@gmail.com" textAlignment="CENTER" textFill="WHITE">
                                             <VBox.margin>
                                                 <Insets left="100.0" top="8.0" />
                                             </VBox.margin>
                                         </Label>
-                                    </children>
-                                </VBox>
-
+                                    </children></VBox>
                                 <Label contentDisplay="CENTER" text="Course: ICT" textFill="WHITE">
                                     <VBox.margin>
                                         <Insets left="100.0" top="8.0" />
                                     </VBox.margin>
                                 </Label>
-
                                 <Label contentDisplay="CENTER" text="ContactNo: 0775657777" textFill="#fff8f8">
                                     <VBox.margin>
                                         <Insets left="100.0" top="8.0" />
@@ -284,7 +316,6 @@
                                 <Insets />
                             </opaqueInsets>
                         </VBox>
-
                         <VBox layoutX="29.0" layoutY="431.0" prefHeight="258.0" prefWidth="322.0">
                             <children>
                                 <Label text="Today's TimeTable">
@@ -295,7 +326,6 @@
                                         <Font size="22.0" />
                                     </font>
                                 </Label>
-
                                 <TableView prefHeight="193.0" prefWidth="317.0">
                                     <columns>
                                         <TableColumn prefWidth="75.0" text="Time" />
@@ -307,7 +337,7 @@
                                 </TableView>
                             </children>
                         </VBox>
-
+                        <TextField floatText="\@Faculty of Technology,Universuty of ruhuna" layoutX="238.0" layoutY="689.0" maxLength="20" prefHeight="26.0" prefWidth="530.0" />
                         <VBox layoutX="54.0" layoutY="56.0" prefHeight="294.0" prefWidth="426.0">
                             <children>
                                 <Label text="RecentNotice">
@@ -315,7 +345,6 @@
                                         <Insets left="10.0" top="15.0" />
                                     </VBox.margin>
                                 </Label>
-
                                 <TableView prefHeight="290.0" prefWidth="326.0">
                                     <columns>
                                         <TableColumn prefWidth="103.99999237060547" text="Date" />
@@ -327,19 +356,22 @@
                                 </TableView>
                             </children>
                         </VBox>
-
-                        <Button layoutX="28.0" layoutY="677.0" mnemonicParsing="false"
-                                prefHeight="27.0" prefWidth="54.0"
-                                style="-fx-background-color: #0b1f36; -fx-border-color: black;"
-                                text="View" textFill="WHITE" />
-
-                        <Button layoutX="874.0" layoutY="706.0" mnemonicParsing="false"
-                                prefHeight="26.0" prefWidth="108.0"
-                                style="-fx-background-color: black;"
-                                text="LogOut" textFill="WHITE" />
+                        <Button layoutX="28.0" layoutY="677.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="54.0" style="-fx-background-color: #0b1f36; -fx-border-color: black;" text="View" textFill="WHITE" />
+                        <Button layoutX="874.0" layoutY="706.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="108.0" style="-fx-background-color: black;" text="LogOut" textFill="WHITE" />
+                        <ImageView fitHeight="30.0" fitWidth="61.0" layoutX="844.0" layoutY="704.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../icon/logout.png" />
+                            </image>
+                        </ImageView>
+                        <Text layoutX="714.0" layoutY="401.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Mentor Details" wrappingWidth="191.67816162109375">
+                            <font>
+                                <Font size="19.0" />
+                            </font>
+                        </Text>
                     </children>
                 </AnchorPane>
             </center>
         </BorderPane>
     </children>
 </StackPane>
+>>>>>>> afra

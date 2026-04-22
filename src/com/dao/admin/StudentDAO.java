@@ -32,7 +32,7 @@ public class StudentDAO {
                     phone VARCHAR(20),
                     address TEXT,
                     department VARCHAR(50),
-                    degrea VARCHAR(50),
+                    course VARCHAR(50),
                     year_no VARCHAR(10),
                     mentor_id VARCHAR(50),
                     guardian_name VARCHAR(100),
@@ -74,7 +74,7 @@ public class StudentDAO {
                 INSERT INTO student (
                     first_name, last_name, reg_no, nic, dob, gender, image_path, district,
                     email, phone, address,
-                    department, degrea, year_no, mentor_id,
+                    department, course, year_no, mentor_id,
                     guardian_name, guardian_phone, guardian_relationship
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
@@ -100,7 +100,7 @@ public class StudentDAO {
             pst.setString(10, s.getPhone());
             pst.setString(11, s.getAddress());
             pst.setString(12, s.getDepartment());
-            pst.setString(13, s.getDegrea());
+            pst.setString(13, s.getCourse());
             pst.setString(14, s.getYear());
             pst.setString(15, s.getMentor());
             pst.setString(16, s.getGuardianName());
@@ -208,7 +208,7 @@ public class StudentDAO {
                 rs.getString("phone"),
                 rs.getString("address"),
                 rs.getString("department"),
-                rs.getString("Degree"),
+                rs.getString("course"),
                 rs.getString("year_no"),
                 rs.getString("mentor_id"),
                 rs.getString("guardian_name"),

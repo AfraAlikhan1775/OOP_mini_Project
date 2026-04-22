@@ -8,10 +8,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="800" prefWidth="1200"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.controller.admin.AdminController">
+<BorderPane prefHeight="800" prefWidth="1200" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.admin.AdminController">
 
     <left>
         <VBox prefWidth="220" spacing="10" style="-fx-background-color:#0b1f36; -fx-padding:15;">
@@ -22,7 +19,7 @@
                 <Button fx:id="dashboardBtn" onAction="#handleDashboard" prefHeight="26.0" prefWidth="151.0" text="Dashboard" />
 
                 <Label style="-fx-text-fill:#7f9bb3;" text="USERS" />
-                <Button onAction="#handleUserprofile" text="Student Management 🎓" />
+                <Button onAction="#handleUserprofile" text="Student Management  🎓" />
                 <Button onAction="#handleLecturer" prefHeight="26.0" prefWidth="149.0" text="Lecturers" />
                 <Button onAction="#handleTO" prefHeight="26.0" prefWidth="151.0" text="Tech Officers" />
                 <Button onAction="#handleStudents" prefHeight="26.0" prefWidth="152.0" text="Undergraduates" />
@@ -36,14 +33,12 @@
     </left>
 
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-background-color:#0f2a44; -fx-padding:10;">
+        <HBox spacing="10" style="-fx-background-color:#0f2a44; -fx-padding:10;">
             <children>
-                <Label style="-fx-text-fill:white; -fx-font-size:20;" text="Admin Dashboard" />
+                <Label style="-fx-text-fill:white; -fx-font-size:20;" text="Adddmin Dashboard" />
                 <Region HBox.hgrow="ALWAYS" />
-                <Button fx:id="logoutBtn"
-                        onAction="#handleLogout"
-                        style="-fx-background-color:#e74c3c; -fx-text-fill:white; -fx-background-radius:6;"
-                        text="Logout" />
+                <Label style="-fx-text-fill:white;" text="08 April 2026" />
+                <Label style="-fx-text-fill:#00ff99;" text="● Online" />
             </children>
         </HBox>
     </top>

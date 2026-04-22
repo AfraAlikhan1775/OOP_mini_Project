@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="25" style="-fx-padding: 30;"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.controller.techOfficerControllers.TOHomeController">
+
+    <!-- Welcome Section -->
+    <VBox spacing="5">
+        <Label fx:id="welcomeLabel" styleClass="welcome-title" text="Welcome back!" />
+        <Label fx:id="subtitleLabel" styleClass="welcome-subtitle" text="Technical Officer Dashboard — Faculty of Technology" />
+    </VBox>
+
+    <!-- Stats Cards Row -->
+    <HBox spacing="20">
+        <!-- Total Students -->
+        <VBox styleClass="stat-card" spacing="8" prefWidth="220" HBox.hgrow="ALWAYS">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label styleClass="stat-card-icon" text="🎓" />
+                    <Label styleClass="stat-card-title" text="Total Students" />
+                </HBox>
+                <Label fx:id="totalStudentsLabel" styleClass="stat-card-value" text="0" />
+            </children>
+        </VBox>
+
+        <!-- Today's Attendance -->
+        <VBox styleClass="stat-card" spacing="8" prefWidth="220" HBox.hgrow="ALWAYS">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label styleClass="stat-card-icon" text="📋" />
+                    <Label styleClass="stat-card-title" text="Attendance Today" />
+                </HBox>
+                <Label fx:id="todayAttendanceLabel" styleClass="stat-card-value" text="0" />
+            </children>
+        </VBox>
+
+        <!-- Medical Records -->
+        <VBox styleClass="stat-card" spacing="8" prefWidth="220" HBox.hgrow="ALWAYS">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label styleClass="stat-card-icon" text="🏥" />
+                    <Label styleClass="stat-card-title" text="Medical Records" />
+                </HBox>
+                <Label fx:id="medicalCountLabel" styleClass="stat-card-value" text="0" />
+            </children>
+        </VBox>
+
+        <!-- Active Notices -->
+        <VBox styleClass="stat-card" spacing="8" prefWidth="220" HBox.hgrow="ALWAYS">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label styleClass="stat-card-icon" text="📢" />
+                    <Label styleClass="stat-card-title" text="Active Notices" />
+                </HBox>
+                <Label fx:id="noticeCountLabel" styleClass="stat-card-value" text="0" />
+            </children>
+        </VBox>
+    </HBox>
+
+    <!-- Quick Actions Section -->
+    <VBox spacing="15">
+        <Label styleClass="section-title" text="Quick Actions" />
+        <HBox spacing="15">
+            <VBox styleClass="stat-card" spacing="10" prefWidth="300" HBox.hgrow="ALWAYS">
+                <Label style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;" text="📋 Mark Attendance" />
+                <Label style="-fx-text-fill:#5a6d80; -fx-font-size:13px;" text="Record daily attendance for undergraduate students in your department." />
+            </VBox>
+            <VBox styleClass="stat-card" spacing="10" prefWidth="300" HBox.hgrow="ALWAYS">
+                <Label style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;" text="🏥 Add Medical Record" />
+                <Label style="-fx-text-fill:#5a6d80; -fx-font-size:13px;" text="Upload and manage medical certificates submitted by students." />
+            </VBox>
+            <VBox styleClass="stat-card" spacing="10" prefWidth="300" HBox.hgrow="ALWAYS">
+                <Label style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;" text="📅 View Timetable" />
+                <Label style="-fx-text-fill:#5a6d80; -fx-font-size:13px;" text="Check the current timetable schedule for your department." />
+            </VBox>
+        </HBox>
+    </VBox>
+
+</VBox>
