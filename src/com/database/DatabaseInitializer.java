@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.Properties;
 import java.util.Scanner;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 public class DatabaseInitializer {
 
     private static final String URL;
@@ -12,8 +14,13 @@ public class DatabaseInitializer {
     private static final String PASSWORD;
 
     static {
-        Properties props = new Properties();
+        // Load .env file (ignores if missing, so env vars / db.properties still work)
+        Dotenv dotenv = Dotenv.configure()
+                .ignoreIfMissing()
+                .load();
 
+        // Legacy: also try db.properties for backward compatibility
+        Properties props = new Properties();
         try (InputStream is = DatabaseInitializer.class.getResourceAsStream("/db.properties")) {
             if (is != null) {
                 props.load(is);
@@ -22,17 +29,32 @@ public class DatabaseInitializer {
             System.err.println("Could not load db.properties: " + e.getMessage());
         }
 
-        URL = resolve(props, "db.url", "DB_URL", "jdbc:mysql://localhost:33061/fms_db");
-        USER = resolve(props, "db.user", "DB_USER", "root");
-        PASSWORD = resolve(props, "db.password", "DB_PASSWORD", "Umes0820@@");
+        URL      = resolve(dotenv, props, "DB_URL",      "db.url");
+        USER     = resolve(dotenv, props, "DB_USER",     "db.user");
+        PASSWORD = resolve(dotenv, props, "DB_PASSWORD", "db.password");
     }
 
-    private static String resolve(Properties props, String propKey, String envKey, String fallback) {
-        String env = System.getenv(envKey);
-        if (env != null && !env.isBlank()) return env;
-        String sys = System.getProperty(propKey);
-        if (sys != null && !sys.isBlank()) return sys;
-        return props.getProperty(propKey, fallback);
+    /**
+     * Resolves a configuration value with the following priority:
+     * 1. .env file (via Dotenv)
+     * 2. OS environment variable
+     * 3. db.properties file (legacy fallback)
+     * Throws an error if the value is not found in any source.
+     */
+    private static String resolve(Dotenv dotenv, Properties props, String envKey, String propKey) {
+        // 1. .env file
+        String val = dotenv.get(envKey);
+        if (val != null && !val.isBlank()) return val;
+
+        // 2. OS environment variable
+        val = System.getenv(envKey);
+        if (val != null && !val.isBlank()) return val;
+
+        // 3. db.properties
+        val = props.getProperty(propKey);
+        if (val != null && !val.isBlank()) return val;
+
+        throw new RuntimeException("Missing required config: set " + envKey + " in .env, environment, or " + propKey + " in db.properties");
     }
 
     public static Connection getConnection() throws SQLException {
