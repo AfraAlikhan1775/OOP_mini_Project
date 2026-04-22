@@ -47,9 +47,9 @@ public class TODashboardController {
                 ((TOAttendanceController) controller).setMarkedBy(loggedInUsername);
             } else if (controller instanceof TOMedicalController) {
                 ((TOMedicalController) controller).setAddedBy(loggedInUsername);
-            } else if (controller instanceof TOTimetableController) {
-                ((TOTimetableController) controller).setEmpId(loggedInUsername);
-            } else if (controller instanceof TOHomeController) {
+//            } else if (controller instanceof TOTimetableController) {
+//                ((TOTimetableController) controller).setEmpId(loggedInUsername);
+//            } else if (controller instanceof TOHomeController) {
                 ((TOHomeController) controller).setEmpId(loggedInUsername);
             }
 

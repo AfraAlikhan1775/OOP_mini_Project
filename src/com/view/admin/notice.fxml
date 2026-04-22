@@ -1,105 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="748.0" prefWidth="1300.0" stylesheets="@adminstyle.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" >
-    <children>
-        <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="46.0" prefWidth="860.0" style="-fx-background-color: #0b1f36;">
-            <VBox.margin>
-                <Insets top="10.0" />
-            </VBox.margin>
+<BorderPane prefHeight="748.0" prefWidth="1300.0"
+            stylesheets="@adminstyle.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.controller.admin.NoticeController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="46.0" spacing="12.0"
+              style="-fx-background-color: #0b1f36; -fx-padding: 10 20 10 20;">
             <children>
-                <Label text="Notice Management  🧾" textFill="WHITE">
+                <Label text="Notice Management 📄" textFill="WHITE">
                     <font>
-                        <Font size="18.0" />
+                        <Font size="18.0"/>
                     </font>
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                    <HBox.margin>
-                        <Insets left="-300.0" />
-                    </HBox.margin>
                 </Label>
-                <TextField prefHeight="26.0" prefWidth="278.0">
-                    <opaqueInsets>
-                        <Insets left="20.0" />
-                    </opaqueInsets>
-                    <HBox.margin>
-                        <Insets left="90.0" />
-                    </HBox.margin>
-                </TextField>
-                <Button mnemonicParsing="false" style="-fx-background-color: #122c4a;" text="🔍" textFill="WHITE" />
-                <Label text="Filter" textFill="WHITE">
-                    <font>
-                        <Font name="Nirmala UI" size="17.0" />
-                    </font>
-                    <opaqueInsets>
-                        <Insets top="50.0" />
-                    </opaqueInsets>
-                    <HBox.margin>
-                        <Insets left="250.0" right="-150.0" />
-                    </HBox.margin>
-                </Label>
-                <ComboBox fx:id="categoryComboBox" prefHeight="26.0" prefWidth="158.0">
-                    <HBox.margin>
-                        <Insets left="170.0" right="-400.0" />
-                    </HBox.margin>
-                </ComboBox>
-                <MenuButton mnemonicParsing="false" text="➕" textFill="WHITE">
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <TextField fx:id="searchField" prefHeight="26.0" prefWidth="278.0" promptText="Search notice..."/>
+                <Button mnemonicParsing="false" onAction="#handleSearch"
+                        style="-fx-background-color: #122c4a;" text="🔍" textFill="WHITE"/>
+
+                <MenuButton mnemonicParsing="false"
+                            style="-fx-background-color: #122c4a; -fx-font-size: 18px;"
+                            text="➕" textFill="WHITE">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#navigateAddStudent" text="Add student ">
-                            <styleClass>
-                                <String fx:value=".menu-button .arrow-button {    -fx-padding: 0;    -fx-opacity: 0;}" />
-                                <String fx:value=".menu-button .arrow {    -fx-background-color: transparent;}" />
-                            </styleClass>
-                        </MenuItem>
-                        <MenuItem mnemonicParsing="false" text="Add lecturer" />
-                        <MenuItem mnemonicParsing="false" onAction="#navigateAddStudent" text="Add Course">
-                            <styleClass>
-                                <String fx:value=".menu-button .arrow-button {    -fx-padding: 0;    -fx-opacity: 0;}" />
-                                <String fx:value=".menu-button .arrow {    -fx-background-color: transparent;}" />
-                            </styleClass>
-                        </MenuItem>
-                        <MenuItem mnemonicParsing="false" onAction="#navigateAddStudent" text="Add TO">
-                            <styleClass>
-                                <String fx:value=".menu-button .arrow-button {    -fx-padding: 0;    -fx-opacity: 0;}" />
-                                <String fx:value=".menu-button .arrow {    -fx-background-color: transparent;}" />
-                            </styleClass>
-                        </MenuItem>
-                        <MenuItem mnemonicParsing="false" onAction="#navigateAddtimetable" text="Add Time table">
-                            <styleClass>
-                                <String fx:value=".menu-button .arrow-button {    -fx-padding: 0;    -fx-opacity: 0;}" />
-                                <String fx:value=".menu-button .arrow {    -fx-background-color: transparent;}" />
-                            </styleClass>
-                        </MenuItem>
-                        <MenuItem mnemonicParsing="false" onAction="#navigateAddStudent" text="Add Notice">
-                            <styleClass>
-                                <String fx:value=".menu-button .arrow-button {    -fx-padding: 0;    -fx-opacity: 0;}" />
-                                <String fx:value=".menu-button .arrow {    -fx-background-color: transparent;}" />
-                            </styleClass>
-                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#navigateAddNotice" text="Add Notice"/>
                     </items>
-                    <opaqueInsets>
-                        <Insets left="100.0" right="-100.0" top="-10.0" />
-                    </opaqueInsets>
-                    <font>
-                        <Font size="20.0" />
-                    </font>
-                    <HBox.margin>
-                        <Insets left="550.0" right="-350.0" />
-                    </HBox.margin>
                 </MenuButton>
             </children>
         </HBox>
-    </children>
-</VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" pannable="true" style="-fx-background-color:#eaf1f8;">
+            <content>
+                <VBox fx:id="noticeCardContainer" spacing="22.0" style="-fx-background-color:#eaf1f8;">
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                    </padding>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

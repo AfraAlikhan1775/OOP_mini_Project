@@ -32,7 +32,7 @@ public class StudentDAO {
                     phone VARCHAR(20),
                     address TEXT,
                     department VARCHAR(50),
-                    course VARCHAR(50),
+                    degrea VARCHAR(50),
                     year_no VARCHAR(10),
                     mentor_id VARCHAR(50),
                     guardian_name VARCHAR(100),
@@ -74,7 +74,7 @@ public class StudentDAO {
                 INSERT INTO student (
                     first_name, last_name, reg_no, nic, dob, gender, image_path, district,
                     email, phone, address,
-                    department, course, year_no, mentor_id,
+                    department, degrea, year_no, mentor_id,
                     guardian_name, guardian_phone, guardian_relationship
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
@@ -100,7 +100,7 @@ public class StudentDAO {
             pst.setString(10, s.getPhone());
             pst.setString(11, s.getAddress());
             pst.setString(12, s.getDepartment());
-            pst.setString(13, s.getCourse());
+            pst.setString(13, s.getDegrea());
             pst.setString(14, s.getYear());
             pst.setString(15, s.getMentor());
             pst.setString(16, s.getGuardianName());
@@ -118,14 +118,35 @@ public class StudentDAO {
 
     public List<Student> getAllStudents() {
         List<Student> students = new ArrayList<>();
-        String sql = "SELECT * FROM student ORDER BY id DESC";
+        String sql = "SELECT * FROM student";
 
         try (Connection conn = DatabaseInitializer.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql);
              ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
-                students.add(extractStudent(rs));
+                Student student = new Student(
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("reg_no"),
+                        rs.getString("nic"),
+                        rs.getDate("dob") != null ? rs.getDate("dob").toLocalDate() : null,
+                        rs.getString("gender"),
+                        rs.getString("image_path"),
+                        rs.getString("district"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getString("department"),
+                        rs.getString("degrea"),
+                        rs.getString("year_no"),
+                        rs.getString("mentor_id"),
+                        rs.getString("guardian_name"),
+                        rs.getString("guardian_phone"),
+                        rs.getString("guardian_relationship")
+                );
+
+                students.add(student);
             }
 
         } catch (Exception e) {
@@ -144,7 +165,7 @@ public class StudentDAO {
                    OR last_name LIKE ?
                    OR reg_no LIKE ?
                    OR department LIKE ?
-                   OR course LIKE ?
+                   OR degrea LIKE ?
                 ORDER BY id DESC
                 """;
 
@@ -208,12 +229,28 @@ public class StudentDAO {
                 rs.getString("phone"),
                 rs.getString("address"),
                 rs.getString("department"),
-                rs.getString("course"),
+                rs.getString("degrea"),
                 rs.getString("year_no"),
                 rs.getString("mentor_id"),
                 rs.getString("guardian_name"),
                 rs.getString("guardian_phone"),
                 rs.getString("guardian_relationship")
         );
+    }
+
+    public boolean deleteByRegNo(String regNo) {
+        String sql = "DELETE FROM student WHERE reg_no = ?";
+
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, regNo);
+            return pst.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

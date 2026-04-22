@@ -33,7 +33,7 @@ public class TOHomeController {
                 counts.students = new StudentDAO().getAllStudents().size();
                 counts.attendance = new AttendanceDAO().getAllAttendance().size();
                 counts.medicals = new MedicalDAO().getAllMedicals().size();
-                counts.notices = new NoticeDAO().getNoticesForRole("Technical Officer").size();
+                //counts.notices = new NoticeDAO().getNoticesForRole("Technical Officer").size();
                 return counts;
             }
         };

@@ -7,10 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -22,6 +19,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 public class StudentController {
 
@@ -69,8 +67,6 @@ public class StudentController {
             stage.setResizable(false);
             stage.showAndWait();
 
-            loadStudents();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -101,15 +97,20 @@ public class StudentController {
     }
 
     private void loadStudents() {
-        renderStudents(studentDAO.getAllStudents());
+        List<Student> students = studentDAO.getAllStudents();
+        System.out.println("Loaded students count: " + students.size());
+        renderStudents(students);
     }
 
     private void renderStudents(List<Student> students) {
-        if (studentCardContainer == null) {
+        studentCardContainer.getChildren().clear();
+
+        if (students == null || students.isEmpty()) {
+            Label emptyLabel = new Label("No students found.");
+            emptyLabel.setStyle("-fx-font-size:16px; -fx-text-fill:#555;");
+            studentCardContainer.getChildren().add(emptyLabel);
             return;
         }
-
-        studentCardContainer.getChildren().clear();
 
         for (Student student : students) {
             HBox card = createStudentCard(student);
@@ -120,13 +121,19 @@ public class StudentController {
     private HBox createStudentCard(Student student) {
         HBox card = new HBox(20);
         card.setAlignment(Pos.CENTER_LEFT);
-        card.setPrefHeight(140);
-        card.setStyle("-fx-background-color:white; -fx-background-radius:14; -fx-border-radius:14; -fx-border-color:#d9e2ec; -fx-padding:18;");
+        card.setPrefHeight(150);
+        card.setStyle(
+                "-fx-background-color:white;" +
+                        "-fx-background-radius:18;" +
+                        "-fx-border-radius:18;" +
+                        "-fx-border-color:#d9e2ec;" +
+                        "-fx-padding:20;"
+        );
 
         ImageView imageView = new ImageView();
-        imageView.setFitWidth(90);
-        imageView.setFitHeight(90);
-        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(85);
+        imageView.setFitHeight(95);
+        imageView.setPreserveRatio(false);
 
         if (student.getImagePath() != null && !student.getImagePath().isBlank()) {
             File file = new File(student.getImagePath());
@@ -135,35 +142,92 @@ public class StudentController {
             }
         }
 
-        VBox detailsBox = new VBox(8);
+        VBox detailsBox = new VBox(10);
+        detailsBox.setAlignment(Pos.CENTER_LEFT);
 
-        Label title = new Label(student.getRegNo() + " - " + student.getFirstName() + " " + student.getLastName());
-        title.setStyle("-fx-font-size:18px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;");
+        Label nameLabel = new Label(student.getFirstName() + " " + student.getLastName());
+        nameLabel.setStyle("-fx-font-size:18px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;");
 
-        Label department = new Label("Department: " + valueOrEmpty(student.getDepartment()));
-        Label course = new Label("Course: " + valueOrEmpty(student.getCourse()));
-        Label year = new Label("Year: " + valueOrEmpty(student.getYear()));
-        Label district = new Label("District: " + valueOrEmpty(student.getDistrict()));
+        Label regLabel = new Label("Registration No: " + valueOrEmpty(student.getRegNo()));
+        regLabel.setStyle("-fx-font-size:14px; -fx-text-fill:#333333;");
 
-        detailsBox.getChildren().addAll(title, department, course, year, district);
+        Label departmentLabel = new Label("Department: " + valueOrEmpty(student.getDepartment()));
+        departmentLabel.setStyle("-fx-font-size:14px; -fx-text-fill:#333333;");
+
+        Label degreaLabel = new Label("Degrea: " + valueOrEmpty(student.getDegrea()));
+        degreaLabel.setStyle("-fx-font-size:14px; -fx-text-fill:#333333;");
+
+        detailsBox.getChildren().addAll(nameLabel, regLabel, departmentLabel, degreaLabel);
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         Button viewBtn = new Button("View");
-        viewBtn.setPrefWidth(100);
-        viewBtn.setStyle("-fx-background-color:#0b1f36; -fx-text-fill:white;");
+        viewBtn.setPrefWidth(110);
+        viewBtn.setStyle(
+                "-fx-background-color:#0b1f36;" +
+                        "-fx-text-fill:white;" +
+                        "-fx-background-radius:6;"
+        );
+        viewBtn.setOnAction(e -> handleView(student));
 
         Button removeBtn = new Button("Remove");
-        removeBtn.setPrefWidth(100);
-        removeBtn.setStyle("-fx-background-color:#b22222; -fx-text-fill:white;");
+        removeBtn.setPrefWidth(110);
+        removeBtn.setStyle(
+                "-fx-background-color:#c62828;" +
+                        "-fx-text-fill:white;" +
+                        "-fx-background-radius:6;"
+        );
+        removeBtn.setOnAction(e -> handleRemove(student));
 
-        VBox buttonBox = new VBox(10, viewBtn, removeBtn);
+        VBox buttonBox = new VBox(12, viewBtn, removeBtn);
         buttonBox.setAlignment(Pos.CENTER_RIGHT);
 
-        card.getChildren().addAll(imageView, detailsBox, spacer, buttonBox);
+        if (imageView.getImage() != null) {
+            card.getChildren().addAll(imageView, detailsBox, spacer, buttonBox);
+        } else {
+            Region emptyImageSpace = new Region();
+            emptyImageSpace.setPrefWidth(85);
+            card.getChildren().addAll(emptyImageSpace, detailsBox, spacer, buttonBox);
+        }
 
         return card;
+    }
+
+    private void handleView(Student student) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Student Details");
+        alert.setHeaderText(student.getFirstName() + " " + student.getLastName());
+        alert.setContentText(
+                "Registration No: " + valueOrEmpty(student.getRegNo()) + "\n" +
+                        "Department: " + valueOrEmpty(student.getDepartment()) + "\n" +
+                        "Degrea: " + valueOrEmpty(student.getDegrea()) + "\n" +
+                        "Year: " + valueOrEmpty(student.getYear())
+        );
+        alert.showAndWait();
+    }
+
+    private void handleRemove(Student student) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Remove Student");
+        confirm.setHeaderText("Are you sure?");
+        confirm.setContentText("Do you want to remove " + student.getRegNo() + "?");
+
+        Optional<ButtonType> result = confirm.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            boolean deleted = studentDAO.deleteByRegNo(student.getRegNo());
+
+            if (deleted) {
+                loadStudents();
+            } else {
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Delete Failed");
+                error.setHeaderText(null);
+                error.setContentText("Could not remove student.");
+                error.showAndWait();
+            }
+        }
     }
 
     private String valueOrEmpty(String value) {

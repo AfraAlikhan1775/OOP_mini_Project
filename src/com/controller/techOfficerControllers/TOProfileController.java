@@ -54,39 +54,39 @@ public class TOProfileController {
     private void loadProfileData() {
         if (empId == null) return;
 
-        TechnicalOfficer to = toDAO.getTOByEmpId(empId);
-        if (to == null) {
-            statusLabel.setText("Error: Profile not found.");
-            statusLabel.setStyle("-fx-text-fill: red;");
-            return;
-        }
+//        TechnicalOfficer to = toDAO.getTOByEmpId(empId);
+//        if (to == null) {
+//            statusLabel.setText("Error: Profile not found.");
+//            statusLabel.setStyle("-fx-text-fill: red;");
+//            return;
+//        }
 
-        Platform.runLater(() -> {
-            firstNameField.setText(valueOrEmpty(to.getFirstName()));
-            lastNameField.setText(valueOrEmpty(to.getLastName()));
-            empIdField.setText(to.getEmpId()); // Disabled field
-            nicField.setText(valueOrEmpty(to.getNic()));
-            if (to.getDob() != null) dobPicker.setValue(to.getDob());
-            genderCombo.setValue(to.getGender());
-            districtField.setText(valueOrEmpty(to.getDistrict()));
-
-            emailField.setText(valueOrEmpty(to.getEmail()));
-            phoneField.setText(valueOrEmpty(to.getPhone()));
-            addressField.setText(valueOrEmpty(to.getAddress()));
-
-            departmentCombo.setValue(to.getDepartment());
-            positionField.setText(valueOrEmpty(to.getPosition()));
-            shiftCombo.setValue(to.getShiftType());
-            assignedLabField.setText(valueOrEmpty(to.getAssignedLab()));
-
-            currentImagePath = to.getImagePath();
-            if (currentImagePath != null && !currentImagePath.isBlank()) {
-                File file = new File(currentImagePath);
-                if (file.exists()) {
-                    profileImage.setImage(new Image(file.toURI().toString()));
-                }
-            }
-        });
+//        Platform.runLater(() -> {
+//            firstNameField.setText(valueOrEmpty(to.getFirstName()));
+//            lastNameField.setText(valueOrEmpty(to.getLastName()));
+//            empIdField.setText(to.getEmpId()); // Disabled field
+//            nicField.setText(valueOrEmpty(to.getNic()));
+//            if (to.getDob() != null) dobPicker.setValue(to.getDob());
+//            genderCombo.setValue(to.getGender());
+//            districtField.setText(valueOrEmpty(to.getDistrict()));
+//
+//            emailField.setText(valueOrEmpty(to.getEmail()));
+//            phoneField.setText(valueOrEmpty(to.getPhone()));
+//            addressField.setText(valueOrEmpty(to.getAddress()));
+//
+//            departmentCombo.setValue(to.getDepartment());
+//            positionField.setText(valueOrEmpty(to.getPosition()));
+//            shiftCombo.setValue(to.getShiftType());
+//            assignedLabField.setText(valueOrEmpty(to.getAssignedLab()));
+//
+//            currentImagePath = to.getImagePath();
+//            if (currentImagePath != null && !currentImagePath.isBlank()) {
+//                File file = new File(currentImagePath);
+//                if (file.exists()) {
+//                    profileImage.setImage(new Image(file.toURI().toString()));
+//                }
+//            }
+//        });
     }
 
     @FXML
@@ -126,13 +126,13 @@ public class TOProfileController {
                 assignedLabField.getText()
         );
 
-        if (toDAO.updateProfile(to)) {
-            statusLabel.setText("Profile updated successfully!");
-            statusLabel.setStyle("-fx-text-fill: #16a34a;");
-        } else {
-            statusLabel.setText("Failed to update profile.");
-            statusLabel.setStyle("-fx-text-fill: red;");
-        }
+//        if (toDAO.updateProfile(to)) {
+//            statusLabel.setText("Profile updated successfully!");
+//            statusLabel.setStyle("-fx-text-fill: #16a34a;");
+//        } else {
+//            statusLabel.setText("Failed to update profile.");
+//            statusLabel.setStyle("-fx-text-fill: red;");
+//        }
     }
 
     private String valueOrEmpty(String value) {

@@ -1,4 +1,4 @@
-package com.dao;
+package com.dao.admin;
 
 import com.database.DatabaseInitializer;
 import com.model.Notice;

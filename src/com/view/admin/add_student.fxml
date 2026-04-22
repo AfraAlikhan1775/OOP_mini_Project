@@ -30,7 +30,6 @@
                <children>
                   <Label text="Student Registration 📝" textFill="WHITE">
                      <font>
-
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
@@ -199,8 +198,8 @@
                                  </items>
                               </ComboBox>
 
-                              <Label text="Course:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                              <ComboBox fx:id="course" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                              <Label text="Degrea:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                              <ComboBox fx:id="degrea" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="0">
                                  <items>
                                     <FXCollections fx:factory="observableArrayList">
                                        <String fx:value="BICT" />

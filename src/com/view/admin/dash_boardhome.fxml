@@ -7,40 +7,48 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="20" style="-fx-padding:20;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<VBox spacing="20" style="-fx-padding:20;"
+      xmlns="http://javafx.com/javafx/25"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.controller.admin.DashboardHomeController">
+
    <children>
       <HBox spacing="15">
          <children>
             <VBox style="-fx-background-color:#122c4a; -fx-padding:15; -fx-background-radius:10;">
                <children>
                   <Label style="-fx-text-fill:white;" text="Lecturers" />
-                  <Label style="-fx-text-fill:white; -fx-font-size:24;" text="5" />
+                  <Label fx:id="lecturerCountLabel" style="-fx-text-fill:white; -fx-font-size:24;" text="0" />
                   <Label style="-fx-text-fill:#9fb3c8;" text="Active faculty" />
                </children>
             </VBox>
+
             <VBox style="-fx-background-color:#122c4a; -fx-padding:15; -fx-background-radius:10;">
                <children>
                   <Label style="-fx-text-fill:white;" text="Tech Officers" />
-                  <Label style="-fx-text-fill:white; -fx-font-size:24;" text="4" />
+                  <Label fx:id="techOfficerCountLabel" style="-fx-text-fill:white; -fx-font-size:24;" text="0" />
                   <Label style="-fx-text-fill:#9fb3c8;" text="Registered" />
                </children>
             </VBox>
+
             <VBox style="-fx-background-color:#122c4a; -fx-padding:15; -fx-background-radius:10;">
                <children>
                   <Label style="-fx-text-fill:white;" text="Undergraduates" />
-                  <Label style="-fx-text-fill:white; -fx-font-size:24;" text="20" />
+                  <Label fx:id="studentCountLabel" style="-fx-text-fill:white; -fx-font-size:24;" text="0" />
                   <Label style="-fx-text-fill:#9fb3c8;" text="Enrolled" />
                </children>
             </VBox>
+
             <VBox style="-fx-background-color:#122c4a; -fx-padding:15; -fx-background-radius:10;">
                <children>
                   <Label style="-fx-text-fill:white;" text="Courses" />
-                  <Label style="-fx-text-fill:white; -fx-font-size:24;" text="8" />
+                  <Label fx:id="courseCountLabel" style="-fx-text-fill:white; -fx-font-size:24;" text="0" />
                   <Label style="-fx-text-fill:#9fb3c8;" text="This semester" />
                </children>
             </VBox>
          </children>
       </HBox>
+
       <HBox spacing="20">
          <children>
             <VBox prefWidth="400" spacing="10" style="-fx-background-color:#122c4a; -fx-padding:15; -fx-background-radius:10;">
@@ -49,6 +57,7 @@
                   <ListView fx:id="recentUsersList" prefHeight="200" />
                </children>
             </VBox>
+
             <VBox prefWidth="400" spacing="10" style="-fx-background-color:#122c4a; -fx-padding:15; -fx-background-radius:10;">
                <children>
                   <Label style="-fx-text-fill:white;" text="Recent Notices" />
@@ -57,6 +66,7 @@
             </VBox>
          </children>
       </HBox>
+
       <VBox spacing="10" style="-fx-background-color:#122c4a; -fx-padding:15; -fx-background-radius:10;">
          <children>
             <Label style="-fx-text-fill:white;" text="Course Overview" />
@@ -66,7 +76,6 @@
                   <TableColumn fx:id="colName" prefWidth="200" text="Course Name" />
                   <TableColumn fx:id="colCoordinator" prefWidth="150" text="Coordinator" />
                   <TableColumn fx:id="colCredits" prefWidth="80" text="Credits" />
-                  <TableColumn fx:id="colStatus" prefWidth="100" text="Status" />
                </columns>
             </TableView>
          </children>

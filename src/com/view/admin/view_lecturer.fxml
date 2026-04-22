@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="820.0" prefWidth="1000.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.controller.admin.ViewLecturerController">
+
+    <top>
+        <HBox alignment="CENTER" prefHeight="90.0" style="-fx-background-color: #0b1f36;">
+            <children>
+                <VBox alignment="CENTER" spacing="5">
+                    <children>
+                        <Label text="Lecturer Details 👨‍🏫" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="20.0" />
+                            </font>
+                        </Label>
+                        <Label text="UoR - FoT" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" pannable="true" style="-fx-background-color:#eaf1f8;">
+            <content>
+                <VBox spacing="20" style="-fx-background-color:#eaf1f8;">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20" />
+                    </padding>
+
+                    <children>
+
+                        <VBox spacing="15" style="-fx-background-color:white; -fx-background-radius:10; -fx-padding:20;">
+                            <children>
+                                <Label text="Personal Information" style="-fx-font-size:16px; -fx-font-weight:bold;" />
+
+                                <HBox spacing="30">
+                                    <children>
+                                        <GridPane hgap="15" vgap="18">
+                                            <children>
+                                                <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                                <Label fx:id="firstName" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                                                <Label text="Last Name:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                                                <Label fx:id="lastName" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                                                <Label text="NIC:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                                <Label fx:id="nic" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                                                <Label text="Date of Birth:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                <Label fx:id="dobLabel" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                                                <Label text="Gender:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                                <Label fx:id="gender" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                                                <Label text="Registration Picture:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                <Label text="Uploaded Image" prefWidth="140" style="-fx-font-size:14px;" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                            </children>
+                                        </GridPane>
+
+                                        <VBox alignment="TOP_CENTER" prefWidth="190" spacing="10"
+                                              style="-fx-background-color:#f4f6f8; -fx-background-radius:10; -fx-padding:15;">
+                                            <children>
+                                                <Label text="Image Preview" style="-fx-font-weight:bold;" />
+                                                <ImageView fx:id="lecturerImageView" fitHeight="150" fitWidth="150" preserveRatio="true" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="15" style="-fx-background-color:white; -fx-background-radius:10; -fx-padding:20;">
+                            <children>
+                                <Label text="Contact Information" style="-fx-font-size:16px; -fx-font-weight:bold;" />
+
+                                <GridPane hgap="15" vgap="18">
+                                    <children>
+                                        <Label text="Contact Number:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                        <Label fx:id="contactNumber" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                                        <Label text="Email:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                                        <Label fx:id="email" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                                        <Label text="Emergency Contact:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                        <Label fx:id="emergencyContact" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                                        <Label text="District:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                        <Label fx:id="district" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                                        <Label text="Address:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                        <TextArea fx:id="address" editable="false" prefHeight="90" prefWidth="455"
+                                                  wrapText="true"
+                                                  GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
+                                    </children>
+                                </GridPane>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="15" style="-fx-background-color:white; -fx-background-radius:10; -fx-padding:20;">
+                            <children>
+                                <Label text="Academic Information" style="-fx-font-size:16px; -fx-font-weight:bold;" />
+
+                                <GridPane hgap="15" vgap="18">
+                                    <children>
+                                        <Label text="Employee ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                        <Label fx:id="employeeId" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                                        <Label text="Department:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                                        <Label fx:id="department" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                                        <Label text="Lecturer Type:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                        <Label fx:id="lecturerType" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                                        <Label text="Appointment Date:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                        <Label fx:id="appointmentDateLabel" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                                        <Label text="Specialization:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                        <Label fx:id="specialization" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                                        <Label text="Experience (Years):" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                        <Label fx:id="experienceYears" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+
+                                        <Label text="Degrees:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                        <TextArea fx:id="degrees" editable="false" prefHeight="100" prefWidth="455"
+                                                  wrapText="true"
+                                                  GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
+                                    </children>
+                                </GridPane>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="15" style="-fx-background-color:white; -fx-background-radius:10; -fx-padding:20;">
+                            <children>
+                                <Label text="System Information" style="-fx-font-size:16px; -fx-font-weight:bold;" />
+
+                                <GridPane hgap="15" vgap="18">
+                                    <children>
+                                        <Label text="Account Status:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                        <Label fx:id="status" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                                        <Label text="Login Username:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                                        <Label fx:id="linkedUsername" prefWidth="220" style="-fx-font-size:14px;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                                    </children>
+                                </GridPane>
+                            </children>
+                        </VBox>
+
+                        <HBox alignment="CENTER" spacing="15">
+                            <children>
+                                <Button text="Update"
+
+                                        prefWidth="120"
+                                        style="-fx-background-color:#0b1f36; -fx-text-fill:white;" />
+                                <Button text="Back"
+                                        onAction="#handleBack"
+                                        prefWidth="120" />
+                            </children>
+                        </HBox>
+
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

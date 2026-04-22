@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
 
@@ -32,7 +33,7 @@ public class AddStudentController {
     @FXML private TextArea address;
 
     @FXML private ComboBox<String> department;
-    @FXML private ComboBox<String> course;
+    @FXML private ComboBox<String> degrea;
     @FXML private TextField year;
     @FXML private TextField mentor;
 
@@ -62,7 +63,6 @@ public class AddStudentController {
 
     @FXML
     private void register() {
-
         String registrationNumber = regNo.getText().trim();
 
         if (registrationNumber.isEmpty()) {
@@ -107,7 +107,7 @@ public class AddStudentController {
                 phone.getText().trim(),
                 address.getText().trim(),
                 department.getValue(),
-                course.getValue(),
+                degrea.getValue(),
                 year.getText().trim(),
                 mentor.getText().trim(),
                 guardianName.getText().trim(),
@@ -134,7 +134,9 @@ public class AddStudentController {
         if (studentSaved) {
             showAlert(Alert.AlertType.INFORMATION, "Success",
                     "Student registered successfully.\nUsername: " + registrationNumber + "\nPassword: 12345");
-            handleClear();
+
+            Stage stage = (Stage) firstName.getScene().getWindow();
+            stage.close();
         } else {
             showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to save student details.");
         }
@@ -159,7 +161,7 @@ public class AddStudentController {
         address.clear();
 
         department.setValue(null);
-        course.setValue(null);
+        degrea.setValue(null);
         year.clear();
         mentor.clear();
 
