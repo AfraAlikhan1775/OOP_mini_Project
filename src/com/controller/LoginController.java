@@ -44,29 +44,29 @@ public class LoginController {
 
             } else if ("Student".equals(user.getRole())) {
 
-                if (userDAO.isDefaultPassword(username)) {
-                    URL resource = getClass().getResource("/com/view/Student/change_password.fxml");
+//                if (userDAO.isDefaultPassword(username)) {
+//                    URL resource = getClass().getResource("/com/view/Student/change_password.fxml");
+//
+//                    if (resource == null) {
+//                        statusLabel.setText("Change password page not found!");
+//                        return;
+//                    }
+//
+//                    FXMLLoader loader = new FXMLLoader(resource);
+//                    Parent root = loader.load();
+//
+//                    com.controller.Student.ChangePasswordController controller = loader.getController();
+//                    controller.setUsername(username);
+//
+//                    Stage stage = (Stage) usernameField.getScene().getWindow();
+//                    stage.setScene(new Scene(root));
+//                    stage.setTitle("Change Password");
+//                    stage.setResizable(false);
+//                    stage.show();
+//
+//                } else {
+                    openPage("/com/view/Student/student_main.fxml", "Student Dashboard");
 
-                    if (resource == null) {
-                        statusLabel.setText("Change password page not found!");
-                        return;
-                    }
-
-                    FXMLLoader loader = new FXMLLoader(resource);
-                    Parent root = loader.load();
-
-                    com.controller.Student.ChangePasswordController controller = loader.getController();
-                    controller.setUsername(username);
-
-                    Stage stage = (Stage) usernameField.getScene().getWindow();
-                    stage.setScene(new Scene(root));
-                    stage.setTitle("Change Password");
-                    stage.setResizable(false);
-                    stage.show();
-
-                } else {
-                    openPage("/com/Resources/view/Student/student_main.fxml", "Student Dashboard");
-                }
 
             } else if ("Lecturer".equals(user.getRole())) {
                 openPage("/com/view/Lec_N/main_layout.fxml", "Lecturer Dashboard");

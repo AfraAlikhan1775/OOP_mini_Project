@@ -12,7 +12,7 @@ public class student_mainController {
 
     @FXML
     public void initialize() {
-        loadUI("/com/view/student/student_main.fxml");
+        loadUI("/com/view/student/stuDashboard.fxml");
     }
 
     private void loadUI(String fxml) {
