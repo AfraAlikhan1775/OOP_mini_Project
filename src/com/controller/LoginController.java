@@ -69,7 +69,7 @@ public class LoginController {
                 }
 
             } else if ("Lecturer".equals(user.getRole())) {
-                openPage("/com/Resources/view/admin/lecturer.fxml", "Lecturer Dashboard");
+                openPage("/com/view/Lec_N/main_layout.fxml", "Lecturer Dashboard");
 
             } else if ("Technical Officer".equals(user.getRole())) {
                 openPage("/com/Resources/view/admin/to.fxml", "Technical Officer Dashboard");

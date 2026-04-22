@@ -18,7 +18,7 @@ public class Student {
     private String address;
 
     private String department;
-    private String course;
+    private String degrea;
     private String year;
     private String mentor;
 
@@ -46,7 +46,7 @@ public class Student {
         this.address = address;
 
         this.department = department;
-        this.course = course;
+        this.degrea = degrea;
         this.year = year;
         this.mentor = mentor;
 
@@ -103,8 +103,8 @@ public class Student {
         return department;
     }
 
-    public String getCourse() {
-        return course;
+    public String getDegrea() {
+        return degrea;
     }
 
     public String getYear() {

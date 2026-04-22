@@ -4,6 +4,7 @@ import com.database.DatabaseInitializer;
 import com.model.Lecturer;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -14,29 +15,51 @@ public class LecturerDAO {
 
     public LecturerDAO() {
         createTable();
+        createDegreeTable();
     }
 
     public void createTable() {
         String sql = """
                 CREATE TABLE IF NOT EXISTS lecturer (
                     id INT PRIMARY KEY AUTO_INCREMENT,
+                    emp_id VARCHAR(100) UNIQUE NOT NULL,
                     first_name VARCHAR(100),
                     last_name VARCHAR(100),
-                    emp_id VARCHAR(100) UNIQUE,
                     nic VARCHAR(50),
                     dob DATE,
-                    gender VARCHAR(10),
-                    image_path VARCHAR(255),
-                    district VARCHAR(50),
-
+                    gender VARCHAR(20),
+                    reg_pic VARCHAR(255),
+                    contact_number VARCHAR(20),
                     email VARCHAR(100),
-                    phone VARCHAR(20),
+                    emergency_contact VARCHAR(20),
+                    district VARCHAR(50),
                     address TEXT,
-
                     department VARCHAR(50),
+                    lecturer_type VARCHAR(50),
+                    appointment_date DATE,
                     specialization VARCHAR(100),
-                    designation VARCHAR(100),
-                    qualification VARCHAR(100)
+                    experience_years INT DEFAULT 0,
+                    status VARCHAR(20)
+                )
+                """;
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createDegreeTable() {
+        String sql = """
+                CREATE TABLE IF NOT EXISTS lecturer_degree (
+                    degree_id INT PRIMARY KEY AUTO_INCREMENT,
+                    emp_id VARCHAR(100) NOT NULL,
+                    degree_name VARCHAR(255) NOT NULL,
+                    CONSTRAINT fk_lecturer_degree_emp
+                        FOREIGN KEY (emp_id) REFERENCES lecturer(emp_id)
+                        ON DELETE CASCADE
                 )
                 """;
 
@@ -71,38 +94,46 @@ public class LecturerDAO {
     public boolean saveLecturer(Lecturer lecturer) {
         String sql = """
                 INSERT INTO lecturer (
-                    first_name, last_name, emp_id, nic, dob, gender, image_path, district,
-                    email, phone, address,
-                    department, specialization, designation, qualification
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    emp_id, first_name, last_name, nic, dob, gender, reg_pic,
+                    contact_number, email, emergency_contact, district, address,
+                    department, lecturer_type, appointment_date, specialization,
+                    experience_years, status
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (Connection conn = DatabaseInitializer.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
-            pst.setString(1, lecturer.getFirstName());
-            pst.setString(2, lecturer.getLastName());
-            pst.setString(3, lecturer.getEmpId());
+            pst.setString(1, lecturer.getEmployeeId());
+            pst.setString(2, lecturer.getFirstName());
+            pst.setString(3, lecturer.getLastName());
             pst.setString(4, lecturer.getNic());
 
             if (lecturer.getDob() != null) {
-                pst.setDate(5, java.sql.Date.valueOf(lecturer.getDob()));
+                pst.setDate(5, Date.valueOf(lecturer.getDob()));
             } else {
                 pst.setDate(5, null);
             }
 
             pst.setString(6, lecturer.getGender());
-            pst.setString(7, lecturer.getImagePath());
-            pst.setString(8, lecturer.getDistrict());
-
+            pst.setString(7, lecturer.getRegPic());
+            pst.setString(8, lecturer.getContactNumber());
             pst.setString(9, lecturer.getEmail());
-            pst.setString(10, lecturer.getPhone());
-            pst.setString(11, lecturer.getAddress());
+            pst.setString(10, lecturer.getEmergencyContact());
+            pst.setString(11, lecturer.getDistrict());
+            pst.setString(12, lecturer.getAddress());
+            pst.setString(13, lecturer.getDepartment());
+            pst.setString(14, lecturer.getLecturerType());
 
-            pst.setString(12, lecturer.getDepartment());
-            pst.setString(13, lecturer.getSpecialization());
-            pst.setString(14, lecturer.getDesignation());
-            pst.setString(15, lecturer.getQualification());
+            if (lecturer.getAppointmentDate() != null) {
+                pst.setDate(15, Date.valueOf(lecturer.getAppointmentDate()));
+            } else {
+                pst.setDate(15, null);
+            }
+
+            pst.setString(16, lecturer.getSpecialization());
+            pst.setInt(17, lecturer.getExperienceYears());
+            pst.setString(18, lecturer.getStatus());
 
             pst.executeUpdate();
             return true;
@@ -111,6 +142,144 @@ public class LecturerDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean updateLecturer(Lecturer lecturer) {
+        String sql = """
+                UPDATE lecturer SET
+                    first_name = ?,
+                    last_name = ?,
+                    nic = ?,
+                    dob = ?,
+                    gender = ?,
+                    contact_number = ?,
+                    email = ?,
+                    emergency_contact = ?,
+                    district = ?,
+                    address = ?,
+                    department = ?,
+                    lecturer_type = ?,
+                    appointment_date = ?,
+                    specialization = ?,
+                    experience_years = ?,
+                    status = ?
+                WHERE emp_id = ?
+                """;
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, lecturer.getFirstName());
+            pst.setString(2, lecturer.getLastName());
+            pst.setString(3, lecturer.getNic());
+
+            if (lecturer.getDob() != null) {
+                pst.setDate(4, Date.valueOf(lecturer.getDob()));
+            } else {
+                pst.setDate(4, null);
+            }
+
+            pst.setString(5, lecturer.getGender());
+            pst.setString(6, lecturer.getContactNumber());
+            pst.setString(7, lecturer.getEmail());
+            pst.setString(8, lecturer.getEmergencyContact());
+            pst.setString(9, lecturer.getDistrict());
+            pst.setString(10, lecturer.getAddress());
+            pst.setString(11, lecturer.getDepartment());
+            pst.setString(12, lecturer.getLecturerType());
+
+            if (lecturer.getAppointmentDate() != null) {
+                pst.setDate(13, Date.valueOf(lecturer.getAppointmentDate()));
+            } else {
+                pst.setDate(13, null);
+            }
+
+            pst.setString(14, lecturer.getSpecialization());
+            pst.setInt(15, lecturer.getExperienceYears());
+            pst.setString(16, lecturer.getStatus());
+            pst.setString(17, lecturer.getEmployeeId());
+
+            return pst.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean saveLecturerDegree(String empId, String degreeName) {
+        String sql = "INSERT INTO lecturer_degree (emp_id, degree_name) VALUES (?, ?)";
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, empId);
+            pst.setString(2, degreeName);
+            pst.executeUpdate();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteLecturerDegrees(String empId) {
+        String sql = "DELETE FROM lecturer_degree WHERE emp_id = ?";
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, empId);
+            return pst.executeUpdate() >= 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<String> getLecturerDegrees(String empId) {
+        List<String> degrees = new ArrayList<>();
+        String sql = "SELECT degree_name FROM lecturer_degree WHERE emp_id = ? ORDER BY degree_id ASC";
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, empId);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    degrees.add(rs.getString("degree_name"));
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return degrees;
+    }
+
+    public Lecturer getLecturerByEmpId(String empId) {
+        String sql = "SELECT * FROM lecturer WHERE emp_id = ?";
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, empId);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return extractLecturer(rs);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public List<Lecturer> getAllLecturers() {
@@ -191,23 +360,42 @@ public class LecturerDAO {
         return lecturers;
     }
 
+    public boolean deleteLecturerByEmpId(String empId) {
+        String sql = "DELETE FROM lecturer WHERE emp_id = ?";
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, empId);
+            return pst.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private Lecturer extractLecturer(ResultSet rs) throws Exception {
-        return new Lecturer(
-                rs.getString("first_name"),
-                rs.getString("last_name"),
-                rs.getString("emp_id"),
-                rs.getString("nic"),
-                rs.getDate("dob") != null ? rs.getDate("dob").toLocalDate() : null,
-                rs.getString("gender"),
-                rs.getString("image_path"),
-                rs.getString("district"),
-                rs.getString("email"),
-                rs.getString("phone"),
-                rs.getString("address"),
-                rs.getString("department"),
-                rs.getString("specialization"),
-                rs.getString("designation"),
-                rs.getString("qualification")
-        );
+        Lecturer lecturer = new Lecturer();
+        lecturer.setId(rs.getInt("id"));
+        lecturer.setFirstName(rs.getString("first_name"));
+        lecturer.setLastName(rs.getString("last_name"));
+        lecturer.setEmployeeId(rs.getString("emp_id"));
+        lecturer.setNic(rs.getString("nic"));
+        lecturer.setDob(rs.getDate("dob") != null ? rs.getDate("dob").toLocalDate() : null);
+        lecturer.setGender(rs.getString("gender"));
+        lecturer.setRegPic(rs.getString("reg_pic"));
+        lecturer.setContactNumber(rs.getString("contact_number"));
+        lecturer.setEmail(rs.getString("email"));
+        lecturer.setEmergencyContact(rs.getString("emergency_contact"));
+        lecturer.setDistrict(rs.getString("district"));
+        lecturer.setAddress(rs.getString("address"));
+        lecturer.setDepartment(rs.getString("department"));
+        lecturer.setLecturerType(rs.getString("lecturer_type"));
+        lecturer.setAppointmentDate(rs.getDate("appointment_date") != null ? rs.getDate("appointment_date").toLocalDate() : null);
+        lecturer.setSpecialization(rs.getString("specialization"));
+        lecturer.setExperienceYears(rs.getInt("experience_years"));
+        lecturer.setStatus(rs.getString("status"));
+        return lecturer;
     }
 }
