@@ -75,6 +75,20 @@ public class Medical {
         this.status = status;
     }
 
+    public Medical(int medicalId, String studentId, String batch, String department, String medicalStartDate,
+                   String medicalEndDate, byte[] medicalData, String reason, String addedBy, String status) {
+        this.medicalId = medicalId;
+        this.studentId = studentId;
+        this.batch = batch;
+        this.department = department;
+        this.medicalStartDate = medicalStartDate;
+        this.medicalEndDate = medicalEndDate;
+        this.medicalData = medicalData;
+        this.reason = reason;
+        this.addedBy = addedBy;
+        this.status = status;
+    }
+
     public String getDepartment() {
         return department;
     }

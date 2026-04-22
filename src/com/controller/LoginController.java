@@ -65,11 +65,11 @@ public class LoginController {
                     stage.show();
 
                 } else {
-                    openPage("/com/Resources/view/Student/student_main.fxml", "Student Dashboard");
+                    openPage("/com/view/Student/student_main.fxml", "Student Dashboard");
                 }
 
             } else if ("Lecturer".equals(user.getRole())) {
-                openPage("/com/Resources/view/admin/lecturer.fxml", "Lecturer Dashboard");
+                openPage("/com/view/admin/lecturer.fxml", "Lecturer Dashboard");
 
             } else if ("Technical Officer".equals(user.getRole())) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/techOfficer/to_dashboard.fxml"));

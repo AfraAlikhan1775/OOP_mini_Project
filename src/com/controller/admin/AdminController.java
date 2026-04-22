@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 
-import java.io.IOException;
+import java.net.URL;
 
 public class AdminController{
     @FXML
@@ -17,7 +17,12 @@ public class AdminController{
 
     private void loadUI(String fxml) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+            URL resource = getClass().getResource(fxml);
+            if (resource == null) {
+                System.err.println("FXML not found: " + fxml);
+                return;
+            }
+            FXMLLoader loader = new FXMLLoader(resource);
             Parent root = loader.load();
             contentArea.getChildren().setAll(root);
 
