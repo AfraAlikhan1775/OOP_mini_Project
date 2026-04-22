@@ -24,7 +24,7 @@ public class DatabaseInitializer {
 
         URL = resolve(props, "db.url", "DB_URL", "jdbc:mysql://localhost:33061/fms_db");
         USER = resolve(props, "db.user", "DB_USER", "root");
-        PASSWORD = resolve(props, "db.password", "DB_PASSWORD", "");
+        PASSWORD = resolve(props, "db.password", "DB_PASSWORD", "Umes0820@@");
     }
 
     private static String resolve(Properties props, String propKey, String envKey, String fallback) {
