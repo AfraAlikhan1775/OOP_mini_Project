@@ -12,7 +12,7 @@ public class student_mainController {
 
     @FXML
     public void initialize() {
-        loadUI("/com/view/student/student_main.fxml");
+        loadUI("/com/view/Student/stuDashboard.fxml");
     }
 
     private void loadUI(String fxml) {
@@ -27,42 +27,37 @@ public class student_mainController {
 
     @FXML
     private void handleDashboard() {
-        loadUI("/com/view/student/stuDashboard.fxml");
+        loadUI("/com/view/Student/stuDashboard.fxml");
     }
 
     @FXML
     private void handleAttendance() {
-        loadUI("/com/view/student/stuAttendance.fxml");
+        loadUI("/com/view/Student/stuAttendance.fxml");
     }
 
     @FXML
     private void handleTimetable() {
-        loadUI("/com/view/student/stuTimetable.fxml");
+        loadUI("/com/view/Student/stuTimetable.fxml");
     }
 
     @FXML
     private void handleNotice() {
-        loadUI("/com/view/student/stuNotice.fxml");
+        loadUI("/com/view/Student/stuNotice.fxml");
     }
 
     @FXML
     private void handleGrades() {
-        loadUI("/com/view/student/stuGrades.fxml");
-    }
-
-    @FXML
-    private void handleCourse() {
-        loadUI("/com/view/student/stuCourse.fxml");
+        loadUI("/com/view/Student/stuGrades.fxml");
     }
 
     @FXML
     private void handleMedical() {
-        loadUI("/com/view/student/stuMedical.fxml");
+        loadUI("/com/view/Student/stuMedical.fxml");
     }
 
     @FXML
     private void handleProfile() {
-        loadUI("/com/view/student/stuProfile.fxml");
+        loadUI("/com/view/Student/stuProfile.fxml");
     }
 
 }

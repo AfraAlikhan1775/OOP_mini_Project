@@ -1,61 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox spacing="15" style="-fx-padding: 25;"
+<VBox spacing="15"
+      style="-fx-padding: 25;"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.controller.techOfficerControllers.TOAttendanceController">
 
-    <!-- Page Header -->
-    <HBox alignment="CENTER_LEFT" spacing="15" styleClass="page-header"
-          style="-fx-background-radius: 12;">
-        <padding>
-            <Insets top="12" right="20" bottom="12" left="20" />
-        </padding>
-        <Label styleClass="page-header-title" text="📋  Attendance Management" />
-        <Region HBox.hgrow="ALWAYS" />
-        <Button onAction="#handleAddAttendance" styleClass="btn-primary" text="+ Add Record" />
+    <HBox alignment="CENTER_LEFT" spacing="15"
+          style="-fx-background-color: #0b1f36; -fx-background-radius: 12; -fx-padding: 12 20 12 20;">
+        <Label text="📘 Session Management" textFill="WHITE">
+            <font>
+                <Font size="18"/>
+            </font>
+        </Label>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="+ Add Session"
+                onAction="#handleAddAttendance"
+                style="-fx-background-color: #1e3a8a; -fx-text-fill: white; -fx-font-weight: bold;"/>
     </HBox>
 
-    <!-- Filter Bar -->
     <HBox spacing="12" alignment="CENTER_LEFT">
-        <TextField fx:id="searchField" styleClass="search-field" promptText="Search by Student ID or Course..." prefWidth="280" />
-        <Button onAction="#handleSearch" styleClass="btn-primary" text="🔍" />
-        <DatePicker fx:id="datePicker" promptText="Filter by Date" prefWidth="180" />
-        <ComboBox fx:id="courseFilter" promptText="Course" prefWidth="150" />
-        <ComboBox fx:id="statusFilter" promptText="Status" prefWidth="130" />
-        <Region HBox.hgrow="ALWAYS" />
-        <Button onAction="#handleRefresh" styleClass="btn-secondary" text="↻ Refresh" />
+        <TextField fx:id="searchField"
+                   promptText="Search by Course / Session / Lecturer..."
+                   prefWidth="280"/>
+        <Button text="🔍"
+                onAction="#handleSearch"
+                style="-fx-background-color: #0b1f36; -fx-text-fill: white;"/>
+        <DatePicker fx:id="datePicker" promptText="Filter by Date" prefWidth="160"/>
+        <ComboBox fx:id="courseFilter" promptText="Course" prefWidth="150"/>
+        <ComboBox fx:id="statusFilter" promptText="Type" prefWidth="140"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="↻ Refresh"
+                onAction="#handleRefresh"
+                style="-fx-background-color: #374151; -fx-text-fill: white;"/>
     </HBox>
 
-    <!-- Attendance Table -->
     <TableView fx:id="attendanceTable" VBox.vgrow="ALWAYS" prefHeight="500">
         <columns>
-            <TableColumn fx:id="colId" text="ID" prefWidth="60" />
-            <TableColumn fx:id="colStudentId" text="Student ID" prefWidth="130" />
-            <TableColumn fx:id="colCourse" text="Course" prefWidth="120" />
-            <TableColumn fx:id="colDate" text="Date" prefWidth="120" />
-            <TableColumn fx:id="colStatus" text="Status" prefWidth="100" />
-            <TableColumn fx:id="colMarkedBy" text="Marked By" prefWidth="120" />
-            <TableColumn fx:id="colRemarks" text="Remarks" prefWidth="180" />
-            <TableColumn fx:id="colActions" text="Actions" prefWidth="120" />
+            <TableColumn fx:id="colId" text="Session ID" prefWidth="120"/>
+            <TableColumn fx:id="colCourse" text="Course ID" prefWidth="120"/>
+            <TableColumn fx:id="colStudentId" text="Lecturer EMPID" prefWidth="140"/>
+            <TableColumn fx:id="colDate" text="Date" prefWidth="120"/>
+            <TableColumn fx:id="colStatus" text="Type" prefWidth="120"/>
+            <TableColumn fx:id="colMarkedBy" text="Hours" prefWidth="100"/>
+            <TableColumn fx:id="colRemarks" text="Details" prefWidth="220"/>
+            <TableColumn fx:id="colActions" text="Actions" prefWidth="120"/>
         </columns>
     </TableView>
 
-    <!-- Status Bar -->
-    <HBox alignment="CENTER_LEFT" spacing="10">
-        <Label fx:id="statusLabel" style="-fx-text-fill: #5a6d80; -fx-font-size: 12px;" text="" />
+    <HBox alignment="CENTER_LEFT">
+        <Label fx:id="statusLabel" style="-fx-text-fill: #5a6d80; -fx-font-size: 12px;" text=""/>
     </HBox>
 
 </VBox>

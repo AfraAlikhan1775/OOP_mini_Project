@@ -4,13 +4,21 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0"
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0"
             xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.controller.Lecturer.MainController">
+            fx:controller="com.controller.Lecturer.MainController"
+            AnchorPane.bottomAnchor="0.0"
+            AnchorPane.leftAnchor="0.0"
+            AnchorPane.rightAnchor="0.0"
+            AnchorPane.topAnchor="0.0">
 
     <children>
-        <BorderPane prefHeight="600.0" prefWidth="900.0">
+        <BorderPane prefHeight="600.0" prefWidth="900.0"
+                   AnchorPane.bottomAnchor="0.0"
+                   AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0"
+                   AnchorPane.topAnchor="0.0">
 
             <!-- LEFT MENU -->
             <left>

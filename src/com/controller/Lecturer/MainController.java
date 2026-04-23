@@ -19,7 +19,7 @@ public class MainController {
 
     private void loadUI(String file) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/com/view/" + file));
+            Parent root = FXMLLoader.load(getClass().getResource("/com/view/Lec_N/" + file));
             contentArea.getChildren().clear();
             contentArea.getChildren().add(root);
         } catch (IOException e) {
