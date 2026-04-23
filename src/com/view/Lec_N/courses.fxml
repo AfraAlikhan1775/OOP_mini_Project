@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox spacing="12" style="-fx-padding:20;"
-      xmlns="http://javafx.com/javafx/25"
-      xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.controller.Lecturer.LecturerCoursesController">
 
-    <Label text="My Courses" style="-fx-font-size:20;" />
+    <top>
+        <VBox spacing="8" style="-fx-padding: 10 0 15 0;">
+            <children>
+                <Label text="My Courses">
+                    <font>
+                        <Font size="22"/>
+                    </font>
+                </Label>
+                <Label text="Courses coordinated by the logged-in lecturer"/>
+            </children>
+        </VBox>
+    </top>
 
-    <HBox spacing="10">
-        <TextField promptText="Search course..." />
-        <Button text="Search" />
-        <Button text="+ Add Course" />
-    </HBox>
-
-    <TableView>
-        <columns>
-            <TableColumn text="Course Code" />
-            <TableColumn text="Course Name" />
-            <TableColumn text="Semester" />
-            <TableColumn text="Students" />
-            <TableColumn text="Special Activities" />
-        </columns>
-    </TableView>
-
-</VBox>
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color:#eaf1f8;">
+            <content>
+                <VBox fx:id="courseCardContainer" spacing="18" style="-fx-padding: 10;">
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </padding>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

@@ -69,7 +69,17 @@ public class LoginController {
                 }
 
             } else if ("Lecturer".equals(user.getRole())) {
-                openPage("/com/view/Lec_N/main_layout.fxml", "Lecturer Dashboard");
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/Lec_N/main_layout.fxml"));
+                Parent root = loader.load();
+
+                com.controller.Lecturer.MainController controller = loader.getController();
+                controller.setLecturerEmpId(username);   // IMPORTANT: username must be EMP0001
+
+                Stage stage = (Stage) usernameField.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Lecturer Dashboard");
+                stage.setMaximized(true);
+                stage.show();
 
             } else if ("Technical Officer".equals(user.getRole())) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/techOfficer/to_dashboard.fxml"));
