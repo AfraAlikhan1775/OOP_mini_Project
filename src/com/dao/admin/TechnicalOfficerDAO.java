@@ -26,11 +26,9 @@ public class TechnicalOfficerDAO {
                     gender VARCHAR(10),
                     image_path VARCHAR(255),
                     district VARCHAR(50),
-
                     email VARCHAR(100),
                     phone VARCHAR(20),
                     address TEXT,
-
                     department VARCHAR(50),
                     position VARCHAR(100),
                     shift_type VARCHAR(50),
@@ -104,5 +102,49 @@ public class TechnicalOfficerDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public TechnicalOfficer getTOByEmpId(String empId) {
+        String sql = "SELECT * FROM technical_officer WHERE emp_id = ?";
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, empId);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    TechnicalOfficer t = new TechnicalOfficer();
+
+                    t.setFirstName(rs.getString("first_name"));
+                    t.setLastName(rs.getString("last_name"));
+                    t.setEmpId(rs.getString("emp_id"));
+                    t.setNic(rs.getString("nic"));
+
+                    java.sql.Date dob = rs.getDate("dob");
+                    if (dob != null) {
+                        t.setDob(dob.toLocalDate());
+                    }
+
+                    t.setGender(rs.getString("gender"));
+                    t.setImagePath(rs.getString("image_path"));
+                    t.setDistrict(rs.getString("district"));
+                    t.setEmail(rs.getString("email"));
+                    t.setPhone(rs.getString("phone"));
+                    t.setAddress(rs.getString("address"));
+                    t.setDepartment(rs.getString("department"));
+                    t.setPosition(rs.getString("position"));
+                    t.setShiftType(rs.getString("shift_type"));
+                    t.setAssignedLab(rs.getString("assigned_lab"));
+
+                    return t;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

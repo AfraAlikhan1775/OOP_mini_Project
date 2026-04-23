@@ -1,349 +1,143 @@
 package com.controller.techOfficerControllers;
 
 import com.dao.AttendanceDAO;
-import com.dao.CourseRegistrationDAO;
-import com.model.AttendanceMarkRow;
-import com.model.Session;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
+import com.model.admin.AttendanceGroup;
+import com.model.admin.AttendanceRecord;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class TOAttendanceController {
 
-    @FXML private TextField searchField;
-    @FXML private DatePicker datePicker;
-    @FXML private ComboBox<String> courseFilter;
-    @FXML private ComboBox<String> statusFilter;
-    @FXML private TableView<Session> attendanceTable;
-    @FXML private TableColumn<Session, String> colId;
-    @FXML private TableColumn<Session, String> colStudentId;
-    @FXML private TableColumn<Session, String> colCourse;
-    @FXML private TableColumn<Session, String> colDate;
-    @FXML private TableColumn<Session, String> colStatus;
-    @FXML private TableColumn<Session, String> colMarkedBy;
-    @FXML private TableColumn<Session, String> colRemarks;
-    @FXML private TableColumn<Session, Void> colActions;
-    @FXML private Label statusLabel;
+    @FXML private VBox cardContainer;
 
     private final AttendanceDAO attendanceDAO = new AttendanceDAO();
-    private final CourseRegistrationDAO registrationDAO = new CourseRegistrationDAO();
+    private TODashboardController dashboardController;
+
+    public void setDashboardController(TODashboardController dashboardController) {
+        this.dashboardController = dashboardController;
+    }
 
     @FXML
     public void initialize() {
-        courseFilter.getItems().add("All");
-        courseFilter.setValue("All");
-
-        statusFilter.getItems().addAll("All", "Theory", "Practical");
-        statusFilter.setValue("All");
-
-        setupTableColumns();
-        loadSessionData();
-
-        datePicker.valueProperty().addListener((obs, oldVal, newVal) -> filterTable());
-        courseFilter.valueProperty().addListener((obs, oldVal, newVal) -> filterTable());
-        statusFilter.valueProperty().addListener((obs, oldVal, newVal) -> filterTable());
+        loadAttendanceCards();
     }
 
-    private void setupTableColumns() {
-        colId.setText("Session ID");
-        colStudentId.setText("Lecturer EMPID");
-        colCourse.setText("Course ID");
-        colDate.setText("Date");
-        colStatus.setText("Type");
-        colMarkedBy.setText("Hours");
-        colRemarks.setText("Details");
-
-        colId.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getSessionId()));
-        colStudentId.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getLecturerEmpId()));
-        colCourse.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getCourseId()));
-        colDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getSessionDate().toString()));
-        colStatus.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getSessionType()));
-        colMarkedBy.setCellValueFactory(c -> new SimpleStringProperty(String.valueOf(c.getValue().getHours())));
-        colRemarks.setCellValueFactory(c ->
-                new SimpleStringProperty("Course: " + c.getValue().getCourseId() + " | Session: " + c.getValue().getSessionId()));
-
-        colActions.setCellFactory(param -> new TableCell<>() {
-            private final Button markBtn = new Button("Mark");
-            private final HBox pane = new HBox(5, markBtn);
-
-            {
-                markBtn.setOnAction(event -> handleMarkAttendance(getTableView().getItems().get(getIndex())));
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty ? null : pane);
-            }
-        });
-    }
-
-    private void loadSessionData() {
-        List<Session> data = attendanceDAO.getAllSessions();
-        attendanceTable.setItems(FXCollections.observableArrayList(data));
-
-        courseFilter.getItems().setAll("All");
-        for (Session s : data) {
-            if (!courseFilter.getItems().contains(s.getCourseId())) {
-                courseFilter.getItems().add(s.getCourseId());
-            }
+    @FXML
+    private void handleOpenAddAttendance() {
+        if (dashboardController != null) {
+            dashboardController.loadContent("/com/view/techOfficer/add_attendance.fxml");
+        } else {
+            System.out.println("Dashboard controller not set.");
         }
     }
 
     @FXML
-    private void handleSearch() {
-        String keyword = searchField.getText();
-        if (keyword == null || keyword.isBlank()) {
-            loadSessionData();
+    private void handleOpenAddSession() {
+        if (dashboardController != null) {
+            dashboardController.loadContent("/com/view/techOfficer/add_session.fxml");
+        } else {
+            System.out.println("Dashboard controller not set.");
+        }
+    }
+
+    private void loadAttendanceCards() {
+        cardContainer.getChildren().clear();
+
+        List<AttendanceGroup> groups = attendanceDAO.getAllAttendanceGroups();
+
+        if (groups == null || groups.isEmpty()) {
+            Label empty = new Label("No attendance records found.");
+            empty.setStyle("-fx-font-size:14px; -fx-text-fill:#64748b;");
+            cardContainer.getChildren().add(empty);
             return;
         }
 
-        List<Session> all = attendanceDAO.getAllSessions();
-        List<Session> filtered = all.stream()
-                .filter(s -> s.getCourseId().contains(keyword)
-                        || s.getSessionId().contains(keyword)
-                        || s.getLecturerEmpId().contains(keyword))
-                .toList();
-
-        attendanceTable.setItems(FXCollections.observableArrayList(filtered));
-    }
-
-    @FXML
-    private void handleRefresh() {
-        searchField.clear();
-        datePicker.setValue(null);
-        courseFilter.setValue("All");
-        statusFilter.setValue("All");
-        loadSessionData();
-        statusLabel.setText("Data refreshed.");
-    }
-
-    private void filterTable() {
-        LocalDate date = datePicker.getValue();
-        String course = courseFilter.getValue();
-        String type = statusFilter.getValue();
-
-        List<Session> all = attendanceDAO.getAllSessions();
-        List<Session> filtered = all.stream()
-                .filter(s -> date == null || s.getSessionDate().equals(date))
-                .filter(s -> course == null || "All".equals(course) || s.getCourseId().equals(course))
-                .filter(s -> type == null || "All".equals(type) || s.getSessionType().equals(type))
-                .toList();
-
-        attendanceTable.setItems(FXCollections.observableArrayList(filtered));
-    }
-
-    @FXML
-    private void handleAddAttendance() {
-        showAddSessionDialog();
-    }
-
-    private void showAddSessionDialog() {
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("Add Session");
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(8);
-        grid.setPadding(new Insets(20));
-
-        TextField courseIdField = new TextField();
-        TextField sessionIdField = new TextField();
-        ComboBox<String> typeBox = new ComboBox<>(FXCollections.observableArrayList("Theory", "Practical"));
-        DatePicker datePicker = new DatePicker(LocalDate.now());
-        TextField lecturerField = new TextField();
-        TextField hoursField = new TextField();
-        ComboBox<String> semesterBox = new ComboBox<>(FXCollections.observableArrayList("1", "2"));
-        TextField academicYearField = new TextField();
-
-        Label courseError = new Label();
-        courseError.setStyle("-fx-text-fill:red;");
-        Label lecturerError = new Label();
-        lecturerError.setStyle("-fx-text-fill:red;");
-
-        courseIdField.textProperty().addListener((obs, o, n) -> {
-            if (n == null || n.isBlank()) {
-                courseError.setText("");
-            } else if (!attendanceDAO.courseExists(n.trim())) {
-                courseError.setText("Course does not exist");
-            } else {
-                courseError.setText("");
-            }
-        });
-
-        lecturerField.textProperty().addListener((obs, o, n) -> {
-            if (n == null || n.isBlank()) {
-                lecturerError.setText("");
-            } else if (!attendanceDAO.lecturerExists(n.trim())) {
-                lecturerError.setText("Lecturer does not exist");
-            } else {
-                lecturerError.setText("");
-            }
-        });
-
-        grid.add(new Label("Course ID:"), 0, 0);
-        grid.add(courseIdField, 1, 0);
-        grid.add(courseError, 1, 1);
-
-        grid.add(new Label("Session ID:"), 0, 2);
-        grid.add(sessionIdField, 1, 2);
-
-        grid.add(new Label("Type:"), 0, 3);
-        grid.add(typeBox, 1, 3);
-
-        grid.add(new Label("Date:"), 0, 4);
-        grid.add(datePicker, 1, 4);
-
-        grid.add(new Label("Lecturer EMPID:"), 0, 5);
-        grid.add(lecturerField, 1, 5);
-        grid.add(lecturerError, 1, 6);
-
-        grid.add(new Label("Hours:"), 0, 7);
-        grid.add(hoursField, 1, 7);
-
-        grid.add(new Label("Semester:"), 0, 8);
-        grid.add(semesterBox, 1, 8);
-
-        grid.add(new Label("Academic Year:"), 0, 9);
-        grid.add(academicYearField, 1, 9);
-
-        dialog.getDialogPane().setContent(grid);
-
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            try {
-                if (!attendanceDAO.courseExists(courseIdField.getText().trim())) {
-                    statusLabel.setText("Course does not exist.");
-                    return;
-                }
-                if (!attendanceDAO.lecturerExists(lecturerField.getText().trim())) {
-                    statusLabel.setText("Lecturer does not exist.");
-                    return;
-                }
-
-                Session session = new Session(
-                        courseIdField.getText().trim(),
-                        sessionIdField.getText().trim(),
-                        typeBox.getValue(),
-                        datePicker.getValue(),
-                        lecturerField.getText().trim(),
-                        Double.parseDouble(hoursField.getText().trim())
-                );
-
-                boolean saved = attendanceDAO.addSession(
-                        session,
-                        semesterBox.getValue(),
-                        academicYearField.getText().trim()
-                );
-
-                statusLabel.setText(saved ? "Session saved successfully." : "Failed to save session.");
-                handleRefresh();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                statusLabel.setText("Invalid data.");
-            }
+        for (AttendanceGroup group : groups) {
+            cardContainer.getChildren().add(createAttendanceCard(group));
         }
     }
 
-    private void handleMarkAttendance(Session session) {
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("Mark Attendance - " + session.getCourseId() + " / " + session.getSessionId());
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+    private VBox createAttendanceCard(AttendanceGroup group) {
+        int presentCount = attendanceDAO.countByStatus(group.getId(), "PRESENT");
+        int absentCount = attendanceDAO.countByStatus(group.getId(), "ABSENT");
+        int medicalCount = attendanceDAO.countByStatus(group.getId(), "MEDICAL");
 
-        GridPane topGrid = new GridPane();
-        topGrid.setHgap(10);
-        topGrid.setVgap(10);
-        topGrid.setPadding(new Insets(10));
+        VBox card = new VBox(10);
+        card.setPadding(new Insets(18));
+        card.setStyle(
+                "-fx-background-color:white;" +
+                        "-fx-background-radius:14;" +
+                        "-fx-border-color:#dbe3ea;" +
+                        "-fx-border-radius:14;"
+        );
 
-        ComboBox<String> semesterBox = new ComboBox<>(FXCollections.observableArrayList("1", "2"));
-        TextField academicYearField = new TextField();
+        Label title = new Label("📘 " + group.getCourseId() + " | " + group.getType());
+        title.setStyle("-fx-font-size:18px; -fx-font-weight:bold; -fx-text-fill:#0f172a;");
 
-        topGrid.add(new Label("Semester:"), 0, 0);
-        topGrid.add(semesterBox, 1, 0);
-        topGrid.add(new Label("Academic Year:"), 0, 1);
-        topGrid.add(academicYearField, 1, 1);
+        Label info1 = new Label("Year: " + group.getYear() + "   |   Session: " + group.getSessionId());
+        info1.setStyle("-fx-font-size:13px; -fx-text-fill:#475569;");
 
-        TableView<AttendanceMarkRow> table = new TableView<>();
-        TableColumn<AttendanceMarkRow, String> regNoCol = new TableColumn<>("Reg No");
-        TableColumn<AttendanceMarkRow, String> nameCol = new TableColumn<>("Student Name");
-        TableColumn<AttendanceMarkRow, String> statusCol = new TableColumn<>("Status");
+        Label info2 = new Label("Date: " + group.getAttendanceDate());
+        info2.setStyle("-fx-font-size:13px; -fx-text-fill:#475569;");
 
-        regNoCol.setCellValueFactory(c -> c.getValue().regNoProperty());
-        nameCol.setCellValueFactory(c -> c.getValue().studentNameProperty());
-        statusCol.setCellValueFactory(c -> c.getValue().statusProperty());
+        Label summary = new Label("Present: " + presentCount + "   |   Absent: " + absentCount + "   |   Medical: " + medicalCount);
+        summary.setStyle("-fx-font-size:13px; -fx-text-fill:#334155; -fx-font-weight:bold;");
 
-        statusCol.setCellFactory(col -> new TableCell<>() {
-            private final ComboBox<String> combo = new ComboBox<>(
-                    FXCollections.observableArrayList("Present", "Absent", "Medical")
-            );
+        HBox bottom = new HBox();
+        bottom.setAlignment(Pos.CENTER_RIGHT);
 
-            {
-                combo.valueProperty().addListener((obs, oldVal, newVal) -> {
-                    AttendanceMarkRow row = getTableView().getItems().get(getIndex());
-                    row.setStatus(newVal);
-                });
-            }
+        Button viewBtn = new Button("View");
+        viewBtn.setStyle("-fx-background-color:#0b1f36; -fx-text-fill:white; -fx-font-weight:bold;");
+        viewBtn.setOnAction(e -> openDetails(group));
 
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    combo.setValue(item);
-                    setGraphic(combo);
-                }
-            }
-        });
+        bottom.getChildren().add(viewBtn);
 
-        table.getColumns().addAll(regNoCol, nameCol, statusCol);
-        table.setPrefHeight(350);
+        card.getChildren().addAll(title, info1, info2, summary, bottom);
+        return card;
+    }
 
-        Button loadBtn = new Button("Load Students");
-        loadBtn.setOnAction(e -> {
-            String sem = semesterBox.getValue();
-            String year = academicYearField.getText().trim();
+    private void openDetails(AttendanceGroup group) {
+        List<AttendanceRecord> records = attendanceDAO.getAttendanceByGroupId(group.getId());
 
-            if (sem == null || year.isBlank()) {
-                statusLabel.setText("Select semester and academic year.");
-                return;
-            }
+        VBox content = new VBox(12);
+        content.setPadding(new Insets(20));
+        content.setStyle("-fx-background-color:#f8fafc;");
 
-            List<String[]> students = registrationDAO.getRegisteredStudentsByCourse(session.getCourseId(), sem, year);
-            List<AttendanceMarkRow> rows = new ArrayList<>();
+        Label header = new Label("Attendance Details - " + group.getCourseId() + " | " + group.getAttendanceDate());
+        header.setStyle("-fx-font-size:18px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;");
+        content.getChildren().add(header);
 
-            for (String[] s : students) {
-                rows.add(new AttendanceMarkRow(s[0], s[1], "Present"));
-            }
+        for (AttendanceRecord record : records) {
+            HBox row = new HBox(15);
+            row.setPadding(new Insets(12));
+            row.setStyle("-fx-background-color:white; -fx-background-radius:10; -fx-border-color:#e2e8f0; -fx-border-radius:10;");
 
-            table.setItems(FXCollections.observableArrayList(rows));
-        });
+            Label reg = new Label(record.getRegNo());
+            reg.setPrefWidth(260);
+            reg.setStyle("-fx-font-size:13px; -fx-text-fill:#1e293b; -fx-font-weight:bold;");
 
-        VBox content = new VBox(10, topGrid, loadBtn, table);
-        content.setPadding(new Insets(10));
-        dialog.getDialogPane().setContent(content);
+            Label status = new Label(record.getStatus());
+            status.setStyle("-fx-font-size:13px; -fx-text-fill:#475569;");
 
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            boolean saved = attendanceDAO.saveAttendanceBulk(
-                    session.getCourseId(),
-                    session.getSessionId(),
-                    table.getItems()
-            );
-
-            statusLabel.setText(saved ? "Attendance saved successfully." : "Failed to save attendance.");
+            row.getChildren().addAll(reg, status);
+            content.getChildren().add(row);
         }
+
+        ScrollPane scrollPane = new ScrollPane(content);
+        scrollPane.setFitToWidth(true);
+
+        Stage stage = new Stage();
+        stage.setTitle("Attendance Details");
+        stage.setScene(new Scene(scrollPane, 700, 600));
+        stage.show();
     }
 }

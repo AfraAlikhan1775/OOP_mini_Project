@@ -20,37 +20,42 @@ public class TODashboardController {
 
     @FXML
     public void initialize() {
-        dateLabel.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMMM yyyy")));
-        loadUI("/com/view/techOfficer/to_home.fxml");
+        if (dateLabel != null) {
+            dateLabel.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMMM yyyy")));
+        }
+        loadContent("/com/view/techOfficer/to_home.fxml");
     }
 
     public void setLoggedInUser(String username) {
         this.loggedInUsername = username;
-        // Reload home with context
-        loadUI("/com/view/techOfficer/to_home.fxml");
+        loadContent("/com/view/techOfficer/to_home.fxml");
     }
 
     public String getLoggedInUsername() {
         return loggedInUsername;
     }
 
-    private void loadUI(String fxmlPath) {
+    public void loadContent(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
 
-            // Pass the username to child controllers
             Object controller = loader.getController();
+
             if (controller instanceof TOProfileController) {
                 ((TOProfileController) controller).setEmpId(loggedInUsername);
-            } else if (controller instanceof TOAttendanceController) {
-               // ((TOAttendanceController) controller).setMarkedBy(loggedInUsername);
             } else if (controller instanceof TOMedicalController) {
                 ((TOMedicalController) controller).setAddedBy(loggedInUsername);
-//            } else if (controller instanceof TOTimetableController) {
-//                ((TOTimetableController) controller).setEmpId(loggedInUsername);
-//            } else if (controller instanceof TOHomeController) {
+            } else if (controller instanceof TOHomeController) {
                 ((TOHomeController) controller).setEmpId(loggedInUsername);
+            } else if (controller instanceof TONoticeController) {
+                ((TONoticeController) controller).setEmpId(loggedInUsername);
+            } else if (controller instanceof TOAttendanceController) {
+                ((TOAttendanceController) controller).setDashboardController(this);
+            } else if (controller instanceof AddAttendanceController) {
+                ((AddAttendanceController) controller).setDashboardController(this);
+            } else if (controller instanceof AddSessionController) {
+                ((AddSessionController) controller).setDashboardController(this);
             }
 
             contentArea.getChildren().setAll(root);
@@ -62,32 +67,32 @@ public class TODashboardController {
 
     @FXML
     private void handleHome() {
-        loadUI("/com/view/techOfficer/to_home.fxml");
+        loadContent("/com/view/techOfficer/to_home.fxml");
     }
 
     @FXML
     private void handleProfile() {
-        loadUI("/com/view/techOfficer/to_profile.fxml");
+        loadContent("/com/view/techOfficer/to_profile.fxml");
     }
 
     @FXML
     private void handleAttendance() {
-        loadUI("/com/view/techOfficer/to_attendance.fxml");
+        loadContent("/com/view/techOfficer/to_attendance.fxml");
     }
 
     @FXML
     private void handleMedical() {
-        loadUI("/com/view/techOfficer/to_medical.fxml");
+        loadContent("/com/view/techOfficer/to_medical.fxml");
     }
 
     @FXML
     private void handleNotices() {
-        loadUI("/com/view/techOfficer/to_notices.fxml");
+        loadContent("/com/view/techOfficer/to_notices.fxml");
     }
 
     @FXML
     private void handleTimetable() {
-        loadUI("/com/view/techOfficer/to_timetable.fxml");
+        loadContent("/com/view/techOfficer/to_timetable.fxml");
     }
 
     @FXML
@@ -95,6 +100,7 @@ public class TODashboardController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/Login.fxml"));
             Parent root = loader.load();
+
             Stage stage = (Stage) contentArea.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("FMS Login");
@@ -103,6 +109,7 @@ public class TODashboardController {
             stage.setHeight(560);
             stage.centerOnScreen();
             stage.show();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

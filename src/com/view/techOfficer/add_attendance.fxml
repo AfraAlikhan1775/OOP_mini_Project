@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="18" style="-fx-padding: 25;"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.controller.techOfficerControllers.AddAttendanceController">
+
+    <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-background-color:#0b1f36; -fx-padding:14; -fx-background-radius:12;">
+        <Label text="➕ Add Attendance" style="-fx-text-fill:white; -fx-font-size:20px; -fx-font-weight:bold;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="infoLabel" text="0 student(s) added" style="-fx-text-fill:#dbeafe; -fx-font-size:13px;"/>
+        <Button text="Back"
+                onAction="#handleBack"
+                style="-fx-background-color:#475569; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:8;"/>
+    </HBox>
+
+    <VBox spacing="15" style="-fx-background-color:white; -fx-padding:18; -fx-background-radius:12; -fx-border-color:#d9e2ec; -fx-border-radius:12;">
+        <Label text="Attendance Details" style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;"/>
+
+        <HBox spacing="12">
+            <ComboBox fx:id="yearBox" promptText="Year" prefWidth="120"/>
+            <ComboBox fx:id="semesterBox" promptText="Semester" prefWidth="120"/>
+            <ComboBox fx:id="courseBox" promptText="Course ID" prefWidth="180"/>
+            <ComboBox fx:id="sessionBox" promptText="Session ID" prefWidth="160"/>
+            <ComboBox fx:id="typeBox" promptText="Type" prefWidth="140"/>
+            <DatePicker fx:id="datePicker" prefWidth="150"/>
+        </HBox>
+    </VBox>
+
+    <VBox spacing="15" style="-fx-background-color:white; -fx-padding:18; -fx-background-radius:12; -fx-border-color:#d9e2ec; -fx-border-radius:12;" VBox.vgrow="ALWAYS">
+        <Label text="Student Attendance Entry" style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;"/>
+
+        <HBox spacing="12">
+            <TextField fx:id="regNoField" promptText="Registration Number" prefWidth="280"/>
+            <ComboBox fx:id="statusBox" prefWidth="140"/>
+            <Button text="+"
+                    onAction="#handleAddStudent"
+                    style="-fx-background-color:#16a34a; -fx-text-fill:white; -fx-font-size:16px; -fx-font-weight:bold; -fx-background-radius:8;"
+                    prefWidth="50"/>
+            <Button text="Remove Selected"
+                    onAction="#handleRemoveSelected"
+                    style="-fx-background-color:#dc2626; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:8;"/>
+        </HBox>
+
+        <TableView fx:id="attendanceTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="regNoCol" text="Registration Number" prefWidth="350"/>
+                <TableColumn fx:id="statusCol" text="Status" prefWidth="180"/>
+            </columns>
+        </TableView>
+
+        <HBox alignment="CENTER_RIGHT" spacing="10">
+            <Button text="Finish"
+                    onAction="#handleFinish"
+                    style="-fx-background-color:#0b1f36; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:8;"
+                    prefWidth="140"/>
+        </HBox>
+    </VBox>
+
+</VBox>

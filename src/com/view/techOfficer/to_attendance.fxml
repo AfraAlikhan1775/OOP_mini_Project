@@ -1,60 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox spacing="15"
-      style="-fx-padding: 25;"
+<VBox spacing="15" style="-fx-padding:25;"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.controller.techOfficerControllers.TOAttendanceController">
 
-    <HBox alignment="CENTER_LEFT" spacing="15"
-          style="-fx-background-color: #0b1f36; -fx-background-radius: 12; -fx-padding: 12 20 12 20;">
-        <Label text="📘 Session Management" textFill="WHITE">
-            <font>
-                <Font size="18"/>
-            </font>
-        </Label>
+    <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-background-color:#0b1f36; -fx-padding:15; -fx-background-radius:12;">
+        <Label text="📅 Attendance Management" style="-fx-text-fill:white; -fx-font-size:20px; -fx-font-weight:bold;"/>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button text="+ Add Session"
-                onAction="#handleAddAttendance"
-                style="-fx-background-color: #1e3a8a; -fx-text-fill: white; -fx-font-weight: bold;"/>
+
+        <Button text="Add Session"
+                onAction="#handleOpenAddSession"
+                style="-fx-background-color:#2563eb; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:8;"/>
+
+        <Button text="Add Attendance"
+                onAction="#handleOpenAddAttendance"
+                style="-fx-background-color:#16a34a; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:8;"/>
     </HBox>
 
-    <HBox spacing="12" alignment="CENTER_LEFT">
-        <TextField fx:id="searchField"
-                   promptText="Search by Course / Session / Lecturer..."
-                   prefWidth="280"/>
-        <Button text="🔍"
-                onAction="#handleSearch"
-                style="-fx-background-color: #0b1f36; -fx-text-fill: white;"/>
-        <DatePicker fx:id="datePicker" promptText="Filter by Date" prefWidth="160"/>
-        <ComboBox fx:id="courseFilter" promptText="Course" prefWidth="150"/>
-        <ComboBox fx:id="statusFilter" promptText="Type" prefWidth="140"/>
-        <Region HBox.hgrow="ALWAYS"/>
-        <Button text="↻ Refresh"
-                onAction="#handleRefresh"
-                style="-fx-background-color: #374151; -fx-text-fill: white;"/>
-    </HBox>
-
-    <TableView fx:id="attendanceTable" VBox.vgrow="ALWAYS" prefHeight="500">
-        <columns>
-            <TableColumn fx:id="colId" text="Session ID" prefWidth="120"/>
-            <TableColumn fx:id="colCourse" text="Course ID" prefWidth="120"/>
-            <TableColumn fx:id="colStudentId" text="Lecturer EMPID" prefWidth="140"/>
-            <TableColumn fx:id="colDate" text="Date" prefWidth="120"/>
-            <TableColumn fx:id="colStatus" text="Type" prefWidth="120"/>
-            <TableColumn fx:id="colMarkedBy" text="Hours" prefWidth="100"/>
-            <TableColumn fx:id="colRemarks" text="Details" prefWidth="220"/>
-            <TableColumn fx:id="colActions" text="Actions" prefWidth="120"/>
-        </columns>
-    </TableView>
-
-    <HBox alignment="CENTER_LEFT">
-        <Label fx:id="statusLabel" style="-fx-text-fill: #5a6d80; -fx-font-size: 12px;" text=""/>
-    </HBox>
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color:transparent;">
+        <content>
+            <VBox fx:id="cardContainer" spacing="15" style="-fx-padding:5;"/>
+        </content>
+    </ScrollPane>
 
 </VBox>
