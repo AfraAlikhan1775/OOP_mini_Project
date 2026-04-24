@@ -3,29 +3,58 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="15" style="-fx-padding:20;"
-      xmlns="http://javafx.com/javafx/25"
-      xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane fitToWidth="true" style="-fx-background-color:#f5f7fa;"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.controller.Lecturer.DashboardController">
 
-    <Label text="Dashboard" style="-fx-font-size:22;" />
+    <content>
+        <VBox spacing="20" style="-fx-padding:25; -fx-background-color:#f5f7fa;">
 
-    <HBox spacing="15">
+            <Label text="Dashboard" style="-fx-font-size:28px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;" />
 
-        <VBox style="-fx-background-color:#3498db; -fx-padding:15;">
-            <Label text="Courses"/>
-            <Label text="3"/>
+            <!-- Stats Cards -->
+            <HBox spacing="20">
+
+                <!-- Courses Card -->
+                <VBox style="-fx-background-color:white; -fx-padding:20; -fx-background-radius:8; -fx-border-color:#d9e2ec; -fx-border-radius:8;" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="📚 My Courses" style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;"/>
+                        <Label fx:id="courseCountLabel" text="0" style="-fx-font-size:32px; -fx-font-weight:bold; -fx-text-fill:#3498db;"/>
+                    </children>
+                </VBox>
+
+                <!-- Students Card -->
+                <VBox style="-fx-background-color:white; -fx-padding:20; -fx-background-radius:8; -fx-border-color:#d9e2ec; -fx-border-radius:8;" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="👥 Total Students" style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;"/>
+                        <Label fx:id="studentCountLabel" text="0" style="-fx-font-size:32px; -fx-font-weight:bold; -fx-text-fill:#2ecc71;"/>
+                    </children>
+                </VBox>
+
+                <!-- Notices Card -->
+                <VBox style="-fx-background-color:white; -fx-padding:20; -fx-background-radius:8; -fx-border-color:#d9e2ec; -fx-border-radius:8;" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="📢 Notices" style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;"/>
+                        <Label fx:id="noticeCountLabel" text="0" style="-fx-font-size:32px; -fx-font-weight:bold; -fx-text-fill:#f39c12;"/>
+                    </children>
+                </VBox>
+
+            </HBox>
+
+            <!-- Info Section -->
+            <VBox spacing="10" style="-fx-background-color:white; -fx-padding:20; -fx-background-radius:8; -fx-border-color:#d9e2ec; -fx-border-radius:8;">
+                <children>
+                    <Label text="Quick Information" style="-fx-font-size:18px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;"/>
+                    <Label text="Welcome to the Lecturer Dashboard! You can navigate using the menu on the left to:" style="-fx-text-fill:#555; -fx-wrap-text:true;"/>
+                    <Label text="• View and manage your courses" style="-fx-text-fill:#555; -fx-wrap-text:true;"/>
+                    <Label text="• Upload grades and attendance records" style="-fx-text-fill:#555; -fx-wrap-text:true;"/>
+                    <Label text="• View student details and performance" style="-fx-text-fill:#555; -fx-wrap-text:true;"/>
+                    <Label text="• Access notices and timetables" style="-fx-text-fill:#555; -fx-wrap-text:true;"/>
+                </children>
+            </VBox>
+
         </VBox>
+    </content>
 
-        <VBox style="-fx-background-color:#2ecc71; -fx-padding:15;">
-            <Label text="Students"/>
-            <Label text="78"/>
-        </VBox>
-
-        <VBox style="-fx-background-color:#f39c12; -fx-padding:15;">
-            <Label text="Notices"/>
-            <Label text="5"/>
-        </VBox>
-
-    </HBox>
-
-</VBox>
+</ScrollPane>

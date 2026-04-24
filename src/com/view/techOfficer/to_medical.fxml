@@ -1,59 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox spacing="15" style="-fx-padding: 25;"
-      xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.controller.techOfficerControllers.TOMedicalController">
+<BorderPane xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.controller.techOfficerControllers.TOMedicalController"
+            style="-fx-background-color:#f5f7fa; -fx-padding:20;">
 
-    <!-- Page Header -->
-    <HBox alignment="CENTER_LEFT" spacing="15" styleClass="page-header"
-          style="-fx-background-radius: 12;">
-        <padding>
-            <Insets top="12" right="20" bottom="12" left="20" />
-        </padding>
-        <Label styleClass="page-header-title" text="🏥  Medical Records Management" />
-        <Region HBox.hgrow="ALWAYS" />
-        <Button onAction="#handleAddMedical" styleClass="btn-primary" text="+ Add Medical" />
-    </HBox>
+    <top>
+        <VBox spacing="12">
+            <Label text="Medical Management"
+                   style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;" />
 
-    <!-- Filter Bar -->
-    <HBox spacing="12" alignment="CENTER_LEFT">
-        <TextField fx:id="searchField" styleClass="search-field" promptText="Search by Student ID, Reason..." prefWidth="280" />
-        <Button onAction="#handleSearch" styleClass="btn-primary" text="🔍" />
-        <ComboBox fx:id="departmentFilter" promptText="Department" prefWidth="150" />
-        <ComboBox fx:id="statusFilter" promptText="Status" prefWidth="130" />
-        <Region HBox.hgrow="ALWAYS" />
-        <Button onAction="#handleRefresh" styleClass="btn-secondary" text="↻ Refresh" />
-    </HBox>
+            <HBox spacing="10">
+                <TextField fx:id="searchField" promptText="Search student/reg no" prefWidth="250" />
+                <Button text="Search" onAction="#handleSearch" />
+                <Button text="Refresh" onAction="#handleRefresh" />
+                <ComboBox fx:id="departmentFilter" promptText="Department" prefWidth="140" />
+                <ComboBox fx:id="statusFilter" promptText="Status" prefWidth="140" />
+                <Button text="+ Add Medical" onAction="#handleAddMedical" />
+            </HBox>
+        </VBox>
+    </top>
 
-    <!-- Medical Records Table -->
-    <TableView fx:id="medicalTable" VBox.vgrow="ALWAYS" prefHeight="500">
-        <columns>
-            <TableColumn fx:id="colId" text="ID" prefWidth="60" />
-            <TableColumn fx:id="colStudentId" text="Student ID" prefWidth="130" />
-            <TableColumn fx:id="colDepartment" text="Department" prefWidth="110" />
-            <TableColumn fx:id="colStartDate" text="Start Date" prefWidth="110" />
-            <TableColumn fx:id="colEndDate" text="End Date" prefWidth="110" />
-            <TableColumn fx:id="colReason" text="Reason" prefWidth="170" />
-            <TableColumn fx:id="colStatus" text="Status" prefWidth="100" />
-            <TableColumn fx:id="colActions" text="Actions" prefWidth="150" />
-        </columns>
-    </TableView>
+    <center>
+        <TableView fx:id="medicalTable" prefHeight="500">
+            <columns>
+                <TableColumn fx:id="colId" text="ID" prefWidth="60" />
+                <TableColumn fx:id="colStudentId" text="Student ID" prefWidth="140" />
+                <TableColumn fx:id="colDepartment" text="Department" prefWidth="120" />
+                <TableColumn fx:id="colStartDate" text="Start Date" prefWidth="120" />
+                <TableColumn fx:id="colEndDate" text="End Date" prefWidth="120" />
+                <TableColumn fx:id="colReason" text="Reason" prefWidth="220" />
+                <TableColumn fx:id="colStatus" text="Status" prefWidth="120" />
+                <TableColumn fx:id="colActions" text="Actions" prefWidth="150" />
+            </columns>
+        </TableView>
+    </center>
 
-    <!-- Status Bar -->
-    <HBox alignment="CENTER_LEFT" spacing="10">
-        <Label fx:id="statusLabel" style="-fx-text-fill: #5a6d80; -fx-font-size: 12px;" text="" />
-    </HBox>
+    <bottom>
+        <Label fx:id="statusLabel"
+               text=""
+               style="-fx-padding:10 0 0 0; -fx-text-fill:#0b1f36;" />
+    </bottom>
 
-</VBox>
+</BorderPane>

@@ -18,6 +18,7 @@ public class AddLecturerController {
     @FXML private TextField lastName;
     @FXML private TextField nic;
     @FXML private DatePicker dob;
+
     @FXML private ComboBox<String> gender;
     @FXML private ImageView lecturerImageView;
 

@@ -1,9 +1,13 @@
 package com.controller.Student;
 
+import com.session.StudentSession;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 public class student_mainController {
 
@@ -22,12 +26,22 @@ public class student_mainController {
             contentArea.getChildren().setAll(root);
         } catch (Exception e) {
             e.printStackTrace();
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Load Error");
+            alert.setContentText("Cannot load page: " + fxml);
+            alert.showAndWait();
         }
     }
 
     @FXML
     private void handleDashboard() {
         loadUI("/com/view/Student/stuDashboard.fxml");
+    }
+
+    @FXML
+    private void handleCourses() {
+        loadUI("/com/view/Student/stuCourse.fxml");
     }
 
     @FXML
@@ -60,4 +74,22 @@ public class student_mainController {
         loadUI("/com/view/Student/stuProfile.fxml");
     }
 
+    @FXML
+    private void handleLogout() {
+        try {
+            StudentSession.clear();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/Login.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) contentArea.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login");
+            stage.setMaximized(false);
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

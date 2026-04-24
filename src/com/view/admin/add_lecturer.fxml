@@ -7,17 +7,13 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -69,28 +65,26 @@
                                                 <TextField fx:id="lastName" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
                                                 <Label text="Employee ID:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                                <TextField fx:id="empId" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <TextField fx:id="employeeId" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                                                <Label text="NIC:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                                <TextField fx:id="nic" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                <Label text="Linked Username:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                <TextField fx:id="linkedUsername" editable="false" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="1" />
 
-                                                <Label text="Date of Birth:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                                                <DatePicker fx:id="dob" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Label text="NIC:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                                <TextField fx:id="nic" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                                                <Label text="Gender:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                                <HBox alignment="CENTER_LEFT" spacing="15" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                                                    <children>
-                                                        <RadioButton fx:id="male" text="Male">
-                                                            <toggleGroup>
-                                                                <ToggleGroup fx:id="genderGroup" />
-                                                            </toggleGroup>
-                                                        </RadioButton>
-                                                        <RadioButton fx:id="female" text="Female" toggleGroup="$genderGroup" />
-                                                    </children>
-                                                </HBox>
+                                                <Label text="Date of Birth:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                <DatePicker fx:id="dob" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="2" />
 
-                                                <Label text="Profile Picture:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                                                <Button onAction="#uploadImage" prefWidth="140" text="Upload Image" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Label text="Gender:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                                <ComboBox fx:id="gender" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                    <items>
+                                                        <FXCollections fx:factory="observableArrayList">
+                                                            <String fx:value="Male" />
+                                                            <String fx:value="Female" />
+                                                        </FXCollections>
+                                                    </items>
+                                                </ComboBox>
 
                                                 <Label text="District:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                                 <ComboBox fx:id="district" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="3">
@@ -113,6 +107,9 @@
                                                         </FXCollections>
                                                     </items>
                                                 </ComboBox>
+
+                                                <Label text="Profile Picture:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                                <Button onAction="#uploadImage" prefWidth="140" text="Upload Image" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                             </children>
                                         </GridPane>
 
@@ -138,10 +135,13 @@
                                         <TextField fx:id="email" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                                         <Label text="Phone:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                                        <TextField fx:id="phone" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                                        <TextField fx:id="contactNumber" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
-                                        <Label text="Address:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                        <TextArea fx:id="address" prefHeight="80" prefWidth="520" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                                        <Label text="Emergency Contact:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                        <TextField fx:id="emergencyContact" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                                        <Label text="Address:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                        <TextArea fx:id="address" prefHeight="80" prefWidth="520" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
                                     </children>
                                 </GridPane>
                             </children>
@@ -164,14 +164,38 @@
                                             </items>
                                         </ComboBox>
 
-                                        <Label text="Specialization:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                                        <TextField fx:id="specialization" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                                        <Label text="Lecturer Type:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                                        <ComboBox fx:id="lecturerType" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                                            <items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                    <String fx:value="Permanent" />
+                                                    <String fx:value="Temporary" />
+                                                    <String fx:value="Visiting" />
+                                                </FXCollections>
+                                            </items>
+                                        </ComboBox>
 
-                                        <Label text="Designation:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                        <TextField fx:id="designation" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        <Label text="Appointment Date:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                        <DatePicker fx:id="appointmentDate" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                                        <Label text="Qualification:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                        <TextField fx:id="qualification" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                        <Label text="Specialization:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                        <TextField fx:id="specialization" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                                        <Label text="Experience Years:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                        <TextField fx:id="experienceYears" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                                        <Label text="Status:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                        <ComboBox fx:id="status" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                            <items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                    <String fx:value="Active" />
+                                                    <String fx:value="Inactive" />
+                                                </FXCollections>
+                                            </items>
+                                        </ComboBox>
+
+                                        <Label text="Degrees:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                        <TextArea fx:id="degrees" promptText="Enter one degree per line" prefHeight="90" prefWidth="520" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
                                     </children>
                                 </GridPane>
                             </children>

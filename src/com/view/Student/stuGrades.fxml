@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<AnchorPane prefHeight="569.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
+<AnchorPane prefHeight="569.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.Student.stuGradesController">
     <children>
         <Text fill="#0b1f36" layoutX="22.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Grades">
             <font>

@@ -9,25 +9,28 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.controller.Lecturer.LecturerCoursesController">
+            fx:controller="com.controller.Lecturer.LecturerCoursesController"
+            style="-fx-background-color:#eaf1f8;">
 
     <top>
-        <VBox spacing="8" style="-fx-padding: 10 0 15 0;">
+        <VBox spacing="8" style="-fx-padding: 18 20 15 20;">
             <children>
                 <Label text="My Courses">
                     <font>
-                        <Font size="22"/>
+                        <Font size="24"/>
                     </font>
                 </Label>
-                <Label text="Courses coordinated by the logged-in lecturer"/>
+                <Label text="Upload PDF notes and add weekly announcements for each course"
+                       style="-fx-text-fill:#607080;"/>
             </children>
         </VBox>
     </top>
 
     <center>
-        <ScrollPane fitToWidth="true" style="-fx-background-color:#eaf1f8;">
+        <ScrollPane fitToWidth="true"
+                    style="-fx-background-color:transparent; -fx-background:transparent;">
             <content>
-                <VBox fx:id="courseCardContainer" spacing="18" style="-fx-padding: 10;">
+                <VBox fx:id="courseCardContainer" spacing="18" style="-fx-padding: 20;">
                     <padding>
                         <Insets top="10" right="10" bottom="10" left="10"/>
                     </padding>
@@ -35,4 +38,5 @@
             </content>
         </ScrollPane>
     </center>
+
 </BorderPane>

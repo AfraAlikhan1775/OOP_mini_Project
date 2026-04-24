@@ -2,6 +2,7 @@ package com.controller;
 
 import com.dao.admin.UserDAO;
 import com.model.User;
+import com.session.StudentSession;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -43,6 +44,7 @@ public class LoginController {
                 openPage("/com/view/admin/admin.fxml", "Admin Dashboard");
 
             } else if ("Student".equals(user.getRole())) {
+                StudentSession.setUsername(username);
 
                 if (userDAO.isDefaultPassword(username)) {
                     URL resource = getClass().getResource("/com/view/Student/change_password.fxml");
@@ -73,7 +75,7 @@ public class LoginController {
                 Parent root = loader.load();
 
                 com.controller.Lecturer.MainController controller = loader.getController();
-                controller.setLecturerEmpId(username);   // IMPORTANT: username must be EMP0001
+                controller.setLecturerEmpId(username);
 
                 Stage stage = (Stage) usernameField.getScene().getWindow();
                 stage.setScene(new Scene(root));
@@ -84,6 +86,7 @@ public class LoginController {
             } else if ("Technical Officer".equals(user.getRole())) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/techOfficer/to_dashboard.fxml"));
                 Parent root = loader.load();
+
                 com.controller.techOfficerControllers.TODashboardController controller = loader.getController();
                 controller.setLoggedInUser(username);
 

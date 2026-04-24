@@ -1,4 +1,4 @@
-package main.java.com.controller.admin;
+package com.controller.admin;
 
 import com.model.Lecturer;
 import com.dao.admin.LecturerDAO;

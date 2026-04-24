@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -10,29 +9,38 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="15" style="-fx-padding: 25;"
-      xmlns="http://javafx.com/javafx/21"
+<VBox spacing="0"
+      xmlns="http://javafx.com/javafx/25"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.controller.techOfficerControllers.TONoticeController">
+      fx:controller="com.controller.techOfficerControllers.TONoticeController"
+      style="-fx-background-color:#eaf1f8;">
 
-    <HBox alignment="CENTER_LEFT" spacing="15" styleClass="page-header" style="-fx-background-radius: 12;">
-        <padding><Insets top="12" right="20" bottom="12" left="20" /></padding>
-        <Label styleClass="page-header-title" text="📢  Notices" />
+    <HBox alignment="CENTER_LEFT"
+          prefHeight="50"
+          spacing="12"
+          style="-fx-background-color:#0b1f36; -fx-padding:10 20 10 20;">
+        <children>
+            <Label text="My Notices 📄" textFill="WHITE"
+                   style="-fx-font-size:18px; -fx-font-weight:bold;" />
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <TextField fx:id="searchField" prefWidth="280" promptText="Search notice..." />
+
+            <Button text="🔍"
+                    onAction="#handleSearch"
+                    style="-fx-background-color:#122c4a; -fx-text-fill:white;" />
+        </children>
     </HBox>
 
-    <HBox spacing="12" alignment="CENTER_LEFT">
-        <TextField fx:id="searchField" styleClass="search-field" promptText="Search notices..." prefWidth="300" />
-        <Button onAction="#handleSearch" styleClass="btn-primary" text="🔍" />
-        <ComboBox fx:id="categoryFilter" promptText="Category" prefWidth="150" />
-        <Region HBox.hgrow="ALWAYS" />
-        <Button onAction="#handleRefresh" styleClass="btn-secondary" text="↻ Refresh" />
-    </HBox>
-
-    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
-        <VBox fx:id="noticeContainer" spacing="12" style="-fx-padding: 5;" />
+    <ScrollPane fitToWidth="true" pannable="true" style="-fx-background-color:#eaf1f8;">
+        <content>
+            <VBox fx:id="noticeCardBox" spacing="18" style="-fx-background-color:#eaf1f8;">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20" />
+                </padding>
+            </VBox>
+        </content>
     </ScrollPane>
 
-    <HBox alignment="CENTER_LEFT" spacing="10">
-        <Label fx:id="statusLabel" style="-fx-text-fill: #5a6d80; -fx-font-size: 12px;" text="" />
-    </HBox>
 </VBox>

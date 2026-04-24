@@ -10,11 +10,8 @@ import javafx.stage.Stage;
 
 public class AdminController {
 
-    @FXML
-    private StackPane contentArea;
-
-    @FXML
-    private Button logoutBtn;
+    @FXML private StackPane contentArea;
+    @FXML private Button logoutBtn;
 
     @FXML
     public void initialize() {
@@ -38,12 +35,12 @@ public class AdminController {
 
     @FXML
     private void handleTO() {
-        loadPage("/com/view/admin/technical_officer.fxml");
+        loadPage("/com/view/admin/to.fxml");
     }
 
     @FXML
     private void handleStudents() {
-
+        loadPage("/com/view/admin/student.fxml");
     }
 
     @FXML

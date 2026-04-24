@@ -17,7 +17,7 @@ public class DashboardDAO {
     }
 
     public int getTechOfficerCount() {
-        String sql = "SELECT COUNT(*) FROM technical_officers";
+        String sql = "SELECT COUNT(*) FROM technical_officer";
         return getCount(sql);
     }
 
@@ -52,7 +52,7 @@ public class DashboardDAO {
         String sql = """
                 SELECT username, role
                 FROM users
-                ORDER BY id DESC
+                ORDER BY user_id DESC
                 LIMIT 5
                 """;
 

@@ -1,6 +1,7 @@
 package com.controller.Student;
 
 import com.dao.admin.UserDAO;
+import com.session.StudentSession;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,6 +23,7 @@ public class ChangePasswordController {
 
     public void setUsername(String username) {
         this.username = username;
+        StudentSession.setUsername(username);
     }
 
     @FXML
