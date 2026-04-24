@@ -17,4 +17,6 @@ public class ExamEligibilityRow {
     public String getStatus() {
         return status;
     }
+
+
 }
