@@ -10,56 +10,191 @@ import java.util.List;
 public class MedicalDAO {
 
     public MedicalDAO() {
-        createTable();
+        createTablesIfNotExists();
     }
 
-    public void createTable() {
+    private void createTablesIfNotExists() {
         String sql = """
                 CREATE TABLE IF NOT EXISTS medical (
-                    medical_id         INT PRIMARY KEY AUTO_INCREMENT,
-                    student_id         VARCHAR(100) NOT NULL,
-                    medical_data       LONGBLOB,
-                    medical_start_date DATE NOT NULL,
-                    medical_end_date   DATE NOT NULL,
-                    batch              VARCHAR(10),
-                    department         VARCHAR(50),
-                    reason             VARCHAR(255),
-                    added_by           VARCHAR(50),
-                    status             ENUM('Pending', 'Verified', 'Rejected') DEFAULT 'Pending',
-                    created_at         TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    medical_id INT AUTO_INCREMENT PRIMARY KEY,
+                    reg_no VARCHAR(50),
+                    student_id VARCHAR(100),
+                    file_path VARCHAR(500),
+                    medical_data LONGBLOB,
+                    start_date DATE,
+                    end_date DATE,
+                    medical_start_date DATE,
+                    medical_end_date DATE,
+                    batch VARCHAR(10),
+                    department VARCHAR(50),
+                    reason TEXT,
+                    added_by VARCHAR(50),
+                    status VARCHAR(20) DEFAULT 'Pending',
+                    approved_by VARCHAR(50),
+                    approved_at TIMESTAMP NULL,
+                    reject_reason TEXT,
+                    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
                 """;
 
         try (Connection conn = DatabaseInitializer.getConnection();
              Statement stmt = conn.createStatement()) {
+
             stmt.execute(sql);
+
+            addColumnIfMissing(conn, "medical", "reg_no", "VARCHAR(50)");
+            addColumnIfMissing(conn, "medical", "student_id", "VARCHAR(100)");
+            addColumnIfMissing(conn, "medical", "file_path", "VARCHAR(500)");
+            addColumnIfMissing(conn, "medical", "medical_data", "LONGBLOB");
+            addColumnIfMissing(conn, "medical", "start_date", "DATE");
+            addColumnIfMissing(conn, "medical", "end_date", "DATE");
+            addColumnIfMissing(conn, "medical", "medical_start_date", "DATE");
+            addColumnIfMissing(conn, "medical", "medical_end_date", "DATE");
+            addColumnIfMissing(conn, "medical", "batch", "VARCHAR(10)");
+            addColumnIfMissing(conn, "medical", "department", "VARCHAR(50)");
+            addColumnIfMissing(conn, "medical", "reason", "TEXT");
+            addColumnIfMissing(conn, "medical", "added_by", "VARCHAR(50)");
+            addColumnIfMissing(conn, "medical", "status", "VARCHAR(20) DEFAULT 'Pending'");
+            addColumnIfMissing(conn, "medical", "approved_by", "VARCHAR(50)");
+            addColumnIfMissing(conn, "medical", "approved_at", "TIMESTAMP NULL");
+            addColumnIfMissing(conn, "medical", "reject_reason", "TEXT");
+            addColumnIfMissing(conn, "medical", "submitted_at", "TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
+            addColumnIfMissing(conn, "medical", "created_at", "TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public boolean addMedical(Medical m) {
+    private void addColumnIfMissing(Connection conn, String table, String column, String definition) {
+        try {
+            DatabaseMetaData metaData = conn.getMetaData();
+
+            try (ResultSet rs = metaData.getColumns(null, null, table, column)) {
+                if (!rs.next()) {
+                    try (Statement stmt = conn.createStatement()) {
+                        stmt.executeUpdate("ALTER TABLE " + table + " ADD COLUMN " + column + " " + definition);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Column check failed: " + column);
+            e.printStackTrace();
+        }
+    }
+
+    public List<Medical> getAllMedicals() {
+        List<Medical> list = new ArrayList<>();
+
         String sql = """
-                INSERT INTO medical (student_id, medical_data, medical_start_date, medical_end_date,
-                                     batch, department, reason, added_by, status)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                SELECT
+                    medical_id,
+                    COALESCE(student_id, reg_no) AS student_id,
+                    batch,
+                    department,
+                    COALESCE(medical_start_date, start_date) AS medical_start_date,
+                    COALESCE(medical_end_date, end_date) AS medical_end_date,
+                    medical_data,
+                    reason,
+                    added_by,
+                    status
+                FROM medical
+                ORDER BY submitted_at DESC, medical_id DESC
+                """;
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                list.add(mapMedical(rs));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public List<Medical> searchMedicals(String keyword) {
+        List<Medical> list = new ArrayList<>();
+
+        String sql = """
+                SELECT
+                    medical_id,
+                    COALESCE(student_id, reg_no) AS student_id,
+                    batch,
+                    department,
+                    COALESCE(medical_start_date, start_date) AS medical_start_date,
+                    COALESCE(medical_end_date, end_date) AS medical_end_date,
+                    medical_data,
+                    reason,
+                    added_by,
+                    status
+                FROM medical
+                WHERE COALESCE(student_id, reg_no) LIKE ?
+                   OR reg_no LIKE ?
+                   OR department LIKE ?
+                   OR status LIKE ?
+                   OR reason LIKE ?
+                ORDER BY submitted_at DESC, medical_id DESC
                 """;
 
         try (Connection conn = DatabaseInitializer.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
-            pst.setString(1, m.getStudentId());
-            pst.setBytes(2, m.getMedicalData());
-            pst.setString(3, m.getMedicalStartDate());
-            pst.setString(4, m.getMedicalEndDate());
-            pst.setString(5, m.getBatch());
-            pst.setString(6, m.getDepartment());
-            pst.setString(7, m.getReason());
-            pst.setString(8, m.getAddedBy());
-            pst.setString(9, m.getStatus() != null ? m.getStatus() : "Pending");
+            String search = "%" + keyword + "%";
 
-            pst.executeUpdate();
-            return true;
+            pst.setString(1, search);
+            pst.setString(2, search);
+            pst.setString(3, search);
+            pst.setString(4, search);
+            pst.setString(5, search);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    list.add(mapMedical(rs));
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public boolean addMedical(Medical medical) {
+        String sql = """
+                INSERT INTO medical
+                (reg_no, student_id, batch, department,
+                 start_date, end_date, medical_start_date, medical_end_date,
+                 medical_data, reason, added_by, status, submitted_at, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+                """;
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, medical.getStudentId());
+            pst.setString(2, medical.getStudentId());
+            pst.setString(3, medical.getBatch());
+            pst.setString(4, medical.getDepartment());
+
+            pst.setDate(5, toSqlDate(medical.getMedicalStartDate()));
+            pst.setDate(6, toSqlDate(medical.getMedicalEndDate()));
+            pst.setDate(7, toSqlDate(medical.getMedicalStartDate()));
+            pst.setDate(8, toSqlDate(medical.getMedicalEndDate()));
+
+            pst.setBytes(9, medical.getMedicalData());
+            pst.setString(10, medical.getReason());
+            pst.setString(11, medical.getAddedBy());
+            pst.setString(12, medical.getStatus());
+
+            return pst.executeUpdate() > 0;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,27 +202,42 @@ public class MedicalDAO {
         }
     }
 
-    public boolean updateMedical(Medical m) {
+    public boolean updateMedical(Medical medical) {
         String sql = """
                 UPDATE medical
-                SET student_id = ?, medical_data = ?, medical_start_date = ?, medical_end_date = ?,
-                    batch = ?, department = ?, reason = ?, added_by = ?, status = ?
+                SET reg_no = ?,
+                    student_id = ?,
+                    batch = ?,
+                    department = ?,
+                    start_date = ?,
+                    end_date = ?,
+                    medical_start_date = ?,
+                    medical_end_date = ?,
+                    medical_data = ?,
+                    reason = ?,
+                    added_by = ?,
+                    status = ?
                 WHERE medical_id = ?
                 """;
 
         try (Connection conn = DatabaseInitializer.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
-            pst.setString(1, m.getStudentId());
-            pst.setBytes(2, m.getMedicalData());
-            pst.setString(3, m.getMedicalStartDate());
-            pst.setString(4, m.getMedicalEndDate());
-            pst.setString(5, m.getBatch());
-            pst.setString(6, m.getDepartment());
-            pst.setString(7, m.getReason());
-            pst.setString(8, m.getAddedBy());
-            pst.setString(9, m.getStatus());
-            pst.setInt(10, m.getMedicalId());
+            pst.setString(1, medical.getStudentId());
+            pst.setString(2, medical.getStudentId());
+            pst.setString(3, medical.getBatch());
+            pst.setString(4, medical.getDepartment());
+
+            pst.setDate(5, toSqlDate(medical.getMedicalStartDate()));
+            pst.setDate(6, toSqlDate(medical.getMedicalEndDate()));
+            pst.setDate(7, toSqlDate(medical.getMedicalStartDate()));
+            pst.setDate(8, toSqlDate(medical.getMedicalEndDate()));
+
+            pst.setBytes(9, medical.getMedicalData());
+            pst.setString(10, medical.getReason());
+            pst.setString(11, medical.getAddedBy());
+            pst.setString(12, medical.getStatus());
+            pst.setInt(13, medical.getMedicalId());
 
             return pst.executeUpdate() > 0;
 
@@ -112,117 +262,25 @@ public class MedicalDAO {
         }
     }
 
-    public List<Medical> getAllMedicals() {
-        List<Medical> list = new ArrayList<>();
-        String sql = "SELECT * FROM medical ORDER BY created_at DESC";
-
-        try (Connection conn = DatabaseInitializer.getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
-
-            while (rs.next()) {
-                list.add(extractMedical(rs));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return list;
+    private Medical mapMedical(ResultSet rs) throws SQLException {
+        return new Medical(
+                rs.getInt("medical_id"),
+                rs.getString("student_id"),
+                rs.getString("batch"),
+                rs.getString("department"),
+                rs.getString("medical_start_date"),
+                rs.getString("medical_end_date"),
+                rs.getBytes("medical_data"),
+                rs.getString("reason"),
+                rs.getString("added_by"),
+                rs.getString("status")
+        );
     }
 
-    public List<Medical> getMedicalByStudent(String studentId) {
-        List<Medical> list = new ArrayList<>();
-        String sql = "SELECT * FROM medical WHERE student_id = ? ORDER BY created_at DESC";
-
-        try (Connection conn = DatabaseInitializer.getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
-
-            pst.setString(1, studentId);
-
-            try (ResultSet rs = pst.executeQuery()) {
-                while (rs.next()) {
-                    list.add(extractMedical(rs));
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+    private Date toSqlDate(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
         }
-
-        return list;
-    }
-
-    public List<Medical> searchMedicals(String keyword) {
-        List<Medical> list = new ArrayList<>();
-        String sql = """
-                SELECT * FROM medical
-                WHERE student_id LIKE ?
-                   OR department LIKE ?
-                   OR batch LIKE ?
-                   OR reason LIKE ?
-                   OR status LIKE ?
-                ORDER BY created_at DESC
-                """;
-
-        String pattern = "%" + keyword + "%";
-
-        try (Connection conn = DatabaseInitializer.getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
-
-            pst.setString(1, pattern);
-            pst.setString(2, pattern);
-            pst.setString(3, pattern);
-            pst.setString(4, pattern);
-            pst.setString(5, pattern);
-
-            try (ResultSet rs = pst.executeQuery()) {
-                while (rs.next()) {
-                    list.add(extractMedical(rs));
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return list;
-    }
-
-    public List<Medical> filterByDepartment(String department) {
-        List<Medical> list = new ArrayList<>();
-        String sql = "SELECT * FROM medical WHERE department = ? ORDER BY created_at DESC";
-
-        try (Connection conn = DatabaseInitializer.getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
-
-            pst.setString(1, department);
-
-            try (ResultSet rs = pst.executeQuery()) {
-                while (rs.next()) {
-                    list.add(extractMedical(rs));
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return list;
-    }
-
-    private Medical extractMedical(ResultSet rs) throws SQLException {
-        Medical m = new Medical();
-        m.setMedicalId(rs.getInt("medical_id"));
-        m.setStudentId(rs.getString("student_id"));
-        m.setMedicalData(rs.getBytes("medical_data"));
-        m.setMedicalStartDate(rs.getString("medical_start_date"));
-        m.setMedicalEndDate(rs.getString("medical_end_date"));
-        m.setBatch(rs.getString("batch"));
-        m.setDepartment(rs.getString("department"));
-        m.setReason(rs.getString("reason"));
-        m.setAddedBy(rs.getString("added_by"));
-        m.setStatus(rs.getString("status"));
-        return m;
+        return Date.valueOf(value);
     }
 }

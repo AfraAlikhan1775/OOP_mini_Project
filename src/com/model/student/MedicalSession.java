@@ -5,14 +5,14 @@ import javafx.beans.property.SimpleBooleanProperty;
 
 public class MedicalSession {
 
-    private final BooleanProperty selected = new SimpleBooleanProperty(false);
+    private final int attendanceGroupId;
+    private final String courseId;
+    private final String sessionId;
+    private final String sessionName;
+    private final String type;
+    private final String attendanceDate;
 
-    private int attendanceGroupId;
-    private String courseId;
-    private String sessionId;
-    private String sessionName;
-    private String type;
-    private String attendanceDate;
+    private final BooleanProperty selected = new SimpleBooleanProperty(false);
 
     public MedicalSession(int attendanceGroupId, String courseId, String sessionId,
                           String sessionName, String type, String attendanceDate) {
@@ -24,14 +24,43 @@ public class MedicalSession {
         this.attendanceDate = attendanceDate;
     }
 
-    public BooleanProperty selectedProperty() { return selected; }
-    public boolean isSelected() { return selected.get(); }
-    public void setSelected(boolean selected) { this.selected.set(selected); }
+    public int getAttendanceGroupId() {
+        return attendanceGroupId;
+    }
 
-    public int getAttendanceGroupId() { return attendanceGroupId; }
-    public String getCourseId() { return courseId; }
-    public String getSessionId() { return sessionId; }
-    public String getSessionName() { return sessionName; }
-    public String getType() { return type; }
-    public String getAttendanceDate() { return attendanceDate; }
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public String getSessionName() {
+        return sessionName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getAttendanceDate() {
+        return attendanceDate;
+    }
+
+    public String getDate() {
+        return attendanceDate;
+    }
+
+    public BooleanProperty selectedProperty() {
+        return selected;
+    }
+
+    public boolean isSelected() {
+        return selected.get();
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected.set(selected);
+    }
 }

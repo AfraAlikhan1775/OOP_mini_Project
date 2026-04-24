@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.controller.Lecturer.LecturerMedicalController"
+            style="-fx-background-color:#ecf0f1; -fx-padding:20;">
+
+    <top>
+        <VBox spacing="10">
+            <HBox spacing="15">
+                <Label fx:id="titleLabel"
+                       text="Student Medical Submissions"
+                       style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;" />
+
+                <Button text="Refresh"
+                        onAction="#handleRefresh"
+                        style="-fx-background-color:#0b1f36; -fx-text-fill:white; -fx-background-radius:8;" />
+            </HBox>
+
+            <Label text="Only medical submissions related to your assigned courses are shown."
+                   style="-fx-text-fill:#607080;" />
+        </VBox>
+    </top>
+
+    <center>
+        <TableView fx:id="medicalTable" prefHeight="650" style="-fx-background-color:white;">
+            <columns>
+                <TableColumn fx:id="colRegNo" text="Reg No" prefWidth="110" />
+                <TableColumn fx:id="colStudentName" text="Student" prefWidth="150" />
+                <TableColumn fx:id="colCourseId" text="Course" prefWidth="90" />
+                <TableColumn fx:id="colSessionId" text="Session ID" prefWidth="100" />
+                <TableColumn fx:id="colType" text="Type" prefWidth="90" />
+                <TableColumn fx:id="colAttendanceDate" text="Attendance Date" prefWidth="130" />
+                <TableColumn fx:id="colMedicalDates" text="Medical Dates" prefWidth="180" />
+                <TableColumn fx:id="colReason" text="Reason" prefWidth="180" />
+                <TableColumn fx:id="colStatus" text="Status" prefWidth="90" />
+                <TableColumn fx:id="colActions" text="Actions" prefWidth="230" />
+            </columns>
+        </TableView>
+    </center>
+
+    <bottom>
+        <Label fx:id="statusLabel"
+               text=""
+               style="-fx-padding:12 0 0 0; -fx-text-fill:#374151;" />
+    </bottom>
+
+</BorderPane>

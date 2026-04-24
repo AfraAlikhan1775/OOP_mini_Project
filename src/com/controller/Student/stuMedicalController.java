@@ -51,7 +51,9 @@ public class stuMedicalController {
     private void setupTable() {
         sessionTable.setEditable(true);
 
-        selectColumn.setCellValueFactory(cellData -> cellData.getValue().selectedProperty());
+        selectColumn.setCellValueFactory(cellData ->
+                cellData.getValue().selectedProperty()
+        );
         selectColumn.setCellFactory(CheckBoxTableCell.forTableColumn(selectColumn));
 
         dateColumn.setCellValueFactory(cellData ->
@@ -79,10 +81,10 @@ public class stuMedicalController {
     @FXML
     private void handleChooseFile() {
         FileChooser chooser = new FileChooser();
-        chooser.setTitle("Select Medical Photo");
+        chooser.setTitle("Select Medical File");
 
-        chooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
+        chooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Medical Files", "*.png", "*.jpg", "*.jpeg", "*.pdf")
         );
 
         selectedFile = chooser.showOpenDialog(fileLabel.getScene().getWindow());
@@ -115,13 +117,12 @@ public class stuMedicalController {
         }
 
         List<MedicalSession> sessions = medicalDAO.getSessionsForDateGap(regNo, start, end);
-
         sessionTable.setItems(FXCollections.observableArrayList(sessions));
 
         if (sessions.isEmpty()) {
-            messageLabel.setText("No attendance sessions found in this date range.");
+            messageLabel.setText("No absent sessions found for this date range.");
         } else {
-            messageLabel.setText("Select the sessions covered by your medical.");
+            messageLabel.setText("Select absent sessions covered by your medical.");
         }
     }
 
@@ -135,7 +136,7 @@ public class stuMedicalController {
         }
 
         if (selectedFile == null) {
-            messageLabel.setText("Please upload medical photo.");
+            messageLabel.setText("Please upload medical PDF/photo.");
             return;
         }
 
@@ -147,13 +148,18 @@ public class stuMedicalController {
             return;
         }
 
+        if (end.isBefore(start)) {
+            messageLabel.setText("End date cannot be before start date.");
+            return;
+        }
+
         List<MedicalSession> selectedSessions = sessionTable.getItems()
                 .stream()
                 .filter(MedicalSession::isSelected)
                 .toList();
 
         if (selectedSessions.isEmpty()) {
-            messageLabel.setText("Please select at least one session.");
+            messageLabel.setText("Please select at least one absent session.");
             return;
         }
 
@@ -171,7 +177,7 @@ public class stuMedicalController {
             clearForm();
             loadMedicalCards();
         } else {
-            messageLabel.setText("Medical not submitted. 20% medical limit may be exceeded.");
+            messageLabel.setText("Medical not submitted. Check database connection or selected sessions.");
         }
     }
 
@@ -226,14 +232,14 @@ public class stuMedicalController {
         Label title = new Label("Medical ID: " + request.getMedicalId());
         title.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 
-        Label status = new Label(request.getStatus());
+        Label status = new Label(safe(request.getStatus()));
         status.setStyle(getStatusStyle(request.getStatus()));
 
         top.getChildren().addAll(title, status);
 
-        Label date = new Label("Date: " + request.getStartDate() + " to " + request.getEndDate());
+        Label date = new Label("Date: " + safe(request.getStartDate()) + " to " + safe(request.getEndDate()));
         Label reason = new Label("Reason: " + safe(request.getReason()));
-        Label file = new Label("File: " + request.getFilePath());
+        Label file = new Label("File: " + safe(request.getFilePath()));
         Label approvedBy = new Label("Approved By: " + safe(request.getApprovedBy()));
         Label submitted = new Label("Submitted At: " + safe(request.getSubmittedAt()));
 
@@ -248,7 +254,7 @@ public class stuMedicalController {
     private String getStatusStyle(String status) {
         String base = "-fx-padding: 4 10 4 10; -fx-background-radius: 20; -fx-font-weight: bold;";
 
-        if ("Approved".equalsIgnoreCase(status)) {
+        if ("Approved".equalsIgnoreCase(status) || "Verified".equalsIgnoreCase(status)) {
             return base + "-fx-background-color: #d1e7dd; -fx-text-fill: #0f5132;";
         }
 

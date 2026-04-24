@@ -1,6 +1,7 @@
 package com.controller.Student;
 
 import com.dao.student.StudentAcademicDAO;
+import com.model.student.ExamEligibilityRow;
 import com.model.student.StudentAttendanceDetail;
 import com.model.student.StudentSubjectAttendance;
 import com.session.StudentSession;
@@ -14,6 +15,9 @@ import javafx.scene.layout.VBox;
 import java.util.List;
 
 public class stuAttendanceController {
+
+    @FXML private VBox mainAttendancePane;
+    @FXML private VBox eligibilityPane;
 
     @FXML private VBox subjectCardBox;
     @FXML private Label titleLabel;
@@ -31,15 +35,21 @@ public class stuAttendanceController {
     @FXML private TableColumn<StudentAttendanceDetail, String> sessionCol;
     @FXML private TableColumn<StudentAttendanceDetail, String> statusCol;
 
+    @FXML private TableView<ExamEligibilityRow> eligibilityTable;
+    @FXML private TableColumn<ExamEligibilityRow, String> courseCodeCol;
+    @FXML private TableColumn<ExamEligibilityRow, String> eligibilityStatusCol;
+
     private final StudentAcademicDAO dao = new StudentAcademicDAO();
 
     @FXML
     public void initialize() {
-        setupTable();
+        setupAttendanceTable();
+        setupEligibilityTable();
+        showAttendancePage();
         loadSubjects();
     }
 
-    private void setupTable() {
+    private void setupAttendanceTable() {
         idCol.setCellValueFactory(data ->
                 new SimpleStringProperty(String.valueOf(data.getValue().getAttendanceId())));
 
@@ -51,6 +61,35 @@ public class stuAttendanceController {
 
         statusCol.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getStatus()));
+    }
+
+    private void setupEligibilityTable() {
+        courseCodeCol.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getCourseCode()));
+
+        eligibilityStatusCol.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getStatus()));
+
+        eligibilityStatusCol.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String status, boolean empty) {
+                super.updateItem(status, empty);
+
+                if (empty || status == null) {
+                    setText(null);
+                    setStyle("");
+                    return;
+                }
+
+                setText(status);
+
+                if ("EL".equalsIgnoreCase(status)) {
+                    setStyle("-fx-text-fill:#198754; -fx-font-weight:bold;");
+                } else {
+                    setStyle("-fx-text-fill:#dc3545; -fx-font-weight:bold;");
+                }
+            }
+        });
     }
 
     private void loadSubjects() {
@@ -105,6 +144,7 @@ public class stuAttendanceController {
         drawBar(s);
 
         String regNo = StudentSession.getUsername();
+
         detailTable.setItems(FXCollections.observableArrayList(
                 dao.getAttendanceDetails(regNo, s.getCourseId(), s.getType())
         ));
@@ -142,5 +182,33 @@ public class stuAttendanceController {
         );
 
         barBox.getChildren().add(part);
+    }
+
+    @FXML
+    private void handleCheckEligibility() {
+        String regNo = StudentSession.getUsername();
+
+        eligibilityTable.setItems(FXCollections.observableArrayList(
+                dao.getExamEligibility(regNo)
+        ));
+
+        mainAttendancePane.setVisible(false);
+        mainAttendancePane.setManaged(false);
+
+        eligibilityPane.setVisible(true);
+        eligibilityPane.setManaged(true);
+    }
+
+    @FXML
+    private void handleBackFromEligibility() {
+        showAttendancePage();
+    }
+
+    private void showAttendancePage() {
+        mainAttendancePane.setVisible(true);
+        mainAttendancePane.setManaged(true);
+
+        eligibilityPane.setVisible(false);
+        eligibilityPane.setManaged(false);
     }
 }

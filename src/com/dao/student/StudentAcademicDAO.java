@@ -5,22 +5,25 @@ import com.model.Notice;
 import com.model.student.StudentAttendanceDetail;
 import com.model.student.StudentSubjectAttendance;
 import com.model.student.StudentTimetableRow;
-
-import java.sql.*;
+import com.model.student.ExamEligibilityRow;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.sql.*;
+
 
 public class StudentAcademicDAO {
 
     public int getYearFromRegNo(String regNo) {
-        if (regNo == null) return 1;
+        if (regNo == null) return 0;
 
         if (regNo.startsWith("TG/2024/")) return 1;
         if (regNo.startsWith("TG/2023/")) return 2;
         if (regNo.startsWith("TG/2022/")) return 3;
         if (regNo.startsWith("TG/2021/")) return 4;
 
-        return 1;
+        return 0;
     }
 
     public int getCurrentSemester() {
@@ -36,7 +39,9 @@ public class StudentAcademicDAO {
             pst.setString(1, regNo);
 
             ResultSet rs = pst.executeQuery();
-            if (rs.next()) return rs.getString("department");
+            if (rs.next()) {
+                return rs.getString("department");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,6 +55,11 @@ public class StudentAcademicDAO {
 
         int year = getYearFromRegNo(regNo);
         int semester = getCurrentSemester();
+        String department = getStudentDepartment(regNo);
+
+        if (year == 0 || department.isBlank()) {
+            return list;
+        }
 
         String sql = """
                 SELECT
@@ -66,9 +76,10 @@ public class StudentAcademicDAO {
                 LEFT JOIN attendance_record ar
                     ON ag.id = ar.group_id
                     AND ar.reg_no = ?
-                WHERE CAST(c.year AS CHAR) = ?
-                AND CAST(c.semester AS CHAR) = ?
-                AND ag.year_no = ?
+                WHERE c.department = ?
+                  AND CAST(c.year AS CHAR) = ?
+                  AND CAST(c.semester AS CHAR) = ?
+                  AND ag.year_no = ?
                 GROUP BY c.course_id, c.course_name, ag.type
                 ORDER BY c.course_id, ag.type
                 """;
@@ -77,9 +88,10 @@ public class StudentAcademicDAO {
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setString(1, regNo);
-            pst.setString(2, String.valueOf(year));
-            pst.setString(3, String.valueOf(semester));
-            pst.setInt(4, year);
+            pst.setString(2, department);
+            pst.setString(3, String.valueOf(year));
+            pst.setString(4, String.valueOf(semester));
+            pst.setInt(5, year);
 
             ResultSet rs = pst.executeQuery();
 
@@ -121,8 +133,8 @@ public class StudentAcademicDAO {
                 INNER JOIN attendance_group ag
                     ON ar.group_id = ag.id
                 WHERE ar.reg_no = ?
-                AND ag.course_id = ?
-                AND ag.type = ?
+                  AND ag.course_id = ?
+                  AND ag.type = ?
                 ORDER BY ag.attendance_date DESC, ar.id DESC
                 """;
 
@@ -158,9 +170,9 @@ public class StudentAcademicDAO {
                 INNER JOIN medical_selected_session mss
                     ON m.medical_id = mss.medical_id
                 WHERE m.reg_no = ?
-                AND mss.course_id = ?
-                AND mss.type = ?
-                AND m.status = 'Rejected'
+                  AND mss.course_id = ?
+                  AND mss.type = ?
+                  AND m.status = 'Rejected'
                 """;
 
         try (PreparedStatement pst = conn.prepareStatement(sql)) {
@@ -187,8 +199,8 @@ public class StudentAcademicDAO {
                 SELECT *
                 FROM notices
                 WHERE (role_target = 'All' OR role_target = 'Student')
-                AND (batch_target = 'All' OR batch_target = ?)
-                AND (department_target = 'All' OR department_target = ?)
+                  AND (batch_target = 'All' OR batch_target = ?)
+                  AND (department_target = 'All' OR department_target = ?)
                 ORDER BY created_at DESC
                 """;
 
@@ -241,8 +253,8 @@ public class StudentAcademicDAO {
                 INNER JOIN timetable_session ts
                     ON tg.id = ts.timetable_group_id
                 WHERE tg.department = ?
-                AND tg.level_no = ?
-                AND tg.semester = ?
+                  AND tg.level_no = ?
+                  AND tg.semester = ?
                 ORDER BY
                     CASE ts.day_name
                         WHEN 'Monday' THEN 1
@@ -281,4 +293,84 @@ public class StudentAcademicDAO {
 
         return list;
     }
-}
+
+
+    public List<ExamEligibilityRow> getExamEligibility(String regNo) {
+        List<ExamEligibilityRow> list = new ArrayList<>();
+
+        int year = getYearFromRegNo(regNo);
+        int semester = getCurrentSemester();
+        String department = getStudentDepartment(regNo);
+
+        if (year == 0 || department.isBlank()) {
+            return list;
+        }
+
+        String sql = """
+            SELECT
+                ag.course_id,
+                ag.type,
+                COUNT(ar.id) AS total_count,
+                SUM(CASE
+                    WHEN ar.status = 'PRESENT'
+                      OR ar.status = 'MEDICAL'
+                    THEN 1 ELSE 0
+                END) AS eligible_count
+            FROM attendance_group ag
+            LEFT JOIN attendance_record ar
+                ON ag.id = ar.group_id
+                AND ar.reg_no = ?
+            WHERE ag.year_no = ?
+              AND ag.semester = ?
+            GROUP BY ag.course_id, ag.type
+            ORDER BY ag.course_id, ag.type
+            """;
+
+        Map<String, List<Double>> coursePercentages = new LinkedHashMap<>();
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, regNo);
+            pst.setInt(2, year);
+            pst.setInt(3, semester);
+
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                String courseCode = rs.getString("course_id");
+                int total = rs.getInt("total_count");
+                int eligible = rs.getInt("eligible_count");
+
+                double percentage = total == 0 ? 0 : (eligible * 100.0) / total;
+
+                coursePercentages
+                        .computeIfAbsent(courseCode, k -> new ArrayList<>())
+                        .add(percentage);
+            }
+
+            for (Map.Entry<String, List<Double>> entry : coursePercentages.entrySet()) {
+                String courseCode = entry.getKey();
+                List<Double> percentages = entry.getValue();
+
+                boolean eligible = true;
+
+                for (double p : percentages) {
+                    if (p < 80.0) {
+                        eligible = false;
+                        break;
+                    }
+                }
+
+                list.add(new ExamEligibilityRow(
+                        courseCode,
+                        eligible ? "EL" : "NE"
+                ));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }}

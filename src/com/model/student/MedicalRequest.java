@@ -1,15 +1,16 @@
 package com.model.student;
 
 public class MedicalRequest {
-    private int medicalId;
-    private String regNo;
-    private String filePath;
-    private String startDate;
-    private String endDate;
-    private String reason;
-    private String status;
-    private String approvedBy;
-    private String submittedAt;
+
+    private final int medicalId;
+    private final String regNo;
+    private final String filePath;
+    private final String startDate;
+    private final String endDate;
+    private final String reason;
+    private final String status;
+    private final String approvedBy;
+    private final String submittedAt;
 
     public MedicalRequest(int medicalId, String regNo, String filePath, String startDate,
                           String endDate, String reason, String status,

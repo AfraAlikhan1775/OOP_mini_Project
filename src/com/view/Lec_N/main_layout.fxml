@@ -7,68 +7,63 @@
 <AnchorPane prefHeight="1080.0" prefWidth="1920.0"
             xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.controller.Lecturer.MainController"
-            AnchorPane.bottomAnchor="0.0"
-            AnchorPane.leftAnchor="0.0"
-            AnchorPane.rightAnchor="0.0"
-            AnchorPane.topAnchor="0.0">
+            fx:controller="com.controller.Lecturer.MainController">
 
     <children>
-        <BorderPane prefHeight="600.0" prefWidth="900.0"
-                   AnchorPane.bottomAnchor="0.0"
-                   AnchorPane.leftAnchor="0.0"
-                   AnchorPane.rightAnchor="0.0"
-                   AnchorPane.topAnchor="0.0">
+        <BorderPane AnchorPane.bottomAnchor="0.0"
+                    AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0"
+                    AnchorPane.topAnchor="0.0">
 
-            <!-- LEFT MENU -->
             <left>
                 <VBox prefWidth="180.0" spacing="5"
-                      style="-fx-background-color: #2c3e50; -fx-padding: 10;">
-                    <children>
+                      style="-fx-background-color:#2c3e50; -fx-padding:10;">
 
-                        <Button text="Dashboard" maxWidth="Infinity" prefHeight="40"
-                                style="-fx-background-color: transparent; -fx-text-fill: white;"
-                                onAction="#handleDashboard"/>
+                    <Button text="Dashboard" maxWidth="Infinity" prefHeight="40"
+                            style="-fx-background-color:transparent; -fx-text-fill:white;"
+                            onAction="#handleDashboard"/>
 
-                        <Button text="My Courses" maxWidth="Infinity" prefHeight="40"
-                                style="-fx-background-color: transparent; -fx-text-fill: white;"
-                                onAction="#handleCourses"/>
+                    <Button text="My Courses" maxWidth="Infinity" prefHeight="40"
+                            style="-fx-background-color:transparent; -fx-text-fill:white;"
+                            onAction="#handleCourses"/>
 
-                        <Button text="Materials" maxWidth="Infinity" prefHeight="40"
-                                style="-fx-background-color: transparent; -fx-text-fill: white;"
-                                onAction="#handleMaterials"/>
+                    <Button text="Materials" maxWidth="Infinity" prefHeight="40"
+                            style="-fx-background-color:transparent; -fx-text-fill:white;"
+                            onAction="#handleMaterials"/>
 
-                        <Button text="Upload Marks" maxWidth="Infinity" prefHeight="40"
-                                style="-fx-background-color: transparent; -fx-text-fill: white;"
-                                onAction="#handleMarks"/>
+                    <Button text="Upload Marks" maxWidth="Infinity" prefHeight="40"
+                            style="-fx-background-color:transparent; -fx-text-fill:white;"
+                            onAction="#handleMarks"/>
 
-                        <Button text="Student Details" maxWidth="Infinity" prefHeight="40"
-                                style="-fx-background-color: transparent; -fx-text-fill: white;"
-                                onAction="#handleStudents"/>
+                    <Button text="Student Details" maxWidth="Infinity" prefHeight="40"
+                            style="-fx-background-color:transparent; -fx-text-fill:white;"
+                            onAction="#handleStudents"/>
 
-                        <Button text="Attendance" maxWidth="Infinity" prefHeight="40"
-                                style="-fx-background-color: transparent; -fx-text-fill: white;"
-                                onAction="#handleAttendance"/>
+                    <Button text="Attendance" maxWidth="Infinity" prefHeight="40"
+                            style="-fx-background-color:transparent; -fx-text-fill:white;"
+                            onAction="#handleAttendance"/>
 
-                        <Button text="Notices" maxWidth="Infinity" prefHeight="40"
-                                style="-fx-background-color: transparent; -fx-text-fill: white;"
-                                onAction="#handleNotices"/>
+                    <Button text="Medical Requests" maxWidth="Infinity" prefHeight="40"
+                            style="-fx-background-color:transparent; -fx-text-fill:white;"
+                            onAction="#handleMedical"/>
 
-                        <Button text="Timetable" maxWidth="Infinity" prefHeight="40"
-                                style="-fx-background-color: transparent; -fx-text-fill: white;"
-                                onAction="#handleTimetable"/>
+                    <Button text="Notices" maxWidth="Infinity" prefHeight="40"
+                            style="-fx-background-color:transparent; -fx-text-fill:white;"
+                            onAction="#handleNotices"/>
 
-                        <Button text="My Profile" maxWidth="Infinity" prefHeight="40"
-                                style="-fx-background-color: transparent; -fx-text-fill: white;"
-                                onAction="#handleProfile"/>
+                    <Button text="Timetable" maxWidth="Infinity" prefHeight="40"
+                            style="-fx-background-color:transparent; -fx-text-fill:white;"
+                            onAction="#handleTimetable"/>
 
-                    </children>
+                    <Button text="My Profile" maxWidth="Infinity" prefHeight="40"
+                            style="-fx-background-color:transparent; -fx-text-fill:white;"
+                            onAction="#handleProfile"/>
+
                 </VBox>
             </left>
 
-            <!-- TOP HEADER -->
             <top>
-                <BorderPane style="-fx-background-color: #34495e; -fx-padding: 10;">
+                <BorderPane style="-fx-background-color:#34495e; -fx-padding:10;">
                     <center>
                         <Label text="Lecturer Dashboard" textFill="white">
                             <font>
@@ -81,16 +76,15 @@
                         <HBox alignment="CENTER_RIGHT" spacing="10">
                             <Label text="Welcome, Lecturer" textFill="white"/>
                             <Button text="Logout"
-                                    style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+                                    style="-fx-background-color:#e74c3c; -fx-text-fill:white;"/>
                         </HBox>
                     </right>
                 </BorderPane>
             </top>
 
-            <!-- CENTER CONTENT -->
             <center>
                 <StackPane fx:id="contentArea"
-                           style="-fx-background-color: #ecf0f1;"/>
+                           style="-fx-background-color:#ecf0f1;"/>
             </center>
 
         </BorderPane>

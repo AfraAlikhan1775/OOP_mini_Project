@@ -103,7 +103,7 @@ public class DashboardDAO {
         String sql = """
                 SELECT course_id, course_name, coordinator, credits
                 FROM courses
-                ORDER BY id DESC
+                ORDER BY user_id DESC
                 LIMIT 5
                 """;
 

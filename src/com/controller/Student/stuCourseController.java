@@ -1,6 +1,7 @@
 package com.controller.Student;
 
 import com.dao.notes.CourseContentDAO;
+import com.dao.student.StudentCourseDAO;
 import com.model.admin.Course;
 import com.model.notes.CourseAnnouncement;
 import com.model.notes.CourseMaterial;
@@ -19,10 +20,10 @@ import java.util.List;
 
 public class stuCourseController {
 
-    @FXML
-    private VBox courseContainer;
+    @FXML private VBox courseContainer;
 
     private final CourseContentDAO contentDAO = new CourseContentDAO();
+    private final StudentCourseDAO studentCourseDAO = new StudentCourseDAO();
 
     @FXML
     public void initialize() {
@@ -39,10 +40,10 @@ public class stuCourseController {
             return;
         }
 
-        List<Course> courses = contentDAO.getStudentRegisteredCourses(regNo);
+        List<Course> courses = studentCourseDAO.getCoursesForStudent(regNo);
 
         if (courses.isEmpty()) {
-            courseContainer.getChildren().add(message("No registered courses found."));
+            courseContainer.getChildren().add(message("No courses found for your department and year."));
             return;
         }
 
@@ -65,6 +66,7 @@ public class stuCourseController {
         title.setStyle("-fx-font-size:20px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;");
 
         Label info = new Label("Course ID: " + course.getCourseId()
+                + " | Department: " + course.getDepartment()
                 + " | Year " + course.getYear()
                 + " | Semester " + course.getSemester());
 

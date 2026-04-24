@@ -40,77 +40,101 @@ public class LoginController {
         }
 
         try {
-            if ("Admin".equals(user.getRole())) {
+            String role = user.getRole();
+
+            if ("Admin".equalsIgnoreCase(role)) {
                 openPage("/com/view/admin/admin.fxml", "Admin Dashboard");
 
-            } else if ("Student".equals(user.getRole())) {
+            } else if ("Student".equalsIgnoreCase(role)) {
                 StudentSession.setUsername(username);
 
                 if (userDAO.isDefaultPassword(username)) {
-                    URL resource = getClass().getResource("/com/view/Student/change_password.fxml");
-
-                    if (resource == null) {
-                        statusLabel.setText("Change password page not found!");
-                        return;
-                    }
-
-                    FXMLLoader loader = new FXMLLoader(resource);
-                    Parent root = loader.load();
-
-                    com.controller.Student.ChangePasswordController controller = loader.getController();
-                    controller.setUsername(username);
-
-                    Stage stage = (Stage) usernameField.getScene().getWindow();
-                    stage.setScene(new Scene(root));
-                    stage.setTitle("Change Password");
-                    stage.setResizable(false);
-                    stage.show();
-
+                    openChangePassword(username);
                 } else {
                     openPage("/com/view/Student/student_main.fxml", "Student Dashboard");
                 }
 
-            } else if ("Lecturer".equals(user.getRole())) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/Lec_N/main_layout.fxml"));
-                Parent root = loader.load();
+            } else if ("Lecturer".equalsIgnoreCase(role)) {
+                openLecturerDashboard(username);
 
-                com.controller.Lecturer.MainController controller = loader.getController();
-                controller.setLecturerEmpId(username);
-
-                Stage stage = (Stage) usernameField.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.setTitle("Lecturer Dashboard");
-                stage.setMaximized(true);
-                stage.show();
-
-            } else if ("Technical Officer".equals(user.getRole())) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/techOfficer/to_dashboard.fxml"));
-                Parent root = loader.load();
-
-                com.controller.techOfficerControllers.TODashboardController controller = loader.getController();
-                controller.setLoggedInUser(username);
-
-                Stage stage = (Stage) usernameField.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.setTitle("Technical Officer Dashboard");
-                stage.setMaximized(true);
-                stage.show();
+            } else if ("Technical Officer".equalsIgnoreCase(role)) {
+                openTechnicalOfficerDashboard(username);
 
             } else {
-                statusLabel.setText("Unknown role!");
+                statusLabel.setText("Unknown role: " + role);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            statusLabel.setText("Dashboard loading error: " + e.getMessage());
+            statusLabel.setText("Dashboard loading error. Check console.");
         }
+    }
+
+    private void openLecturerDashboard(String lecturerEmpId) throws Exception {
+        URL resource = getClass().getResource("/com/view/Lec_N/main_layout.fxml");
+
+        if (resource == null) {
+            throw new IllegalArgumentException("FXML not found: /com/view/Lec_N/main_layout.fxml");
+        }
+
+        FXMLLoader loader = new FXMLLoader(resource);
+        Parent root = loader.load();
+
+        com.controller.Lecturer.MainController controller = loader.getController();
+        controller.setLecturerEmpId(lecturerEmpId);
+
+        Stage stage = (Stage) usernameField.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Lecturer Dashboard");
+        stage.setMaximized(true);
+        stage.show();
+    }
+
+    private void openTechnicalOfficerDashboard(String username) throws Exception {
+        URL resource = getClass().getResource("/com/view/techOfficer/to_dashboard.fxml");
+
+        if (resource == null) {
+            throw new IllegalArgumentException("FXML not found: /com/view/techOfficer/to_dashboard.fxml");
+        }
+
+        FXMLLoader loader = new FXMLLoader(resource);
+        Parent root = loader.load();
+
+        com.controller.techOfficerControllers.TODashboardController controller = loader.getController();
+        controller.setLoggedInUser(username);
+
+        Stage stage = (Stage) usernameField.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Technical Officer Dashboard");
+        stage.setMaximized(true);
+        stage.show();
+    }
+
+    private void openChangePassword(String username) throws Exception {
+        URL resource = getClass().getResource("/com/view/Student/change_password.fxml");
+
+        if (resource == null) {
+            throw new IllegalArgumentException("FXML not found: /com/view/Student/change_password.fxml");
+        }
+
+        FXMLLoader loader = new FXMLLoader(resource);
+        Parent root = loader.load();
+
+        com.controller.Student.ChangePasswordController controller = loader.getController();
+        controller.setUsername(username);
+
+        Stage stage = (Stage) usernameField.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Change Password");
+        stage.setResizable(false);
+        stage.show();
     }
 
     private void openPage(String fxmlPath, String title) throws Exception {
         URL resource = getClass().getResource(fxmlPath);
 
         if (resource == null) {
-            throw new IllegalArgumentException("FXML file not found: " + fxmlPath);
+            throw new IllegalArgumentException("FXML not found: " + fxmlPath);
         }
 
         FXMLLoader loader = new FXMLLoader(resource);
