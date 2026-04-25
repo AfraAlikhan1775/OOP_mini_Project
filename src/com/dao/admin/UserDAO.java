@@ -196,4 +196,21 @@ public class UserDAO {
             return false;
         }
     }
+
+    public boolean isAdminPasswordCorrect(String password) {
+        String sql = "SELECT COUNT(*) FROM users WHERE username='admin' AND password=?";
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, password);
+            ResultSet rs = pst.executeQuery();
+
+            return rs.next() && rs.getInt(1) > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

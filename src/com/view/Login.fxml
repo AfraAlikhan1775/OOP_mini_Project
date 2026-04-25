@@ -64,8 +64,9 @@
                         <Font size="12.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="97.0" style="-fx-background-radius: 15; -fx-background-color: #ff4500;" text="Clear" />
-               </children>
+                  <Button mnemonicParsing="false" onAction="#handleClear" prefHeight="39.0" prefWidth="97.0"
+                          style="-fx-background-radius: 15; -fx-background-color: #ff4500;"
+                          text="Clear" />               </children>
                <padding>
                   <Insets left="80.0" top="20.0" />
                </padding>

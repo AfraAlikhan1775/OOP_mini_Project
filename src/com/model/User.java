@@ -1,6 +1,10 @@
 package com.model;
 
-public class User {
+/**
+ * User class implementing IAuthenticated
+ * Demonstrates: Interface Implementation, Encapsulation
+ */
+public class User implements IAuthenticated {
 
     private int userId;
     private String userName;
@@ -56,5 +60,14 @@ public class User {
 
     public void setProfPic(String profPic) {
         this.profPic = profPic;
+    }
+
+    /**
+     * Interface implementation - IAuthenticated
+     * Delegates to getUserName() for consistency
+     */
+    @Override
+    public String getUsername() {
+        return getUserName();
     }
 }

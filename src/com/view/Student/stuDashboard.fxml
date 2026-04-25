@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -8,107 +7,118 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <ScrollPane xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.controller.Student.stuDashboardController"
             fitToWidth="true"
-            style="-fx-background-color: #f5f7fa;">
+            style="-fx-background-color:#f5f7fa;">
 
     <content>
-        <VBox spacing="20" style="-fx-padding: 20; -fx-background-color: #f5f7fa;">
-            <children>
+        <VBox spacing="20" style="-fx-padding:20; -fx-background-color:#f5f7fa;">
 
-                <HBox alignment="CENTER_LEFT" spacing="20"
-                      style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #d9e2ec; -fx-border-radius: 8; -fx-padding: 20;">
-                    <children>
+            <HBox alignment="CENTER_LEFT" spacing="20"
+                  style="-fx-background-color:white; -fx-background-radius:8; -fx-border-color:#d9e2ec; -fx-border-radius:8; -fx-padding:20;">
 
-                        <VBox style="-fx-background-color: #0b1f36; -fx-background-radius: 8; -fx-padding: 15;" spacing="8">
-                            <children>
-                                <ImageView fitHeight="80.0" fitWidth="80.0" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../../Resources/images/icon/stu.png" />
-                                    </image>
-                                </ImageView>
-                                <Label fx:id="nameLabel" text="Student Name" textFill="WHITE" style="-fx-font-weight: bold;"/>
-                                <Label fx:id="emailLabel" text="student@email.com" textFill="#cccccc" style="-fx-font-size: 11;"/>
-                                <Label fx:id="courseLabel" text="Course: -" textFill="#cccccc" style="-fx-font-size: 11;"/>
-                            </children>
+                <VBox spacing="8">
+                    <Label text="Welcome to Dashboard"
+                           style="-fx-font-size:22; -fx-font-weight:bold;"/>
+                    <Label text="Good day! Here is your current student information and academic summary."
+                           wrapText="true"/>
+                    <Label fx:id="departmentLabel" text="Department: -"/>
+                    <Label fx:id="yearLabel" text="Year: -"/>
+                    <Label fx:id="courseLabel" text="Course: -"/>
+                </VBox>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <VBox alignment="CENTER" spacing="8"
+                      style="-fx-background-color:#0b1f36; -fx-background-radius:10; -fx-padding:15;"
+                      prefWidth="220">
+
+                    <ImageView fx:id="studentProfileImage"
+                               fitHeight="95"
+                               fitWidth="95"
+                               preserveRatio="true">
+                        <image>
+                            <Image url="@../../Resources/images/icon/stu.png"/>
+                        </image>
+                    </ImageView>
+
+                    <Label fx:id="nameLabel"
+                           text="Student Name"
+                           textFill="WHITE"
+                           style="-fx-font-weight:bold; -fx-font-size:14;"/>
+
+                    <Label fx:id="emailLabel"
+                           text="student@email.com"
+                           textFill="#cccccc"
+                           wrapText="true"
+                           style="-fx-font-size:11;"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="15">
+
+                <VBox spacing="12"
+                      HBox.hgrow="ALWAYS"
+                      style="-fx-background-color:white; -fx-background-radius:8; -fx-border-color:#d9e2ec; -fx-border-radius:8; -fx-padding:20;">
+
+                    <Label text="Mentor Details"
+                           style="-fx-font-weight:bold; -fx-font-size:18;"/>
+
+                    <HBox spacing="15" alignment="CENTER_LEFT">
+                        <ImageView fx:id="mentorImage"
+                                   fitHeight="95"
+                                   fitWidth="95"
+                                   preserveRatio="true">
+                            <image>
+                                <Image url="@../../Resources/images/icon/stu.png"/>
+                            </image>
+                        </ImageView>
+
+                        <VBox spacing="7">
+                            <Label fx:id="mentorNameLabel"
+                                   text="Mentor Name"
+                                   style="-fx-font-size:16; -fx-font-weight:bold;"/>
+                            <Label fx:id="mentorIdLabel" text="Mentor ID: -"/>
+                            <Label fx:id="mentorEmailLabel" text="Email: -"/>
+                            <Label fx:id="mentorPhoneLabel" text="Phone: -"/>
+                            <Label fx:id="mentorDepartmentLabel" text="Department: -"/>
                         </VBox>
+                    </HBox>
+                </VBox>
 
-                        <VBox spacing="10" HBox.hgrow="ALWAYS">
-                            <children>
-                                <Label text="Welcome to Dashboard" style="-fx-font-size: 20; -fx-font-weight: bold;"/>
-                                <Label text="Good day! Here is your current student information and academic summary." wrapText="true"/>
-                                <Label fx:id="departmentLabel" text="Department: -" />
-                                <Label fx:id="yearLabel" text="Year: -" />
-                                <Label fx:id="mentorLabel" text="Mentor ID: -" />
-                            </children>
-                        </VBox>
+                <VBox spacing="12"
+                      HBox.hgrow="ALWAYS"
+                      style="-fx-background-color:white; -fx-background-radius:8; -fx-border-color:#d9e2ec; -fx-border-radius:8; -fx-padding:20;">
 
-                    </children>
-                </HBox>
+                    <Label text="Recent Notices"
+                           style="-fx-font-weight:bold; -fx-font-size:18;"/>
 
-                <HBox spacing="15">
-                    <children>
+                    <VBox fx:id="noticesBox" spacing="8"/>
+                </VBox>
+            </HBox>
 
-                        <VBox style="-fx-background-color: #3498db; -fx-background-radius: 8; -fx-padding: 15;" spacing="8" HBox.hgrow="ALWAYS">
-                            <children>
-                                <Label text="Attendance" textFill="WHITE" style="-fx-font-weight: bold;"/>
-                                <Label fx:id="attendanceLabel" text="0%" textFill="WHITE" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
-                            </children>
-                        </VBox>
+            <VBox spacing="12"
+                  style="-fx-background-color:white; -fx-background-radius:8; -fx-border-color:#d9e2ec; -fx-border-radius:8; -fx-padding:20;">
 
-                        <VBox style="-fx-background-color: #f39c12; -fx-background-radius: 8; -fx-padding: 15;" spacing="8" HBox.hgrow="ALWAYS">
-                            <children>
-                                <Label text="Registered Courses" textFill="WHITE" style="-fx-font-weight: bold;"/>
-                                <Label fx:id="courseCountLabel" text="0" textFill="WHITE" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
-                            </children>
-                        </VBox>
+                <Label text="Wednesday Timetable"
+                       style="-fx-font-weight:bold; -fx-font-size:18;"/>
 
-                        <VBox style="-fx-background-color: #e74c3c; -fx-background-radius: 8; -fx-padding: 15;" spacing="8" HBox.hgrow="ALWAYS">
-                            <children>
-                                <Label text="Medical Records" textFill="WHITE" style="-fx-font-weight: bold;"/>
-                                <Label fx:id="medicalCountLabel" text="0" textFill="WHITE" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
-                            </children>
-                        </VBox>
+                <TableView fx:id="timetableTable" prefHeight="230">
+                    <columns>
+                        <TableColumn fx:id="timeColumn" prefWidth="150" text="Time"/>
+                        <TableColumn fx:id="subjectColumn" prefWidth="220" text="Subject"/>
+                        <TableColumn fx:id="lecturerColumn" prefWidth="180" text="Lecturer"/>
+                        <TableColumn fx:id="roomColumn" prefWidth="120" text="Room"/>
+                        <TableColumn fx:id="typeColumn" prefWidth="120" text="Type"/>
+                    </columns>
+                </TableView>
+            </VBox>
 
-                    </children>
-                </HBox>
-
-                <HBox spacing="15">
-                    <children>
-
-                        <VBox style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #d9e2ec; -fx-border-radius: 8; -fx-padding: 20;"
-                              spacing="12" HBox.hgrow="ALWAYS">
-                            <children>
-                                <Label text="Recent Notices" style="-fx-font-weight: bold; -fx-font-size: 16;"/>
-                                <VBox fx:id="noticesBox" spacing="8"/>
-                            </children>
-                        </VBox>
-
-                        <VBox style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #d9e2ec; -fx-border-radius: 8; -fx-padding: 20;"
-                              spacing="12" HBox.hgrow="ALWAYS">
-                            <children>
-                                <Label text="Today's Timetable" style="-fx-font-weight: bold; -fx-font-size: 16;"/>
-                                <TableView fx:id="timetableTable" prefHeight="220.0">
-                                    <columns>
-                                        <TableColumn fx:id="timeColumn" prefWidth="130.0" text="Time"/>
-                                        <TableColumn fx:id="subjectColumn" prefWidth="150.0" text="Subject"/>
-                                        <TableColumn fx:id="lecturerColumn" prefWidth="120.0" text="Lecturer"/>
-                                        <TableColumn fx:id="roomColumn" prefWidth="90.0" text="Room"/>
-                                        <TableColumn fx:id="typeColumn" prefWidth="90.0" text="Type"/>
-                                    </columns>
-                                </TableView>
-                            </children>
-                        </VBox>
-
-                    </children>
-                </HBox>
-
-            </children>
         </VBox>
     </content>
 </ScrollPane>

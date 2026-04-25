@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -43,7 +44,7 @@ public class LoginController {
             String role = user.getRole();
 
             if ("Admin".equalsIgnoreCase(role)) {
-                openPage("/com/view/admin/admin.fxml", "Admin Dashboard");
+                openDashboard("/com/view/admin/admin.fxml", "Admin Dashboard");
 
             } else if ("Student".equalsIgnoreCase(role)) {
                 StudentSession.setUsername(username);
@@ -51,7 +52,7 @@ public class LoginController {
                 if (userDAO.isDefaultPassword(username)) {
                     openChangePassword(username);
                 } else {
-                    openPage("/com/view/Student/student_main.fxml", "Student Dashboard");
+                    openDashboard("/com/view/Student/student_main.fxml", "Student Dashboard");
                 }
 
             } else if ("Lecturer".equalsIgnoreCase(role)) {
@@ -70,6 +71,35 @@ public class LoginController {
         }
     }
 
+    private void openDashboard(String fxmlPath, String title) throws Exception {
+        URL resource = getClass().getResource(fxmlPath);
+
+        if (resource == null) {
+            throw new IllegalArgumentException("FXML not found: " + fxmlPath);
+        }
+
+        Parent root = FXMLLoader.load(resource);
+
+        Stage stage = (Stage) usernameField.getScene().getWindow();
+
+        stage.setMaximized(false);
+        stage.setResizable(true);
+
+        double width = Screen.getPrimary().getVisualBounds().getWidth();
+        double height = Screen.getPrimary().getVisualBounds().getHeight();
+
+        Scene scene = new Scene(root, width, height);
+
+        stage.setScene(scene);
+        stage.setTitle(title);
+        stage.setX(Screen.getPrimary().getVisualBounds().getMinX());
+        stage.setY(Screen.getPrimary().getVisualBounds().getMinY());
+        stage.setWidth(width);
+        stage.setHeight(height);
+        stage.setMaximized(true);
+        stage.show();
+    }
+
     private void openLecturerDashboard(String lecturerEmpId) throws Exception {
         URL resource = getClass().getResource("/com/view/Lec_N/main_layout.fxml");
 
@@ -83,11 +113,7 @@ public class LoginController {
         com.controller.Lecturer.MainController controller = loader.getController();
         controller.setLecturerEmpId(lecturerEmpId);
 
-        Stage stage = (Stage) usernameField.getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.setTitle("Lecturer Dashboard");
-        stage.setMaximized(true);
-        stage.show();
+        openDashboardWithRoot(root, "Lecturer Dashboard");
     }
 
     private void openTechnicalOfficerDashboard(String username) throws Exception {
@@ -103,9 +129,24 @@ public class LoginController {
         com.controller.techOfficerControllers.TODashboardController controller = loader.getController();
         controller.setLoggedInUser(username);
 
+        openDashboardWithRoot(root, "Technical Officer Dashboard");
+    }
+
+    private void openDashboardWithRoot(Parent root, String title) {
         Stage stage = (Stage) usernameField.getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.setTitle("Technical Officer Dashboard");
+
+        stage.setMaximized(false);
+        stage.setResizable(true);
+
+        double width = Screen.getPrimary().getVisualBounds().getWidth();
+        double height = Screen.getPrimary().getVisualBounds().getHeight();
+
+        stage.setScene(new Scene(root, width, height));
+        stage.setTitle(title);
+        stage.setX(Screen.getPrimary().getVisualBounds().getMinX());
+        stage.setY(Screen.getPrimary().getVisualBounds().getMinY());
+        stage.setWidth(width);
+        stage.setHeight(height);
         stage.setMaximized(true);
         stage.show();
     }
@@ -124,26 +165,20 @@ public class LoginController {
         controller.setUsername(username);
 
         Stage stage = (Stage) usernameField.getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.setTitle("Change Password");
+
+        stage.setMaximized(false);
         stage.setResizable(false);
+        stage.setScene(new Scene(root, 900, 600));
+        stage.setTitle("Change Password");
+        stage.centerOnScreen();
         stage.show();
     }
 
-    private void openPage(String fxmlPath, String title) throws Exception {
-        URL resource = getClass().getResource(fxmlPath);
-
-        if (resource == null) {
-            throw new IllegalArgumentException("FXML not found: " + fxmlPath);
-        }
-
-        FXMLLoader loader = new FXMLLoader(resource);
-        Parent root = loader.load();
-
-        Stage stage = (Stage) usernameField.getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.setTitle(title);
-        stage.setMaximized(true);
-        stage.show();
+    @FXML
+    private void handleClear() {
+        usernameField.clear();
+        passwordField.clear();
+        statusLabel.setText("");
+        usernameField.requestFocus();
     }
 }

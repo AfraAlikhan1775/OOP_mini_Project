@@ -1,141 +1,204 @@
 package com.controller.techOfficerControllers;
 
-import com.dao.admin.TechnicalOfficerDAO;
+import com.dao.techOfficer.TOProfileDAO;
 import com.model.TechnicalOfficer;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.PasswordField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import javafx.stage.Window;
 
 import java.io.File;
 
 public class TOProfileController {
 
     @FXML private ImageView profileImage;
-    @FXML private TextField firstNameField;
-    @FXML private TextField lastNameField;
-    @FXML private TextField empIdField;
-    @FXML private TextField nicField;
-    @FXML private DatePicker dobPicker;
-    @FXML private ComboBox<String> genderCombo;
-    @FXML private TextField districtField;
-    @FXML private TextField emailField;
-    @FXML private TextField phoneField;
-    @FXML private TextArea addressField;
-    @FXML private ComboBox<String> departmentCombo;
-    @FXML private TextField positionField;
-    @FXML private ComboBox<String> shiftCombo;
-    @FXML private TextField assignedLabField;
+
+    @FXML private Label nameLabel;
+    @FXML private Label empIdLabel;
+    @FXML private Label nicLabel;
+    @FXML private Label dobLabel;
+    @FXML private Label genderLabel;
+    @FXML private Label emailLabel;
+    @FXML private Label phoneLabel;
+    @FXML private Label addressLabel;
+    @FXML private Label departmentLabel;
+    @FXML private Label positionLabel;
+    @FXML private Label shiftLabel;
+    @FXML private Label labLabel;
+
+    @FXML private PasswordField oldPasswordField;
+    @FXML private PasswordField newPasswordField;
+    @FXML private PasswordField confirmPasswordField;
+
     @FXML private Label statusLabel;
 
-    private String empId;
-    private String currentImagePath;
-    private final TechnicalOfficerDAO toDAO = new TechnicalOfficerDAO();
+    private final TOProfileDAO dao = new TOProfileDAO();
 
-    @FXML
-    public void initialize() {
-        genderCombo.getItems().addAll("Male", "Female", "Other");
-        departmentCombo.getItems().addAll("ICT", "BST", "ET");
-        shiftCombo.getItems().addAll("Morning", "Evening", "Night", "General");
-    }
+    private String empId;
+    private String selectedImagePath;
 
     public void setEmpId(String empId) {
         this.empId = empId;
-        loadProfileData();
+        loadProfile();
     }
 
-    private void loadProfileData() {
-        if (empId == null) return;
+    private void loadProfile() {
+        if (empId == null || empId.isBlank()) {
+            showError("Technical Officer session not found.");
+            return;
+        }
 
-//        TechnicalOfficer to = toDAO.getTOByEmpId(empId);
-//        if (to == null) {
-//            statusLabel.setText("Error: Profile not found.");
-//            statusLabel.setStyle("-fx-text-fill: red;");
-//            return;
-//        }
+        TechnicalOfficer officer = dao.getTOProfile(empId);
 
-//        Platform.runLater(() -> {
-//            firstNameField.setText(valueOrEmpty(to.getFirstName()));
-//            lastNameField.setText(valueOrEmpty(to.getLastName()));
-//            empIdField.setText(to.getEmpId()); // Disabled field
-//            nicField.setText(valueOrEmpty(to.getNic()));
-//            if (to.getDob() != null) dobPicker.setValue(to.getDob());
-//            genderCombo.setValue(to.getGender());
-//            districtField.setText(valueOrEmpty(to.getDistrict()));
-//
-//            emailField.setText(valueOrEmpty(to.getEmail()));
-//            phoneField.setText(valueOrEmpty(to.getPhone()));
-//            addressField.setText(valueOrEmpty(to.getAddress()));
-//
-//            departmentCombo.setValue(to.getDepartment());
-//            positionField.setText(valueOrEmpty(to.getPosition()));
-//            shiftCombo.setValue(to.getShiftType());
-//            assignedLabField.setText(valueOrEmpty(to.getAssignedLab()));
-//
-//            currentImagePath = to.getImagePath();
-//            if (currentImagePath != null && !currentImagePath.isBlank()) {
-//                File file = new File(currentImagePath);
-//                if (file.exists()) {
-//                    profileImage.setImage(new Image(file.toURI().toString()));
-//                }
-//            }
-//        });
+        if (officer == null) {
+            showError("Technical Officer profile not found.");
+            return;
+        }
+
+        nameLabel.setText(value(officer.getFirstName()) + " " + value(officer.getLastName()));
+        empIdLabel.setText("Employee ID: " + value(officer.getEmpId()));
+        nicLabel.setText("NIC: " + value(officer.getNic()));
+        dobLabel.setText("DOB: " + (officer.getDob() == null ? "-" : officer.getDob().toString()));
+        genderLabel.setText("Gender: " + value(officer.getGender()));
+        emailLabel.setText("Email: " + value(officer.getEmail()));
+        phoneLabel.setText("Phone: " + value(officer.getPhone()));
+        addressLabel.setText("Address: " + value(officer.getAddress()));
+        departmentLabel.setText("Department: " + value(officer.getDepartment()));
+        positionLabel.setText("Position: " + value(officer.getPosition()));
+        shiftLabel.setText("Shift Type: " + value(officer.getShiftType()));
+        labLabel.setText("Assigned Lab: " + value(officer.getAssignedLab()));
+
+        loadProfilePicture();
+    }
+
+    private void loadProfilePicture() {
+        String userProfilePic = dao.getUserProfilePicture(empId);
+
+        if (setImage(userProfilePic)) {
+            return;
+        }
+
+        setDefaultImage();
     }
 
     @FXML
-    private void handleUploadPhoto() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
-        Window window = firstNameField.getScene().getWindow();
-        File selectedFile = fileChooser.showOpenDialog(window);
+    private void chooseProfilePicture() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Choose Profile Picture");
 
-        if (selectedFile != null) {
-            currentImagePath = selectedFile.getAbsolutePath();
-            profileImage.setImage(new Image(selectedFile.toURI().toString()));
-            statusLabel.setText("Photo selected. Remember to save changes.");
-            statusLabel.setStyle("-fx-text-fill: #16a34a;");
+        chooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
+        );
+
+        File file = chooser.showOpenDialog(profileImage.getScene().getWindow());
+
+        if (file != null) {
+            selectedImagePath = file.getAbsolutePath();
+            profileImage.setImage(new Image(file.toURI().toString()));
+            showSuccess("Photo selected. Click Update Profile Picture.");
         }
     }
 
     @FXML
-    private void handleSave() {
-        if (empId == null) return;
+    private void updateProfilePicture() {
+        if (selectedImagePath == null || selectedImagePath.isBlank()) {
+            showError("Please choose a profile picture first.");
+            return;
+        }
 
-        TechnicalOfficer to = new TechnicalOfficer(
-                firstNameField.getText(),
-                lastNameField.getText(),
-                empId,
-                nicField.getText(),
-                dobPicker.getValue(),
-                genderCombo.getValue(),
-                currentImagePath,
-                districtField.getText(),
-                emailField.getText(),
-                phoneField.getText(),
-                addressField.getText(),
-                departmentCombo.getValue(),
-                positionField.getText(),
-                shiftCombo.getValue(),
-                assignedLabField.getText()
-        );
+        boolean updated = dao.updateUserProfilePicture(empId, selectedImagePath);
 
-//        if (toDAO.updateProfile(to)) {
-//            statusLabel.setText("Profile updated successfully!");
-//            statusLabel.setStyle("-fx-text-fill: #16a34a;");
-//        } else {
-//            statusLabel.setText("Failed to update profile.");
-//            statusLabel.setStyle("-fx-text-fill: red;");
-//        }
+        if (updated) {
+            showSuccess("Profile picture updated successfully.");
+        } else {
+            showError("Failed to update profile picture.");
+        }
     }
 
-    private String valueOrEmpty(String value) {
-        return value == null ? "" : value;
+    @FXML
+    private void updatePassword() {
+        String oldPassword = oldPasswordField.getText();
+        String newPassword = newPasswordField.getText();
+        String confirmPassword = confirmPasswordField.getText();
+
+        if (oldPassword == null || oldPassword.isBlank()
+                || newPassword == null || newPassword.isBlank()
+                || confirmPassword == null || confirmPassword.isBlank()) {
+
+            showError("Please fill all password fields.");
+            return;
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            showError("New password and confirm password do not match.");
+            return;
+        }
+
+        if (!dao.checkOldPassword(empId, oldPassword)) {
+            showError("Old password is incorrect.");
+            return;
+        }
+
+        boolean updated = dao.updatePassword(empId, newPassword);
+
+        if (updated) {
+            oldPasswordField.clear();
+            newPasswordField.clear();
+            confirmPasswordField.clear();
+            showSuccess("Password updated successfully.");
+        } else {
+            showError("Failed to update password.");
+        }
+    }
+
+    private boolean setImage(String path) {
+        try {
+            if (path == null || path.isBlank()) {
+                return false;
+            }
+
+            File file = new File(path);
+
+            if (file.exists()) {
+                profileImage.setImage(new Image(file.toURI().toString()));
+                return true;
+            }
+
+            if (path.startsWith("file:") || path.startsWith("http")) {
+                profileImage.setImage(new Image(path));
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    private void setDefaultImage() {
+        try {
+            profileImage.setImage(new Image(
+                    getClass().getResource("/com/Resources/images/icon/stu.png").toExternalForm()
+            ));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String value(String text) {
+        return text == null || text.isBlank() ? "-" : text;
+    }
+
+    private void showSuccess(String message) {
+        statusLabel.setText(message);
+        statusLabel.setStyle("-fx-text-fill:#16a34a; -fx-font-weight:bold;");
+    }
+
+    private void showError(String message) {
+        statusLabel.setText(message);
+        statusLabel.setStyle("-fx-text-fill:#dc2626; -fx-font-weight:bold;");
     }
 }

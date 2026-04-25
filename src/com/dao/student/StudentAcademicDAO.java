@@ -307,63 +307,77 @@ public class StudentAcademicDAO {
         }
 
         String sql = """
-            SELECT
-                ag.course_id,
+            
+                SELECT
+                c.course_id,
                 ag.type,
                 COUNT(ar.id) AS total_count,
-                SUM(CASE
-                    WHEN ar.status = 'PRESENT'
-                      OR ar.status = 'MEDICAL'
-                    THEN 1 ELSE 0
-                END) AS eligible_count
-            FROM attendance_group ag
+                SUM(CASE WHEN UPPER(ar.status) = 'PRESENT' THEN 1 ELSE 0 END) AS present_count,
+                SUM(CASE WHEN UPPER(ar.status) = 'MEDICAL' THEN 1 ELSE 0 END) AS medical_count
+            FROM courses c
+            INNER JOIN attendance_group ag
+                ON c.course_id = ag.course_id
             LEFT JOIN attendance_record ar
                 ON ag.id = ar.group_id
-                AND ar.reg_no = ?
-            WHERE ag.year_no = ?
-              AND ag.semester = ?
-            GROUP BY ag.course_id, ag.type
-            ORDER BY ag.course_id, ag.type
+               AND ar.reg_no = ?
+            WHERE c.department = ?
+              AND CAST(c.year AS CHAR) = ?
+              AND CAST(c.semester AS CHAR) = ?
+              AND ag.year_no = ?
+            GROUP BY c.course_id, ag.type
+            ORDER BY c.course_id, ag.type
             """;
 
-        Map<String, List<Double>> coursePercentages = new LinkedHashMap<>();
+        Map<String, Map<String, Double>> courseTypePercentages = new LinkedHashMap<>();
 
         try (Connection conn = DatabaseInitializer.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setString(1, regNo);
-            pst.setInt(2, year);
-            pst.setInt(3, semester);
+            pst.setString(2, department);
+            pst.setString(3, String.valueOf(year));
+            pst.setString(4, String.valueOf(semester));
+            pst.setInt(5, year);
 
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
-                String courseCode = rs.getString("course_id");
+                String courseId = rs.getString("course_id");
+                String type = rs.getString("type");
+
                 int total = rs.getInt("total_count");
-                int eligible = rs.getInt("eligible_count");
+                int present = rs.getInt("present_count");
+                int medical = rs.getInt("medical_count");
 
-                double percentage = total == 0 ? 0 : (eligible * 100.0) / total;
+                double presentPercent = total == 0 ? 0 : (present * 100.0) / total;
+                double medicalPercent = total == 0 ? 0 : (medical * 100.0) / total;
 
-                coursePercentages
-                        .computeIfAbsent(courseCode, k -> new ArrayList<>())
-                        .add(percentage);
+                // Medical can count only maximum 20%
+                double countedMedicalPercent = Math.min(medicalPercent, 20.0);
+
+                double finalAttendancePercent = presentPercent + countedMedicalPercent;
+
+                courseTypePercentages
+                        .computeIfAbsent(courseId, k -> new LinkedHashMap<>())
+                        .put(type.toLowerCase(), finalAttendancePercent);
             }
 
-            for (Map.Entry<String, List<Double>> entry : coursePercentages.entrySet()) {
-                String courseCode = entry.getKey();
-                List<Double> percentages = entry.getValue();
+            for (Map.Entry<String, Map<String, Double>> entry : courseTypePercentages.entrySet()) {
+                String courseId = entry.getKey();
+                Map<String, Double> typeMap = entry.getValue();
 
                 boolean eligible = true;
 
-                for (double p : percentages) {
-                    if (p < 80.0) {
-                        eligible = false;
-                        break;
-                    }
+                if (typeMap.containsKey("theory") && typeMap.get("theory") < 80.0) {
+                    eligible = false;
+                }
+
+                if (typeMap.containsKey("practical") && typeMap.get("practical") < 80.0) {
+                    eligible = false;
                 }
 
                 list.add(new ExamEligibilityRow(
-                        courseCode,
+                        courseId,
                         eligible ? "EL" : "NE"
                 ));
             }
@@ -373,4 +387,6 @@ public class StudentAcademicDAO {
         }
 
         return list;
-    }}
+    }
+
+    }

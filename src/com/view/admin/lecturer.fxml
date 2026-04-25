@@ -54,16 +54,9 @@
                           prefHeight="26.0"
                           prefWidth="158.0" />
 
-                <MenuButton mnemonicParsing="false"
-                            style="-fx-background-color: #122c4a; -fx-font-size: 18px;"
-                            text="➕"
-                            textFill="WHITE">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#navigateAddStudent" text="Add student" />
-                        <MenuItem mnemonicParsing="false" onAction="#navigateAddLecturer" text="Add lecturer" />
-                        <MenuItem mnemonicParsing="false" onAction="#navigateAddTechnicalOfficer" text="Add TO" />
-                    </items>
-                </MenuButton>
+                <Button onAction="#navigateAddLecturer"
+                        style="-fx-background-color:#122c4a; -fx-text-fill:white; -fx-font-weight:bold;"
+                        text="➕"/>
             </children>
         </HBox>
     </top>

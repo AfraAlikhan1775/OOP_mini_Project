@@ -48,19 +48,20 @@ public class LecturerMedicalController {
         colRegNo.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRegNo()));
         colStudentName.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getStudentName()));
         colCourseId.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCourseId()));
-        colSessionId.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getSessionId()));
-        colType.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getType()));
-        colAttendanceDate.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getAttendanceDate()));
+        colSessionId.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDisplaySession()));
+        colType.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDisplayType()));
+        colAttendanceDate.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDisplayDate()));
+
         colMedicalDates.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getStartDate() + " to " + data.getValue().getEndDate())
         );
+
         colReason.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getReason()));
         colStatus.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getStatus()));
 
         medicalTable.setItems(medicalList);
         addActionButtons();
     }
-
     private void addActionButtons() {
         colActions.setCellFactory(param -> new TableCell<>() {
 

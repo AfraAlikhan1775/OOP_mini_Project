@@ -2,127 +2,129 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<ScrollPane fitToWidth="true" style="-fx-background-color: transparent;"
-            xmlns="http://javafx.com/javafx/21"
+<ScrollPane fitToWidth="true"
+            xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.controller.techOfficerControllers.TOProfileController">
+            fx:controller="com.controller.techOfficerControllers.TOProfileController"
+            style="-fx-background-color:#eaf1f8;">
 
-    <VBox spacing="20" style="-fx-padding: 30;">
+    <content>
+        <VBox spacing="22" style="-fx-padding:30; -fx-background-color:#eaf1f8;">
 
-        <!-- Page Header -->
-        <HBox alignment="CENTER_LEFT" spacing="15" styleClass="page-header"
-              style="-fx-background-radius: 12;">
-            <padding>
-                <Insets top="15" right="20" bottom="15" left="20" />
-            </padding>
-            <Label styleClass="page-header-title" text="👤  My Profile" />
-        </HBox>
+            <HBox alignment="CENTER_LEFT"
+                  style="-fx-background-color:#0b1f36; -fx-padding:18; -fx-background-radius:12;">
+                <Label text="👤 My Profile"
+                       style="-fx-text-fill:white; -fx-font-size:22px; -fx-font-weight:bold;"/>
+            </HBox>
 
-        <!-- Profile Form Card -->
-        <VBox styleClass="profile-form" spacing="20">
+            <VBox spacing="18"
+                  style="-fx-background-color:white; -fx-padding:25; -fx-background-radius:12; -fx-border-color:#d9e2ec; -fx-border-radius:12;">
 
-            <!-- Profile Photo Section -->
-            <HBox alignment="CENTER_LEFT" spacing="20">
-                <ImageView fx:id="profileImage" fitWidth="120" fitHeight="120" preserveRatio="true"
-                           style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 8, 0, 0, 3);" />
-                <VBox spacing="8">
-                    <Label style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;" text="Profile Photo" />
-                    <Label style="-fx-text-fill:#7f9bb3; -fx-font-size:12px;" text="Upload a clear photo (JPG, PNG)" />
-                    <Button onAction="#handleUploadPhoto" styleClass="btn-secondary" text="📷  Upload Photo" />
+                <HBox alignment="CENTER_LEFT" spacing="25">
+
+                    <ImageView fx:id="profileImage"
+                               fitWidth="130"
+                               fitHeight="130"
+                               preserveRatio="true">
+                        <image>
+                            <Image url="@../../Resources/images/icon/stu.png"/>
+                        </image>
+                    </ImageView>
+
+                    <VBox spacing="8">
+                        <Label fx:id="nameLabel"
+                               text="Technical Officer Name"
+                               style="-fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;"/>
+
+                        <Label fx:id="empIdLabel" text="Employee ID: -"/>
+                        <Label fx:id="departmentLabel" text="Department: -"/>
+                        <Label fx:id="positionLabel" text="Position: -"/>
+                    </VBox>
+
+                    <Region HBox.hgrow="ALWAYS"/>
+
+                    <VBox spacing="10">
+                        <Button text="Choose Profile Picture"
+                                onAction="#chooseProfilePicture"
+                                style="-fx-background-color:#0b1f36; -fx-text-fill:white; -fx-font-weight:bold;"/>
+
+                        <Button text="Update Profile Picture"
+                                onAction="#updateProfilePicture"
+                                style="-fx-background-color:#198754; -fx-text-fill:white; -fx-font-weight:bold;"/>
+                    </VBox>
+                </HBox>
+
+                <Label text="Profile picture updates only users.profile_pic. Technical officer image_path is not changed."
+                       style="-fx-text-fill:#64748b; -fx-font-size:12px;"/>
+            </VBox>
+
+            <HBox spacing="18">
+
+                <VBox spacing="10"
+                      HBox.hgrow="ALWAYS"
+                      style="-fx-background-color:white; -fx-padding:22; -fx-background-radius:12; -fx-border-color:#d9e2ec; -fx-border-radius:12;">
+
+                    <Label text="Personal Information"
+                           style="-fx-font-size:18px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;"/>
+
+                    <Label fx:id="nicLabel" text="NIC: -"/>
+                    <Label fx:id="dobLabel" text="DOB: -"/>
+                    <Label fx:id="genderLabel" text="Gender: -"/>
+                    <Label fx:id="addressLabel" text="Address: -" wrapText="true"/>
                 </VBox>
+
+                <VBox spacing="10"
+                      HBox.hgrow="ALWAYS"
+                      style="-fx-background-color:white; -fx-padding:22; -fx-background-radius:12; -fx-border-color:#d9e2ec; -fx-border-radius:12;">
+
+                    <Label text="Contact and Work Information"
+                           style="-fx-font-size:18px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;"/>
+
+                    <Label fx:id="emailLabel" text="Email: -"/>
+                    <Label fx:id="phoneLabel" text="Phone: -"/>
+                    <Label fx:id="shiftLabel" text="Shift Type: -"/>
+                    <Label fx:id="labLabel" text="Assigned Lab: -"/>
+                </VBox>
+
             </HBox>
 
-            <!-- Personal Information -->
-            <Label style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#0b1f36; -fx-padding: 10 0 0 0;" text="Personal Information" />
+            <VBox spacing="14"
+                  style="-fx-background-color:white; -fx-padding:22; -fx-background-radius:12; -fx-border-color:#d9e2ec; -fx-border-radius:12;">
 
-            <GridPane hgap="20" vgap="12">
-                <columnConstraints>
-                    <ColumnConstraints percentWidth="50" />
-                    <ColumnConstraints percentWidth="50" />
-                </columnConstraints>
+                <Label text="Change Password"
+                       style="-fx-font-size:18px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;"/>
 
-                <Label styleClass="form-label" text="First Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <TextField fx:id="firstNameField" styleClass="form-field" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <PasswordField fx:id="oldPasswordField"
+                               promptText="Old Password"
+                               maxWidth="380"/>
 
-                <Label styleClass="form-label" text="Last Name" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                <TextField fx:id="lastNameField" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <PasswordField fx:id="newPasswordField"
+                               promptText="New Password"
+                               maxWidth="380"/>
 
-                <Label styleClass="form-label" text="Employee ID (Cannot be changed)" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <TextField fx:id="empIdField" styleClass="form-field-disabled" editable="false" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <PasswordField fx:id="confirmPasswordField"
+                               promptText="Confirm New Password"
+                               maxWidth="380"/>
 
-                <Label styleClass="form-label" text="NIC" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <TextField fx:id="nicField" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Button text="Update Password"
+                        onAction="#updatePassword"
+                        style="-fx-background-color:#0b1f36; -fx-text-fill:white; -fx-font-weight:bold;"
+                        maxWidth="180"/>
+            </VBox>
 
-                <Label styleClass="form-label" text="Date of Birth" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                <DatePicker fx:id="dobPicker" styleClass="form-field" maxWidth="1.7976931348623157E308" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-
-                <Label styleClass="form-label" text="Gender" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                <ComboBox fx:id="genderCombo" styleClass="form-field" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-
-                <Label styleClass="form-label" text="District" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                <TextField fx:id="districtField" styleClass="form-field" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-            </GridPane>
-
-            <!-- Contact Information -->
-            <Label style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#0b1f36; -fx-padding: 10 0 0 0;" text="Contact Information" />
-
-            <GridPane hgap="20" vgap="12">
-                <columnConstraints>
-                    <ColumnConstraints percentWidth="50" />
-                    <ColumnConstraints percentWidth="50" />
-                </columnConstraints>
-
-                <Label styleClass="form-label" text="Email" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <TextField fx:id="emailField" styleClass="form-field" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-
-                <Label styleClass="form-label" text="Phone" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                <TextField fx:id="phoneField" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-                <Label styleClass="form-label" text="Address" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <TextArea fx:id="addressField" styleClass="form-field" prefRowCount="3" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2" />
-            </GridPane>
-
-            <!-- Work Information -->
-            <Label style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#0b1f36; -fx-padding: 10 0 0 0;" text="Work Information" />
-
-            <GridPane hgap="20" vgap="12">
-                <columnConstraints>
-                    <ColumnConstraints percentWidth="50" />
-                    <ColumnConstraints percentWidth="50" />
-                </columnConstraints>
-
-                <Label styleClass="form-label" text="Department" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <ComboBox fx:id="departmentCombo" styleClass="form-field" maxWidth="1.7976931348623157E308" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-
-                <Label styleClass="form-label" text="Position" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                <TextField fx:id="positionField" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-                <Label styleClass="form-label" text="Shift Type" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <ComboBox fx:id="shiftCombo" styleClass="form-field" maxWidth="1.7976931348623157E308" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-
-                <Label styleClass="form-label" text="Assigned Lab" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <TextField fx:id="assignedLabField" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            </GridPane>
-
-            <!-- Status & Save -->
-            <HBox alignment="CENTER_RIGHT" spacing="15">
-                <Label fx:id="statusLabel" style="-fx-text-fill: #16a34a; -fx-font-size: 13px;" text="" />
-                <Button onAction="#handleSave" styleClass="btn-primary" text="💾  Save Changes" prefWidth="160" prefHeight="40" />
-            </HBox>
+            <Label fx:id="statusLabel"
+                   text=""
+                   style="-fx-font-size:14px; -fx-font-weight:bold;"/>
 
         </VBox>
-
-    </VBox>
+    </content>
 </ScrollPane>

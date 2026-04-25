@@ -1,102 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="500.0" prefWidth="682.0"
+<ScrollPane fitToWidth="true"
             xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.controller.Student.stuProfileController">
+            fx:controller="com.controller.Student.stuProfileController"
+            style="-fx-background-color:#eaf1f8;">
 
-    <children>
-        <Text fill="#0b1f36" layoutX="14.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student Profile">
-            <font>
-                <Font size="25.0" />
-            </font>
-        </Text>
+    <content>
+        <VBox spacing="25" style="-fx-padding:30; -fx-background-color:#eaf1f8;">
 
-        <Text layoutX="14.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="Your profile details loaded from database" wrappingWidth="279.8" />
+            <Label text="Edit Profile"
+                   style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;"/>
 
-        <VBox layoutX="36.0" layoutY="85.0" prefHeight="340.0" prefWidth="264.0">
-            <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Personal Information">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </Text>
+            <VBox spacing="15"
+                  style="-fx-background-color:white; -fx-padding:25; -fx-background-radius:10; -fx-border-color:#d9e2ec; -fx-border-radius:10;">
 
-                <Line endX="100.0" startX="-100.0" />
+                <Label text="Profile Picture"
+                       style="-fx-font-size:18px; -fx-font-weight:bold;"/>
 
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Full Name:-">
-                    <VBox.margin><Insets top="10.0" /></VBox.margin>
-                </Text>
-                <Label fx:id="fullNameLabel" prefWidth="220.0" style="-fx-border-color: gray; -fx-padding: 5;" text="-" />
+                <HBox spacing="20" alignment="CENTER_LEFT">
 
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Registration No:-">
-                    <VBox.margin><Insets top="10.0" /></VBox.margin>
-                </Text>
-                <Label fx:id="regNoLabel" prefWidth="220.0" style="-fx-border-color: gray; -fx-padding: 5;" text="-" />
+                    <ImageView fx:id="profileImage"
+                               fitWidth="120"
+                               fitHeight="120"
+                               preserveRatio="true">
+                        <image>
+                            <Image url="@../../Resources/images/icon/stu.png"/>
+                        </image>
+                    </ImageView>
 
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email:-">
-                    <VBox.margin><Insets top="10.0" /></VBox.margin>
-                </Text>
-                <Label fx:id="emailLabel" prefWidth="220.0" style="-fx-border-color: gray; -fx-padding: 5;" text="-" />
+                    <VBox spacing="10">
+                        <Button text="Choose Profile Picture"
+                                onAction="#chooseProfilePicture"
+                                style="-fx-background-color:#0b1f36; -fx-text-fill:white; -fx-font-weight:bold;"/>
 
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Course:-">
-                    <VBox.margin><Insets top="10.0" /></VBox.margin>
-                </Text>
-                <Label fx:id="courseLabel" prefWidth="220.0" style="-fx-border-color: gray; -fx-padding: 5;" text="-" />
+                        <Button text="Update Profile Picture"
+                                onAction="#updateProfilePicture"
+                                style="-fx-background-color:#198754; -fx-text-fill:white; -fx-font-weight:bold;"/>
 
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Contact Number:-">
-                    <VBox.margin><Insets top="10.0" /></VBox.margin>
-                </Text>
-                <Label fx:id="contactLabel" prefWidth="220.0" style="-fx-border-color: gray; -fx-padding: 5;" text="-" />
+                        <Label text="This changes only users.profile_pic, not student.image_path."
+                               style="-fx-text-fill:#666;"/>
+                    </VBox>
+                </HBox>
+            </VBox>
 
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Department:-">
-                    <VBox.margin><Insets top="10.0" /></VBox.margin>
-                </Text>
-                <Label fx:id="departmentLabel" prefWidth="220.0" style="-fx-border-color: gray; -fx-padding: 5;" text="-" />
+            <VBox spacing="15"
+                  style="-fx-background-color:white; -fx-padding:25; -fx-background-radius:10; -fx-border-color:#d9e2ec; -fx-border-radius:10;">
 
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Year:-">
-                    <VBox.margin><Insets top="10.0" /></VBox.margin>
-                </Text>
-                <Label fx:id="yearLabel" prefWidth="220.0" style="-fx-border-color: gray; -fx-padding: 5;" text="-" />
-            </children>
+                <Label text="Change Password"
+                       style="-fx-font-size:18px; -fx-font-weight:bold;"/>
+
+                <PasswordField fx:id="oldPasswordField"
+                               promptText="Old Password"
+                               prefWidth="350"/>
+
+                <PasswordField fx:id="newPasswordField"
+                               promptText="New Password"
+                               prefWidth="350"/>
+
+                <PasswordField fx:id="confirmPasswordField"
+                               promptText="Confirm New Password"
+                               prefWidth="350"/>
+
+                <Button text="Update Password"
+                        onAction="#updatePassword"
+                        style="-fx-background-color:#0b1f36; -fx-text-fill:white; -fx-font-weight:bold;"/>
+            </VBox>
+
+            <Label fx:id="messageLabel"
+                   text=""
+                   style="-fx-text-fill:#198754; -fx-font-size:14px; -fx-font-weight:bold;"/>
+
         </VBox>
-
-        <VBox layoutX="358.0" layoutY="85.0" prefHeight="252.0" prefWidth="264.0">
-            <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Profile Picture">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </Text>
-
-                <Line endX="146.89" endY="0.82" startX="-100.0" />
-
-                <ImageView fitHeight="140.0" fitWidth="142.0" pickOnBounds="true" preserveRatio="true">
-                    <VBox.margin>
-                        <Insets left="70.0" top="5.0" />
-                    </VBox.margin>
-                    <image>
-                        <Image url="@../../../icon/stu.png" />
-                    </image>
-                </ImageView>
-
-                <Label style="-fx-border-color: gray;" text="Student Image">
-                    <VBox.margin>
-                        <Insets left="80.0" top="10.0" />
-                    </VBox.margin>
-                </Label>
-            </children>
-        </VBox>
-    </children>
-</AnchorPane>
+    </content>
+</ScrollPane>

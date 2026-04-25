@@ -55,19 +55,9 @@
                           prefHeight="26.0"
                           prefWidth="158.0"/>
 
-                <MenuButton mnemonicParsing="false"
-                            text="➕"
-                            textFill="WHITE"
-                            style="-fx-background-color: #122c4a; -fx-font-size: 18px;">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Add student"/>
-                        <MenuItem mnemonicParsing="false" text="Add lecturer"/>
-                        <MenuItem mnemonicParsing="false" text="Add Course"/>
-                        <MenuItem mnemonicParsing="false" text="Add TO"/>
-                        <MenuItem mnemonicParsing="false" onAction="#navigateAddtimetable" text="Add Time table"/>
-                        <MenuItem mnemonicParsing="false" text="Add Notice"/>
-                    </items>
-                </MenuButton>
+                <Button onAction="#navigateAddtimetable"
+                        style="-fx-background-color:#122c4a; -fx-text-fill:white; -fx-font-weight:bold;"
+                        text="➕"/>
             </children>
         </HBox>
     </top>

@@ -7,30 +7,25 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class student_mainController {
 
-    @FXML
-    private StackPane contentArea;
+    @FXML private StackPane contentArea;
 
     @FXML
     public void initialize() {
         loadUI("/com/view/Student/stuDashboard.fxml");
     }
 
-    private void loadUI(String fxml) {
+    private void loadUI(String fxmlPath) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-            Parent root = loader.load();
-            contentArea.getChildren().setAll(root);
+            Parent page = FXMLLoader.load(getClass().getResource(fxmlPath));
+            contentArea.getChildren().setAll(page);
         } catch (Exception e) {
             e.printStackTrace();
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Load Error");
-            alert.setContentText("Cannot load page: " + fxml);
-            alert.showAndWait();
+            showAlert("Page Load Error", "Cannot load: " + fxmlPath);
         }
     }
 
@@ -50,11 +45,6 @@ public class student_mainController {
     }
 
     @FXML
-    private void handleTimetable() {
-        loadUI("/com/view/Student/stuTimetable.fxml");
-    }
-
-    @FXML
     private void handleNotice() {
         loadUI("/com/view/Student/stuNotice.fxml");
     }
@@ -62,6 +52,11 @@ public class student_mainController {
     @FXML
     private void handleGrades() {
         loadUI("/com/view/Student/stuGrades.fxml");
+    }
+
+    @FXML
+    private void handleTimetable() {
+        loadUI("/com/view/Student/stuTimetable.fxml");
     }
 
     @FXML
@@ -74,22 +69,57 @@ public class student_mainController {
         loadUI("/com/view/Student/stuProfile.fxml");
     }
 
+    /*
+     * Your student_main.fxml currently has onAction="#logout".
+     * So this method MUST exist.
+     */
+    @FXML
+    private void logout() {
+        openLoginPage();
+    }
+
+    /*
+     * If another FXML uses onAction="#handleLogout",
+     * this also works.
+     */
     @FXML
     private void handleLogout() {
+        openLoginPage();
+    }
+
+    private void openLoginPage() {
         try {
             StudentSession.clear();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/Login.fxml"));
-            Parent root = loader.load();
+            Parent root = FXMLLoader.load(getClass().getResource("/com/view/Login.fxml"));
 
             Stage stage = (Stage) contentArea.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Login");
+
             stage.setMaximized(false);
+            stage.setResizable(false);
+
+            Scene loginScene = new Scene(root, 900, 600);
+
+            stage.setScene(loginScene);
+            stage.setTitle("Login");
+            stage.setWidth(900);
+            stage.setHeight(600);
+            stage.setMinWidth(900);
+            stage.setMinHeight(600);
+            stage.centerOnScreen();
             stage.show();
 
         } catch (Exception e) {
             e.printStackTrace();
+            showAlert("Logout Error", "Cannot open login page.");
         }
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

@@ -35,13 +35,9 @@
                 <Button mnemonicParsing="false" onAction="#handleSearch"
                         style="-fx-background-color: #122c4a;" text="🔍" textFill="WHITE"/>
 
-                <MenuButton mnemonicParsing="false"
-                            style="-fx-background-color: #122c4a; -fx-font-size: 18px;"
-                            text="➕" textFill="WHITE">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#navigateAddNotice" text="Add Notice"/>
-                    </items>
-                </MenuButton>
+                <Button onAction="#navigateAddNotice"
+                        style="-fx-background-color:#122c4a; -fx-text-fill:white; -fx-font-weight:bold;"
+                        text="➕"/>
             </children>
         </HBox>
     </top>

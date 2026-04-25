@@ -64,11 +64,9 @@
                         prefWidth="150.0" prefHeight="35.0"
                         style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 15px; -fx-alignment: CENTER-LEFT;"/>
                 <Region VBox.vgrow="ALWAYS"/>
-                <Button text="LogOut"
-                        onAction="#handleLogout"
-                        prefWidth="150.0"
-                        prefHeight="38.0"
-                        style="-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-size: 14px;"/>
+                <Button fx:id="logoutButton"
+                        text="LogOut"
+                        onAction="#logout"/>
             </children>
         </VBox>
     </left>
@@ -83,8 +81,7 @@
               prefHeight="35.0"
               style="-fx-background-color: #f4f6f8; -fx-padding: 5 0 8 0;">
             <children>
-                <Label text="@Faculty of Technology, University of Ruhuna"
-                       style="-fx-text-fill: #444; -fx-font-size: 13px;"/>
+
             </children>
         </HBox>
     </bottom>

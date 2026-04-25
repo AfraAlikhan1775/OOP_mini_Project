@@ -9,22 +9,29 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+
+import java.io.File;
 
 public class stuDashboardController {
 
     @FXML private Label nameLabel;
     @FXML private Label emailLabel;
     @FXML private Label courseLabel;
-
-    @FXML private Label attendanceLabel;
-    @FXML private Label courseCountLabel;
-    @FXML private Label medicalCountLabel;
-
     @FXML private Label departmentLabel;
     @FXML private Label yearLabel;
-    @FXML private Label mentorLabel;
+
+    @FXML private ImageView studentProfileImage;
+
+    @FXML private ImageView mentorImage;
+    @FXML private Label mentorNameLabel;
+    @FXML private Label mentorIdLabel;
+    @FXML private Label mentorEmailLabel;
+    @FXML private Label mentorPhoneLabel;
+    @FXML private Label mentorDepartmentLabel;
 
     @FXML private VBox noticesBox;
 
@@ -44,13 +51,11 @@ public class stuDashboardController {
     }
 
     private void setupTable() {
-        if (timeColumn != null) {
-            timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
-            subjectColumn.setCellValueFactory(new PropertyValueFactory<>("subject"));
-            lecturerColumn.setCellValueFactory(new PropertyValueFactory<>("lecturer"));
-            roomColumn.setCellValueFactory(new PropertyValueFactory<>("room"));
-            typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        }
+        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
+        subjectColumn.setCellValueFactory(new PropertyValueFactory<>("subject"));
+        lecturerColumn.setCellValueFactory(new PropertyValueFactory<>("lecturer"));
+        roomColumn.setCellValueFactory(new PropertyValueFactory<>("room"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
     }
 
     private void loadDashboard() {
@@ -66,38 +71,64 @@ public class stuDashboardController {
         nameLabel.setText(data.getFullName());
         emailLabel.setText(data.getEmail());
         courseLabel.setText("Course: " + data.getCourse());
-
-        attendanceLabel.setText(data.getAttendancePercentage());
-        courseCountLabel.setText(data.getCourseCount());
-        medicalCountLabel.setText(data.getMedicalCount());
-
         departmentLabel.setText("Department: " + data.getDepartment());
         yearLabel.setText("Year: " + data.getYear());
-        mentorLabel.setText("Mentor ID: " + data.getMentorId());
+
+        setImage(studentProfileImage, data.getStudentProfilePic(), "/com/Resources/images/icon/stu.png");
+
+        mentorNameLabel.setText(data.getMentorName());
+        mentorIdLabel.setText("Mentor ID: " + data.getMentorId());
+        mentorEmailLabel.setText("Email: " + data.getMentorEmail());
+        mentorPhoneLabel.setText("Phone: " + data.getMentorPhone());
+        mentorDepartmentLabel.setText("Department: " + data.getMentorDepartment());
+        setImage(mentorImage, data.getMentorPhoto(), "/com/Resources/images/icon/stu.png");
 
         noticesBox.getChildren().clear();
         for (String notice : data.getNotices()) {
             Label label = new Label(notice);
             label.setWrapText(true);
-            label.setStyle("-fx-font-size: 12;");
+            label.setStyle("-fx-font-size: 13;");
             noticesBox.getChildren().add(label);
         }
 
         timetableTable.setItems(FXCollections.observableArrayList(data.getTodayRows()));
     }
 
+    private void setImage(ImageView imageView, String imagePath, String defaultResource) {
+        try {
+            if (imagePath != null && !imagePath.isBlank() && !imagePath.equals("-")) {
+                File file = new File(imagePath);
+
+                if (file.exists()) {
+                    imageView.setImage(new Image(file.toURI().toString()));
+                    return;
+                }
+
+                if (imagePath.startsWith("file:") || imagePath.startsWith("http")) {
+                    imageView.setImage(new Image(imagePath));
+                    return;
+                }
+            }
+
+            imageView.setImage(new Image(getClass().getResource(defaultResource).toExternalForm()));
+
+        } catch (Exception e) {
+            imageView.setImage(new Image(getClass().getResource(defaultResource).toExternalForm()));
+        }
+    }
+
     private void showDefaultState(String message) {
         nameLabel.setText("Student");
         emailLabel.setText(message);
         courseLabel.setText("Course: -");
-
-        attendanceLabel.setText("0%");
-        courseCountLabel.setText("0");
-        medicalCountLabel.setText("0");
-
         departmentLabel.setText("Department: -");
         yearLabel.setText("Year: -");
-        mentorLabel.setText("Mentor ID: -");
+
+        mentorNameLabel.setText("-");
+        mentorIdLabel.setText("Mentor ID: -");
+        mentorEmailLabel.setText("Email: -");
+        mentorPhoneLabel.setText("Phone: -");
+        mentorDepartmentLabel.setText("Department: -");
 
         noticesBox.getChildren().clear();
         noticesBox.getChildren().add(new Label("• No notices available"));

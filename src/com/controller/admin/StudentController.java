@@ -1,6 +1,7 @@
 package com.controller.admin;
 
 import com.dao.admin.StudentDAO;
+import com.dao.admin.UserDAO;
 import com.model.Student;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
 
 import java.io.File;
 import java.util.List;
@@ -55,22 +57,7 @@ public class StudentController {
         }
     }
 
-    @FXML
-    private void navigateAddLecturer() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/admin/add_lecturer.fxml"));
-            Parent root = loader.load();
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setResizable(false);
-            stage.showAndWait();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     private void handleSearch() {
@@ -195,23 +182,31 @@ public class StudentController {
     }
 
     private void handleView(Student student) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Student Details");
-        alert.setHeaderText(student.getFirstName() + " " + student.getLastName());
-        alert.setContentText(
-                "Registration No: " + valueOrEmpty(student.getRegNo()) + "\n" +
-                        "Department: " + valueOrEmpty(student.getDepartment()) + "\n" +
-                        "Degrea: " + valueOrEmpty(student.getDegrea()) + "\n" +
-                        "Year: " + valueOrEmpty(student.getYear())
-        );
-        alert.showAndWait();
-    }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/admin/view_student.fxml"));
+            Parent root = loader.load();
 
-    private void handleRemove(Student student) {
+            ViewStudentController controller = loader.getController();
+            controller.setStudent(student);
+
+            Stage stage = new Stage();
+            stage.setTitle("Student Details");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            loadStudents();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Cannot open student details.");
+        }
+    }    private void handleRemove(Student student) {
+
+        if (!askAdminPassword()) return;
+
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Remove Student");
-        confirm.setHeaderText("Are you sure?");
-        confirm.setContentText("Do you want to remove " + student.getRegNo() + "?");
+        confirm.setHeaderText("Delete Student");
+        confirm.setContentText("Are you sure?");
 
         Optional<ButtonType> result = confirm.showAndWait();
 
@@ -221,16 +216,40 @@ public class StudentController {
             if (deleted) {
                 loadStudents();
             } else {
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setTitle("Delete Failed");
-                error.setHeaderText(null);
-                error.setContentText("Could not remove student.");
-                error.showAndWait();
+                showAlert(Alert.AlertType.ERROR, "Error", "Delete failed");
             }
         }
     }
-
     private String valueOrEmpty(String value) {
         return value == null ? "" : value;
     }
+
+    private boolean askAdminPassword() {
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setHeaderText("Enter Admin Password");
+
+        Optional<String> result = dialog.showAndWait();
+
+        if (result.isEmpty()) return false;
+
+        UserDAO userDAO = new UserDAO();
+
+        if (!userDAO.isAdminPasswordCorrect(result.get())) {
+            showAlert(Alert.AlertType.ERROR, "Wrong Password", "Incorrect password");
+            return false;
+        }
+
+        return true;
+    }
+    private void showAlert(Alert.AlertType type, String title, String msg) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
+
+
+
 }

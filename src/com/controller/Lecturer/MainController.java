@@ -10,20 +10,18 @@ import java.net.URL;
 
 public class MainController {
 
-    @FXML
-    private StackPane contentArea;
+    @FXML private StackPane contentArea;
 
     private String lecturerEmpId;
 
     public void setLecturerEmpId(String lecturerEmpId) {
         this.lecturerEmpId = lecturerEmpId;
-        System.out.println("Logged in Lecturer EMP ID = " + lecturerEmpId);
         loadUI("dashboard.fxml");
     }
 
     @FXML
     public void initialize() {
-        // Do not load here. lecturerEmpId comes after login.
+        // lecturerEmpId is passed after login
     }
 
     private void loadUI(String file) {
@@ -52,6 +50,10 @@ public class MainController {
                 c.setLecturerEmpId(lecturerEmpId);
             }
 
+            if (controller instanceof TimetableController c) {
+                c.setLecturerEmpId(lecturerEmpId);
+            }
+
             contentArea.getChildren().setAll(root);
 
         } catch (Exception e) {
@@ -66,53 +68,14 @@ public class MainController {
         contentArea.getChildren().setAll(label);
     }
 
-    @FXML
-    private void handleDashboard() {
-        loadUI("dashboard.fxml");
-    }
-
-    @FXML
-    private void handleCourses() {
-        loadUI("courses.fxml");
-    }
-
-    @FXML
-    private void handleMaterials() {
-        loadUI("courses.fxml");
-    }
-
-    @FXML
-    private void handleMarks() {
-        loadUI("marks.fxml");
-    }
-
-    @FXML
-    private void handleStudents() {
-        loadUI("students.fxml");
-    }
-
-    @FXML
-    private void handleAttendance() {
-        loadUI("attendance.fxml");
-    }
-
-    @FXML
-    private void handleMedical() {
-        loadUI("lecturer_medical.fxml");
-    }
-
-    @FXML
-    private void handleNotices() {
-        loadUI("notices.fxml");
-    }
-
-    @FXML
-    private void handleTimetable() {
-        loadUI("timetable.fxml");
-    }
-
-    @FXML
-    private void handleProfile() {
-        loadUI("profile.fxml");
-    }
+    @FXML private void handleDashboard() { loadUI("dashboard.fxml"); }
+    @FXML private void handleCourses() { loadUI("courses.fxml"); }
+    @FXML private void handleMaterials() { loadUI("courses.fxml"); }
+    @FXML private void handleMarks() { loadUI("marks.fxml"); }
+    @FXML private void handleStudents() { loadUI("students.fxml"); }
+    @FXML private void handleAttendance() { loadUI("attendance.fxml"); }
+    @FXML private void handleMedical() { loadUI("lecturer_medical.fxml"); }
+    @FXML private void handleNotices() { loadUI("notices.fxml"); }
+    @FXML private void handleTimetable() { loadUI("timetable.fxml"); }
+    @FXML private void handleProfile() { loadUI("profile.fxml"); }
 }

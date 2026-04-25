@@ -253,4 +253,49 @@ public class StudentDAO {
             return false;
         }
     }
+
+    public boolean updateStudent(Student s) {
+        String sql = """
+            UPDATE student SET
+            first_name=?, last_name=?, nic=?, dob=?, gender=?, image_path=?, district=?,
+            email=?, phone=?, address=?, department=?, degrea=?, year_no=?, mentor_id=?,
+            guardian_name=?, guardian_phone=?, guardian_relationship=?
+            WHERE reg_no=?
+            """;
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, s.getFirstName());
+            pst.setString(2, s.getLastName());
+            pst.setString(3, s.getNic());
+
+            if (s.getDob() != null) {
+                pst.setDate(4, java.sql.Date.valueOf(s.getDob()));
+            } else {
+                pst.setDate(4, null);
+            }
+
+            pst.setString(5, s.getGender());
+            pst.setString(6, s.getImagePath());
+            pst.setString(7, s.getDistrict());
+            pst.setString(8, s.getEmail());
+            pst.setString(9, s.getPhone());
+            pst.setString(10, s.getAddress());
+            pst.setString(11, s.getDepartment());
+            pst.setString(12, s.getDegrea());
+            pst.setString(13, s.getYear());
+            pst.setString(14, s.getMentor());
+            pst.setString(15, s.getGuardianName());
+            pst.setString(16, s.getGuardianPhone());
+            pst.setString(17, s.getGuardianRelationship());
+            pst.setString(18, s.getRegNo());
+
+            return pst.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

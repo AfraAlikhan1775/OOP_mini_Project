@@ -113,7 +113,7 @@
         <Label text="EL = Eligible, NE = Not Eligible. Present and approved medical attendance are counted."
                style="-fx-font-size:13px; -fx-text-fill:#555;"/>
 
-        <TableView fx:id="eligibilityTable" prefHeight="420"
+        <TableView fx:id="eligibilityTable" prefHeight="460" prefWidth="20"
                    style="-fx-background-color:white;">
             <columns>
                 <TableColumn fx:id="courseCodeCol" text="Course Code" prefWidth="250"/>

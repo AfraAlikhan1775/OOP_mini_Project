@@ -2,8 +2,10 @@ package com.controller.admin;
 
 import com.model.Lecturer;
 import com.dao.admin.LecturerDAO;
+import com.dao.admin.UserDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import java.util.Optional;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -247,4 +249,25 @@ public class LecturerController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+
+    private boolean askAdminPassword() {
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setHeaderText("Enter Admin Password");
+
+        Optional<String> result = dialog.showAndWait();
+
+        if (result.isEmpty()) return false;
+
+        UserDAO userDAO = new UserDAO();
+
+        if (!userDAO.isAdminPasswordCorrect(result.get())) {
+            showAlert(Alert.AlertType.ERROR, "Wrong Password", "Incorrect password");
+            return false;
+        }
+
+        return true;
+    }
+
 }

@@ -2,23 +2,15 @@ package com.model;
 
 import java.time.LocalDate;
 
-public class Student {
+/**
+ * Student class extending Person
+ * Demonstrates: Inheritance, Encapsulation, Polymorphism
+ */
+public class Student extends Person {
 
-    private String firstName;
-    private String lastName;
     private String regNo;
-    private String nic;
-    private LocalDate dob;
-    private String gender;
-    private String imagePath;
-    private String district;
-
-    private String email;
-    private String phone;
-    private String address;
-
     private String department;
-    private String degrea;
+    private String degree;
     private String year;
     private String mentor;
 
@@ -29,24 +21,13 @@ public class Student {
     public Student(String firstName, String lastName, String regNo, String nic,
                    LocalDate dob, String gender, String imagePath, String district,
                    String email, String phone, String address,
-                   String department, String course, String year, String mentor,
+                   String department, String degree, String year, String mentor,
                    String guardianName, String guardianPhone, String guardianRelationship) {
 
-        this.firstName = firstName;
-        this.lastName = lastName;
+        super(firstName, lastName, nic, dob, gender, imagePath, email, phone, address, district);
         this.regNo = regNo;
-        this.nic = nic;
-        this.dob = dob;
-        this.gender = gender;
-        this.imagePath = imagePath;
-        this.district = district;
-
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-
         this.department = department;
-        this.degrea = degrea;
+        this.degree = degree;
         this.year = year;
         this.mentor = mentor;
 
@@ -55,56 +36,31 @@ public class Student {
         this.guardianRelationship = guardianRelationship;
     }
 
-    public String getFirstName() {
-        return firstName;
+    /**
+     * No-argument constructor
+     */
+    public Student() {
+        super();
     }
 
-    public String getLastName() {
-        return lastName;
+    /**
+     * Polymorphic method override from Person
+     */
+    @Override
+    public String getFullName() {
+        return getFirstName() + " " + getLastName() + " (" + regNo + ")";
     }
 
     public String getRegNo() {
         return regNo;
     }
 
-    public String getNic() {
-        return nic;
-    }
-
-    public LocalDate getDob() {
-        return dob;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public String getDistrict() {
-        return district;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
     public String getDepartment() {
         return department;
     }
 
-    public String getDegrea() {
-        return degrea;
+    public String getDegree() {
+        return degree;
     }
 
     public String getYear() {
@@ -125,5 +81,19 @@ public class Student {
 
     public String getGuardianRelationship() {
         return guardianRelationship;
+    }
+
+    /**
+     * Legacy method for backward compatibility
+     */
+    public String getDegrea() {
+        return degree;
+    }
+
+    /**
+     * Backward compatibility method - delegate to inherited Person method
+     */
+    public LocalDate getDob() {
+        return getDateOfBirth();
     }
 }

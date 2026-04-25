@@ -269,3 +269,16 @@ CREATE TABLE IF NOT EXISTS course_notes (
     note_text TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
+
+
+ALTER TABLE medical_selected_session
+    ADD COLUMN medical_for VARCHAR(20) DEFAULT 'ATTENDANCE';
+
+ALTER TABLE medical_selected_session
+    ADD COLUMN exam_type VARCHAR(50) NULL;
+
+ALTER TABLE medical_selected_session
+    ADD COLUMN exam_date DATE NULL;
+
+ALTER TABLE medical_selected_session
+    MODIFY attendance_group_id INT NULL;

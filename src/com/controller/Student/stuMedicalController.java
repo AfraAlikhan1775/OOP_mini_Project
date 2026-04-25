@@ -1,6 +1,7 @@
 package com.controller.Student;
 
 import com.dao.student.MedicalDAO;
+import com.model.student.ExamMedicalCourse;
 import com.model.student.MedicalRequest;
 import com.model.student.MedicalSession;
 import com.session.StudentSession;
@@ -22,6 +23,14 @@ public class stuMedicalController {
     @FXML private VBox medicalCardBox;
     @FXML private VBox addMedicalBox;
 
+    @FXML private ComboBox<String> medicalTypeBox;
+    @FXML private VBox attendanceMedicalBox;
+    @FXML private VBox examMedicalBox;
+
+    @FXML private ComboBox<ExamMedicalCourse> examCourseBox;
+    @FXML private ComboBox<String> examTypeBox;
+    @FXML private DatePicker examDatePicker;
+
     @FXML private DatePicker startDatePicker;
     @FXML private DatePicker endDatePicker;
     @FXML private TextArea reasonArea;
@@ -40,12 +49,27 @@ public class stuMedicalController {
 
     @FXML
     public void initialize() {
+        setupMedicalType();
         setupTable();
 
         addMedicalBox.setVisible(false);
         addMedicalBox.setManaged(false);
 
+        loadExamCourses();
         loadMedicalCards();
+    }
+
+    private void setupMedicalType() {
+        medicalTypeBox.setItems(FXCollections.observableArrayList("ATTENDANCE", "EXAM"));
+        medicalTypeBox.getSelectionModel().select("ATTENDANCE");
+
+        examTypeBox.setItems(FXCollections.observableArrayList(
+                "Mid Exam",
+                "Final Theory",
+                "Final Practical"
+        ));
+
+        handleMedicalTypeChange();
     }
 
     private void setupTable() {
@@ -72,10 +96,28 @@ public class stuMedicalController {
     }
 
     @FXML
+    private void handleMedicalTypeChange() {
+        boolean isExam = "EXAM".equalsIgnoreCase(medicalTypeBox.getValue());
+
+        attendanceMedicalBox.setVisible(!isExam);
+        attendanceMedicalBox.setManaged(!isExam);
+
+        examMedicalBox.setVisible(isExam);
+        examMedicalBox.setManaged(isExam);
+
+        if (messageLabel != null) {
+            messageLabel.setText(isExam
+                    ? "Exam medical selected. Select course, exam type and exam date."
+                    : "Attendance medical selected. Load absent sessions.");
+        }
+    }
+
+    @FXML
     private void handleShowAddMedical() {
         addMedicalBox.setVisible(true);
         addMedicalBox.setManaged(true);
         messageLabel.setText("");
+        loadExamCourses();
     }
 
     @FXML
@@ -126,6 +168,18 @@ public class stuMedicalController {
         }
     }
 
+    private void loadExamCourses() {
+        String regNo = StudentSession.getUsername();
+
+        if (regNo == null || regNo.isBlank() || examCourseBox == null) {
+            return;
+        }
+
+        examCourseBox.setItems(FXCollections.observableArrayList(
+                medicalDAO.getStudentCoursesForExamMedical(regNo)
+        ));
+    }
+
     @FXML
     private void handleSubmitMedical() {
         String regNo = StudentSession.getUsername();
@@ -135,9 +189,32 @@ public class stuMedicalController {
             return;
         }
 
+        if (!validateCommonFields()) {
+            return;
+        }
+
+        boolean isExam = "EXAM".equalsIgnoreCase(medicalTypeBox.getValue());
+        boolean saved;
+
+        if (isExam) {
+            saved = submitExamMedical(regNo);
+        } else {
+            saved = submitAttendanceMedical(regNo);
+        }
+
+        if (saved) {
+            messageLabel.setText("Medical submitted successfully.");
+            clearForm();
+            loadMedicalCards();
+        } else {
+            messageLabel.setText("Medical not submitted. Check database connection or selected data.");
+        }
+    }
+
+    private boolean validateCommonFields() {
         if (selectedFile == null) {
             messageLabel.setText("Please upload medical PDF/photo.");
-            return;
+            return false;
         }
 
         LocalDate start = startDatePicker.getValue();
@@ -145,14 +222,23 @@ public class stuMedicalController {
 
         if (start == null || end == null) {
             messageLabel.setText("Please select start date and end date.");
-            return;
+            return false;
         }
 
         if (end.isBefore(start)) {
             messageLabel.setText("End date cannot be before start date.");
-            return;
+            return false;
         }
 
+        if (reasonArea.getText() == null || reasonArea.getText().trim().isEmpty()) {
+            messageLabel.setText("Please enter reason.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean submitAttendanceMedical(String regNo) {
         List<MedicalSession> selectedSessions = sessionTable.getItems()
                 .stream()
                 .filter(MedicalSession::isSelected)
@@ -160,34 +246,67 @@ public class stuMedicalController {
 
         if (selectedSessions.isEmpty()) {
             messageLabel.setText("Please select at least one absent session.");
-            return;
+            return false;
         }
 
-        boolean saved = medicalDAO.submitMedical(
+        return medicalDAO.submitMedical(
                 regNo,
                 selectedFile.getAbsolutePath(),
-                start,
-                end,
-                reasonArea.getText(),
+                startDatePicker.getValue(),
+                endDatePicker.getValue(),
+                reasonArea.getText().trim(),
                 selectedSessions
         );
+    }
 
-        if (saved) {
-            messageLabel.setText("Medical submitted successfully.");
-            clearForm();
-            loadMedicalCards();
-        } else {
-            messageLabel.setText("Medical not submitted. Check database connection or selected sessions.");
+    private boolean submitExamMedical(String regNo) {
+        ExamMedicalCourse course = examCourseBox.getValue();
+        String examType = examTypeBox.getValue();
+        LocalDate examDate = examDatePicker.getValue();
+
+        if (course == null) {
+            messageLabel.setText("Please select course.");
+            return false;
         }
+
+        if (examType == null || examType.isBlank()) {
+            messageLabel.setText("Please select exam type.");
+            return false;
+        }
+
+        if (examDate == null) {
+            messageLabel.setText("Please select exam date.");
+            return false;
+        }
+
+        return medicalDAO.submitExamMedical(
+                regNo,
+                selectedFile.getAbsolutePath(),
+                startDatePicker.getValue(),
+                endDatePicker.getValue(),
+                reasonArea.getText().trim(),
+                course.getCourseId(),
+                examType,
+                examDate
+        );
     }
 
     private void clearForm() {
         selectedFile = null;
         fileLabel.setText("No file selected");
+
         startDatePicker.setValue(null);
         endDatePicker.setValue(null);
+        examDatePicker.setValue(null);
+
         reasonArea.clear();
         sessionTable.getItems().clear();
+
+        examCourseBox.getSelectionModel().clearSelection();
+        examTypeBox.getSelectionModel().clearSelection();
+
+        medicalTypeBox.getSelectionModel().select("ATTENDANCE");
+        handleMedicalTypeChange();
 
         addMedicalBox.setVisible(false);
         addMedicalBox.setManaged(false);
@@ -232,10 +351,13 @@ public class stuMedicalController {
         Label title = new Label("Medical ID: " + request.getMedicalId());
         title.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 
+        Label type = new Label(safe(request.getMedicalFor()));
+        type.setStyle("-fx-padding: 4 10 4 10; -fx-background-radius: 20; -fx-font-weight: bold; -fx-background-color:#cfe2ff; -fx-text-fill:#084298;");
+
         Label status = new Label(safe(request.getStatus()));
         status.setStyle(getStatusStyle(request.getStatus()));
 
-        top.getChildren().addAll(title, status);
+        top.getChildren().addAll(title, type, status);
 
         Label date = new Label("Date: " + safe(request.getStartDate()) + " to " + safe(request.getEndDate()));
         Label reason = new Label("Reason: " + safe(request.getReason()));

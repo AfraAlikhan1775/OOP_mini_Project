@@ -1,70 +1,114 @@
 package com.controller.Student;
 
-import com.database.DatabaseInitializer;
+import com.dao.student.StudentProfileDAO;
 import com.session.StudentSession;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.io.File;
 
 public class stuProfileController {
 
-    @FXML private Label fullNameLabel;
-    @FXML private Label emailLabel;
-    @FXML private Label courseLabel;
-    @FXML private Label contactLabel;
-    @FXML private Label regNoLabel;
-    @FXML private Label departmentLabel;
-    @FXML private Label yearLabel;
+    @FXML private ImageView profileImage;
+    @FXML private PasswordField oldPasswordField;
+    @FXML private PasswordField newPasswordField;
+    @FXML private PasswordField confirmPasswordField;
+    @FXML private Label messageLabel;
+
+    private final StudentProfileDAO dao = new StudentProfileDAO();
+    private String selectedImagePath;
 
     @FXML
     public void initialize() {
-        loadProfile();
+        loadProfilePicture();
     }
 
-    private void loadProfile() {
+    private void loadProfilePicture() {
         String username = StudentSession.getUsername();
+        String path = dao.getProfilePicture(username);
 
-        if (username == null || username.isBlank()) {
-            fullNameLabel.setText("No logged student");
+        if (path != null && !path.isBlank()) {
+            File file = new File(path);
+            if (file.exists()) {
+                profileImage.setImage(new Image(file.toURI().toString()));
+            }
+        }
+    }
+
+    @FXML
+    private void chooseProfilePicture() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Choose Profile Picture");
+
+        chooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
+        );
+
+        File file = chooser.showOpenDialog(profileImage.getScene().getWindow());
+
+        if (file != null) {
+            selectedImagePath = file.getAbsolutePath();
+            profileImage.setImage(new Image(file.toURI().toString()));
+        }
+    }
+
+    @FXML
+    private void updateProfilePicture() {
+        if (selectedImagePath == null || selectedImagePath.isBlank()) {
+            showMessage("Please choose a profile picture first.");
             return;
         }
 
-        String sql = """
-                SELECT *
-                FROM student
-                WHERE reg_no = ?
-                """;
+        String username = StudentSession.getUsername();
 
-        try (Connection conn = DatabaseInitializer.getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
+        boolean updated = dao.updateProfilePicture(username, selectedImagePath);
 
-            pst.setString(1, username);
-
-            try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) {
-                    String firstName = value(rs.getString("first_name"));
-                    String lastName = value(rs.getString("last_name"));
-
-                    fullNameLabel.setText((firstName + " " + lastName).trim());
-                    emailLabel.setText(value(rs.getString("email")));
-                    courseLabel.setText(value(rs.getString("degrea")));
-                    contactLabel.setText(value(rs.getString("phone")));
-                    regNoLabel.setText(value(rs.getString("reg_no")));
-                    departmentLabel.setText(value(rs.getString("department")));
-                    yearLabel.setText(value(rs.getString("year_no")));
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            fullNameLabel.setText("Error loading profile");
+        if (updated) {
+            showMessage("Profile picture updated successfully.");
+        } else {
+            showMessage("Failed to update profile picture.");
         }
     }
 
-    private String value(String s) {
-        return (s == null || s.isBlank()) ? "-" : s;
+    @FXML
+    private void updatePassword() {
+        String username = StudentSession.getUsername();
+
+        String oldPassword = oldPasswordField.getText();
+        String newPassword = newPasswordField.getText();
+        String confirmPassword = confirmPasswordField.getText();
+
+        if (oldPassword.isBlank() || newPassword.isBlank() || confirmPassword.isBlank()) {
+            showMessage("Please fill all password fields.");
+            return;
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            showMessage("New password and confirm password do not match.");
+            return;
+        }
+
+        if (!dao.checkOldPassword(username, oldPassword)) {
+            showMessage("Old password is incorrect.");
+            return;
+        }
+
+        boolean updated = dao.updatePassword(username, newPassword);
+
+        if (updated) {
+            oldPasswordField.clear();
+            newPasswordField.clear();
+            confirmPasswordField.clear();
+            showMessage("Password updated successfully.");
+        } else {
+            showMessage("Failed to update password.");
+        }
+    }
+
+    private void showMessage(String msg) {
+        messageLabel.setText(msg);
     }
 }
