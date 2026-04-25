@@ -1,21 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox spacing="12" style="-fx-padding:20;"
+<VBox spacing="16"
+      style="-fx-padding:24; -fx-background-color:#f8fafc;"
       xmlns="http://javafx.com/javafx/25"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.controller.Lecturer.AttendanceController">
 
-    <Label text="Attendance" style="-fx-font-size:20;" />
+    <Label text="Student Attendance"
+           style="-fx-font-size:26px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;"/>
 
-    <TableView>
-        <columns>
-            <TableColumn text="Date" />
-            <TableColumn text="Student" />
-            <TableColumn text="Status" />
-        </columns>
-    </TableView>
+    <Label text="View attendance by course, session type, session ID and date."
+           style="-fx-font-size:13px; -fx-text-fill:#64748b;"/>
+
+    <HBox spacing="10">
+        <ComboBox fx:id="courseBox"
+                  promptText="Select Course"
+                  prefWidth="170"/>
+
+        <ComboBox fx:id="typeBox"
+                  promptText="Session Type"
+                  prefWidth="150"/>
+
+        <ComboBox fx:id="sessionBox"
+                  promptText="Session ID"
+                  prefWidth="160"/>
+
+        <DatePicker fx:id="fromDatePicker"
+                    promptText="From Date"
+                    prefWidth="150"/>
+
+        <DatePicker fx:id="toDatePicker"
+                    promptText="To Date"
+                    prefWidth="150"/>
+
+        <Button text="Filter"
+                onAction="#handleFilter"
+                style="-fx-background-color:#0b1f36; -fx-text-fill:white; -fx-font-weight:bold;"/>
+
+        <Button text="Reset"
+                onAction="#handleReset"
+                style="-fx-background-color:#64748b; -fx-text-fill:white; -fx-font-weight:bold;"/>
+    </HBox>
+
+    <Label fx:id="statusLabel"
+           text="Attendance records will appear below."
+           style="-fx-font-size:13px; -fx-text-fill:#475569;"/>
+
+    <ScrollPane fitToWidth="true"
+                VBox.vgrow="ALWAYS"
+                style="-fx-background-color:transparent;">
+        <VBox fx:id="cardContainer"
+              spacing="14"
+              style="-fx-padding:5;"/>
+    </ScrollPane>
 
 </VBox>

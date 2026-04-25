@@ -37,7 +37,9 @@ public class TechnicalOfficerDAO {
 
         try (Connection conn = DatabaseInitializer.getConnection();
              Statement stmt = conn.createStatement()) {
+
             stmt.execute(sql);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,13 +52,14 @@ public class TechnicalOfficerDAO {
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setString(1, empId);
+
             ResultSet rs = pst.executeQuery();
             return rs.next() && rs.getInt(1) > 0;
 
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     public boolean saveTechnicalOfficer(TechnicalOfficer t) {
@@ -71,6 +74,59 @@ public class TechnicalOfficerDAO {
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
             fillStatement(pst, t);
+            return pst.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateTechnicalOfficer(TechnicalOfficer t) {
+        String sql = """
+                UPDATE technical_officer SET
+                    first_name = ?,
+                    last_name = ?,
+                    nic = ?,
+                    dob = ?,
+                    gender = ?,
+                    image_path = ?,
+                    district = ?,
+                    email = ?,
+                    phone = ?,
+                    address = ?,
+                    department = ?,
+                    position = ?,
+                    shift_type = ?,
+                    assigned_lab = ?
+                WHERE emp_id = ?
+                """;
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, t.getFirstName());
+            pst.setString(2, t.getLastName());
+            pst.setString(3, t.getNic());
+
+            if (t.getDob() != null) {
+                pst.setDate(4, Date.valueOf(t.getDob()));
+            } else {
+                pst.setDate(4, null);
+            }
+
+            pst.setString(5, t.getGender());
+            pst.setString(6, t.getImagePath());
+            pst.setString(7, t.getDistrict());
+            pst.setString(8, t.getEmail());
+            pst.setString(9, t.getPhone());
+            pst.setString(10, t.getAddress());
+            pst.setString(11, t.getDepartment());
+            pst.setString(12, t.getPosition());
+            pst.setString(13, t.getShiftType());
+            pst.setString(14, t.getAssignedLab());
+            pst.setString(15, t.getEmpId());
+
             return pst.executeUpdate() > 0;
 
         } catch (Exception e) {
@@ -94,6 +150,7 @@ public class TechnicalOfficerDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return list;
     }
 
@@ -115,11 +172,13 @@ public class TechnicalOfficerDAO {
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
             String value = "%" + keyword + "%";
+
             for (int i = 1; i <= 6; i++) {
                 pst.setString(i, value);
             }
 
             ResultSet rs = pst.executeQuery();
+
             while (rs.next()) {
                 list.add(mapResultSet(rs));
             }
@@ -127,11 +186,13 @@ public class TechnicalOfficerDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return list;
     }
 
     public List<TechnicalOfficer> filterByDepartment(String department) {
         List<TechnicalOfficer> list = new ArrayList<>();
+
         String sql = "SELECT * FROM technical_officer WHERE department=? ORDER BY id DESC";
 
         try (Connection conn = DatabaseInitializer.getConnection();
@@ -140,6 +201,7 @@ public class TechnicalOfficerDAO {
             pst.setString(1, department);
 
             ResultSet rs = pst.executeQuery();
+
             while (rs.next()) {
                 list.add(mapResultSet(rs));
             }
@@ -147,6 +209,7 @@ public class TechnicalOfficerDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return list;
     }
 
@@ -168,6 +231,7 @@ public class TechnicalOfficerDAO {
 
                 conn.commit();
                 return true;
+
             } catch (Exception e) {
                 conn.rollback();
                 e.printStackTrace();
@@ -187,6 +251,7 @@ public class TechnicalOfficerDAO {
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setString(1, empId);
+
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
@@ -196,6 +261,7 @@ public class TechnicalOfficerDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return null;
     }
 

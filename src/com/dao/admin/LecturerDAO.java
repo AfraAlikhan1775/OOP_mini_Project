@@ -146,25 +146,26 @@ public class LecturerDAO {
 
     public boolean updateLecturer(Lecturer lecturer) {
         String sql = """
-                UPDATE lecturer SET
-                    first_name = ?,
-                    last_name = ?,
-                    nic = ?,
-                    dob = ?,
-                    gender = ?,
-                    contact_number = ?,
-                    email = ?,
-                    emergency_contact = ?,
-                    district = ?,
-                    address = ?,
-                    department = ?,
-                    lecturer_type = ?,
-                    appointment_date = ?,
-                    specialization = ?,
-                    experience_years = ?,
-                    status = ?
-                WHERE emp_id = ?
-                """;
+            UPDATE lecturer SET
+                first_name = ?,
+                last_name = ?,
+                nic = ?,
+                dob = ?,
+                gender = ?,
+                reg_pic = ?,
+                contact_number = ?,
+                email = ?,
+                emergency_contact = ?,
+                district = ?,
+                address = ?,
+                department = ?,
+                lecturer_type = ?,
+                appointment_date = ?,
+                specialization = ?,
+                experience_years = ?,
+                status = ?
+            WHERE emp_id = ?
+            """;
 
         try (Connection conn = DatabaseInitializer.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
@@ -180,24 +181,25 @@ public class LecturerDAO {
             }
 
             pst.setString(5, lecturer.getGender());
-            pst.setString(6, lecturer.getContactNumber());
-            pst.setString(7, lecturer.getEmail());
-            pst.setString(8, lecturer.getEmergencyContact());
-            pst.setString(9, lecturer.getDistrict());
-            pst.setString(10, lecturer.getAddress());
-            pst.setString(11, lecturer.getDepartment());
-            pst.setString(12, lecturer.getLecturerType());
+            pst.setString(6, lecturer.getRegPic());
+            pst.setString(7, lecturer.getContactNumber());
+            pst.setString(8, lecturer.getEmail());
+            pst.setString(9, lecturer.getEmergencyContact());
+            pst.setString(10, lecturer.getDistrict());
+            pst.setString(11, lecturer.getAddress());
+            pst.setString(12, lecturer.getDepartment());
+            pst.setString(13, lecturer.getLecturerType());
 
             if (lecturer.getAppointmentDate() != null) {
-                pst.setDate(13, Date.valueOf(lecturer.getAppointmentDate()));
+                pst.setDate(14, Date.valueOf(lecturer.getAppointmentDate()));
             } else {
-                pst.setDate(13, null);
+                pst.setDate(14, null);
             }
 
-            pst.setString(14, lecturer.getSpecialization());
-            pst.setInt(15, lecturer.getExperienceYears());
-            pst.setString(16, lecturer.getStatus());
-            pst.setString(17, lecturer.getEmployeeId());
+            pst.setString(15, lecturer.getSpecialization());
+            pst.setInt(16, lecturer.getExperienceYears());
+            pst.setString(17, lecturer.getStatus());
+            pst.setString(18, lecturer.getEmployeeId());
 
             return pst.executeUpdate() > 0;
 
@@ -206,7 +208,6 @@ public class LecturerDAO {
             return false;
         }
     }
-
     public boolean saveLecturerDegree(String empId, String degreeName) {
         String sql = "INSERT INTO lecturer_degree (emp_id, degree_name) VALUES (?, ?)";
 

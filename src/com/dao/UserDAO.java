@@ -70,10 +70,11 @@ public class UserDAO {
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setString(1, username);
-            try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) > 0;
-                }
+
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
             }
 
         } catch (Exception e) {
@@ -198,5 +199,6 @@ public class UserDAO {
             return false;
         }
     }
+
 
 }

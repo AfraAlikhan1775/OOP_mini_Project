@@ -43,31 +43,35 @@ public class LoginController {
         try {
             String role = user.getRole();
 
-            if ("Admin".equalsIgnoreCase(role)) {
-                openDashboard("/com/view/admin/admin.fxml", "Admin Dashboard");
-
-            } else if ("Student".equalsIgnoreCase(role)) {
+            if ("Student".equalsIgnoreCase(role)) {
                 StudentSession.setUsername(username);
-
-                if (userDAO.isDefaultPassword(username)) {
-                    openChangePassword(username);
-                } else {
-                    openDashboard("/com/view/Student/student_main.fxml", "Student Dashboard");
-                }
-
-            } else if ("Lecturer".equalsIgnoreCase(role)) {
-                openLecturerDashboard(username);
-
-            } else if ("Technical Officer".equalsIgnoreCase(role)) {
-                openTechnicalOfficerDashboard(username);
-
-            } else {
-                statusLabel.setText("Unknown role: " + role);
             }
+
+            if (!"Admin".equalsIgnoreCase(role) && userDAO.isDefaultPassword(username)) {
+                openChangePassword(username, role);
+                return;
+            }
+
+            openRoleDashboard(username, role);
 
         } catch (Exception e) {
             e.printStackTrace();
             statusLabel.setText("Dashboard loading error. Check console.");
+        }
+    }
+
+    private void openRoleDashboard(String username, String role) throws Exception {
+        if ("Admin".equalsIgnoreCase(role)) {
+            openDashboard("/com/view/admin/admin.fxml", "Admin Dashboard");
+        } else if ("Student".equalsIgnoreCase(role)) {
+            StudentSession.setUsername(username);
+            openDashboard("/com/view/Student/student_main.fxml", "Student Dashboard");
+        } else if ("Lecturer".equalsIgnoreCase(role)) {
+            openLecturerDashboard(username);
+        } else if ("Technical Officer".equalsIgnoreCase(role)) {
+            openTechnicalOfficerDashboard(username);
+        } else {
+            statusLabel.setText("Unknown role: " + role);
         }
     }
 
@@ -79,25 +83,7 @@ public class LoginController {
         }
 
         Parent root = FXMLLoader.load(resource);
-
-        Stage stage = (Stage) usernameField.getScene().getWindow();
-
-        stage.setMaximized(false);
-        stage.setResizable(true);
-
-        double width = Screen.getPrimary().getVisualBounds().getWidth();
-        double height = Screen.getPrimary().getVisualBounds().getHeight();
-
-        Scene scene = new Scene(root, width, height);
-
-        stage.setScene(scene);
-        stage.setTitle(title);
-        stage.setX(Screen.getPrimary().getVisualBounds().getMinX());
-        stage.setY(Screen.getPrimary().getVisualBounds().getMinY());
-        stage.setWidth(width);
-        stage.setHeight(height);
-        stage.setMaximized(true);
-        stage.show();
+        openDashboardWithRoot(root, title);
     }
 
     private void openLecturerDashboard(String lecturerEmpId) throws Exception {
@@ -135,12 +121,11 @@ public class LoginController {
     private void openDashboardWithRoot(Parent root, String title) {
         Stage stage = (Stage) usernameField.getScene().getWindow();
 
-        stage.setMaximized(false);
-        stage.setResizable(true);
-
         double width = Screen.getPrimary().getVisualBounds().getWidth();
         double height = Screen.getPrimary().getVisualBounds().getHeight();
 
+        stage.setMaximized(false);
+        stage.setResizable(true);
         stage.setScene(new Scene(root, width, height));
         stage.setTitle(title);
         stage.setX(Screen.getPrimary().getVisualBounds().getMinX());
@@ -151,7 +136,7 @@ public class LoginController {
         stage.show();
     }
 
-    private void openChangePassword(String username) throws Exception {
+    private void openChangePassword(String username, String role) throws Exception {
         URL resource = getClass().getResource("/com/view/Student/change_password.fxml");
 
         if (resource == null) {
@@ -162,10 +147,9 @@ public class LoginController {
         Parent root = loader.load();
 
         com.controller.Student.ChangePasswordController controller = loader.getController();
-        controller.setUsername(username);
+        controller.setUser(username, role);
 
         Stage stage = (Stage) usernameField.getScene().getWindow();
-
         stage.setMaximized(false);
         stage.setResizable(false);
         stage.setScene(new Scene(root, 900, 600));

@@ -26,10 +26,13 @@ public class MarksDAO {
                     semester VARCHAR(20) NOT NULL,
                     academic_year VARCHAR(20) NOT NULL,
                     exam_type VARCHAR(50) NOT NULL,
+                    exam_date DATE NULL,
                     created_by VARCHAR(50) NOT NULL,
                     UNIQUE KEY uq_marks_group (course_id, year, semester, academic_year, exam_type)
                 )
             """);
+
+            addColumnIfMissing(conn, "marks_group", "exam_date", "DATE NULL");
 
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS student_mark_entry (
@@ -62,10 +65,37 @@ public class MarksDAO {
         }
     }
 
+    private void addColumnIfMissing(Connection conn, String table, String column, String definition) {
+        String sql = """
+            SELECT COUNT(*)
+            FROM INFORMATION_SCHEMA.COLUMNS
+            WHERE TABLE_SCHEMA = DATABASE()
+              AND TABLE_NAME = ?
+              AND COLUMN_NAME = ?
+        """;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, table);
+            ps.setString(2, column);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next() && rs.getInt(1) == 0) {
+                try (Statement st = conn.createStatement()) {
+                    st.execute("ALTER TABLE " + table + " ADD COLUMN " + column + " " + definition);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public int createGroupAndReturnId(MarksGroup g) {
         String sql = """
-            INSERT INTO marks_group(course_id, year, semester, academic_year, exam_type, created_by)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO marks_group
+            (course_id, year, semester, academic_year, exam_type, exam_date, created_by)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         """;
 
         try (Connection conn = DatabaseInitializer.getConnection();
@@ -76,7 +106,14 @@ public class MarksDAO {
             pst.setString(3, g.getSemester());
             pst.setString(4, g.getAcademicYear());
             pst.setString(5, g.getExamType());
-            pst.setString(6, g.getCreatedBy());
+
+            if (g.getExamDate() == null || g.getExamDate().isBlank()) {
+                pst.setDate(6, null);
+            } else {
+                pst.setDate(6, Date.valueOf(g.getExamDate()));
+            }
+
+            pst.setString(7, g.getCreatedBy());
 
             int affected = pst.executeUpdate();
 
@@ -93,41 +130,37 @@ public class MarksDAO {
     }
 
     public boolean addMark(int groupId, String regNo, double mark) {
-
         String insertEntrySql = """
-        INSERT INTO student_mark_entry(group_id, reg_no, raw_mark)
-        VALUES (?, ?, ?)
-        ON DUPLICATE KEY UPDATE raw_mark = VALUES(raw_mark)
-    """;
+            INSERT INTO student_mark_entry(group_id, reg_no, raw_mark)
+            VALUES (?, ?, ?)
+            ON DUPLICATE KEY UPDATE raw_mark = VALUES(raw_mark)
+        """;
 
         String getGroupSql = """
-        SELECT course_id, exam_type
-        FROM marks_group
-        WHERE group_id = ?
-    """;
+            SELECT course_id, exam_type
+            FROM marks_group
+            WHERE group_id = ?
+        """;
 
         try (Connection conn = DatabaseInitializer.getConnection()) {
-
             conn.setAutoCommit(false);
 
-            String courseId = "";
-            String examType = "";
+            String courseId;
+            String examType;
 
-            // 🔹 get course + exam type
             try (PreparedStatement ps = conn.prepareStatement(getGroupSql)) {
                 ps.setInt(1, groupId);
                 ResultSet rs = ps.executeQuery();
 
-                if (rs.next()) {
-                    courseId = rs.getString("course_id");
-                    examType = rs.getString("exam_type");
-                } else {
+                if (!rs.next()) {
                     conn.rollback();
                     return false;
                 }
+
+                courseId = rs.getString("course_id");
+                examType = rs.getString("exam_type");
             }
 
-            // 🔹 insert into student_mark_entry
             try (PreparedStatement ps = conn.prepareStatement(insertEntrySql)) {
                 ps.setInt(1, groupId);
                 ps.setString(2, regNo);
@@ -135,8 +168,8 @@ public class MarksDAO {
                 ps.executeUpdate();
             }
 
-            // 🔥 FORCE INSERT INTO student_marks (THIS WAS MISSING)
             insertOrUpdateStudentMarks(conn, courseId, regNo, examType, mark);
+            recalculateStudentMarks(conn, courseId, regNo);
 
             conn.commit();
             return true;
@@ -146,29 +179,23 @@ public class MarksDAO {
             return false;
         }
     }
-    private void upsertStudentMarks(Connection conn,
-                                    String courseId,
-                                    String regNo,
-                                    String examType,
-                                    double mark) throws SQLException {
+
+    private void insertOrUpdateStudentMarks(Connection conn,
+                                            String courseId,
+                                            String regNo,
+                                            String examType,
+                                            double mark) throws SQLException {
 
         String column = getColumnName(examType);
+        if (column == null) return;
 
-        if (column == null) {
-            throw new SQLException("Invalid exam type: " + examType);
-        }
-
-        String sql = """
-            INSERT INTO student_marks (
-                course_id, reg_no, quiz1, quiz2, quiz3,
-                assignment_mark, mid_exam, final_theory, final_practical,
-                ca_mark, final_mark
-            )
-            VALUES (?, ?, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        String insertSql = """
+            INSERT INTO student_marks (course_id, reg_no)
+            VALUES (?, ?)
             ON DUPLICATE KEY UPDATE reg_no = VALUES(reg_no)
         """;
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(insertSql)) {
             ps.setString(1, courseId);
             ps.setString(2, regNo);
             ps.executeUpdate();
@@ -184,10 +211,7 @@ public class MarksDAO {
         }
     }
 
-    private void recalculateStudentMarks(Connection conn,
-                                         String courseId,
-                                         String regNo) throws SQLException {
-
+    private void recalculateStudentMarks(Connection conn, String courseId, String regNo) throws SQLException {
         String selectSql = """
             SELECT quiz1, quiz2, quiz3, assignment_mark, mid_exam,
                    final_theory, final_practical
@@ -221,25 +245,16 @@ public class MarksDAO {
         }
 
         double quizAverage = (quiz1 + quiz2 + quiz3) / 3.0;
+        double caMark = quizAverage * 0.10 + assignment * 0.10 + mid * 0.20;
 
-        double caMark =
-                quizAverage * 0.10 +
-                        assignment * 0.10 +
-                        mid * 0.20;
+        double finalPart = 0;
 
-        boolean hasTheory = theory > 0;
-        boolean hasPractical = practical > 0;
-
-        double finalPart;
-
-        if (hasTheory && hasPractical) {
+        if (theory > 0 && practical > 0) {
             finalPart = theory * 0.30 + practical * 0.30;
-        } else if (hasTheory) {
+        } else if (theory > 0) {
             finalPart = theory * 0.60;
-        } else if (hasPractical) {
+        } else if (practical > 0) {
             finalPart = practical * 0.60;
-        } else {
-            finalPart = 0;
         }
 
         double finalMark = caMark + finalPart;
@@ -262,9 +277,7 @@ public class MarksDAO {
     private String getColumnName(String examType) {
         if (examType == null) return null;
 
-        String value = examType.trim().toLowerCase();
-
-        return switch (value) {
+        return switch (examType.trim().toLowerCase()) {
             case "quiz 1" -> "quiz1";
             case "quiz 2" -> "quiz2";
             case "quiz 3" -> "quiz3";
@@ -288,6 +301,8 @@ public class MarksDAO {
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
+                Date d = rs.getDate("exam_date");
+
                 list.add(new MarksGroup(
                         rs.getInt("group_id"),
                         rs.getString("course_id"),
@@ -295,7 +310,8 @@ public class MarksDAO {
                         rs.getString("semester"),
                         rs.getString("academic_year"),
                         rs.getString("exam_type"),
-                        rs.getString("created_by")
+                        rs.getString("created_by"),
+                        d == null ? null : d.toString()
                 ));
             }
 
@@ -394,50 +410,6 @@ public class MarksDAO {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }
-    }
-
-    private void insertOrUpdateStudentMarks(Connection conn,
-                                            String courseId,
-                                            String regNo,
-                                            String examType,
-                                            double mark) throws SQLException {
-
-        // Step 1: create row if not exist
-        String insertSql = """
-        INSERT INTO student_marks (course_id, reg_no)
-        VALUES (?, ?)
-        ON DUPLICATE KEY UPDATE reg_no = VALUES(reg_no)
-    """;
-
-        try (PreparedStatement ps = conn.prepareStatement(insertSql)) {
-            ps.setString(1, courseId);
-            ps.setString(2, regNo);
-            ps.executeUpdate();
-        }
-
-        // Step 2: detect column
-        String column = switch (examType.toLowerCase().trim()) {
-            case "quiz 1" -> "quiz1";
-            case "quiz 2" -> "quiz2";
-            case "quiz 3" -> "quiz3";
-            case "assignment" -> "assignment_mark";
-            case "mid exam" -> "mid_exam";
-            case "final theory" -> "final_theory";
-            case "final practical" -> "final_practical";
-            default -> null;
-        };
-
-        if (column == null) return;
-
-        // Step 3: update correct column
-        String updateSql = "UPDATE student_marks SET " + column + " = ? WHERE course_id=? AND reg_no=?";
-
-        try (PreparedStatement ps = conn.prepareStatement(updateSql)) {
-            ps.setDouble(1, mark);
-            ps.setString(2, courseId);
-            ps.setString(3, regNo);
-            ps.executeUpdate();
         }
     }
 }

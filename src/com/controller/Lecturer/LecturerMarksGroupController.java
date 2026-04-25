@@ -16,17 +16,11 @@ import java.util.stream.Collectors;
 
 public class LecturerMarksGroupController {
 
-    @FXML
-    private VBox cardContainer;
-
-    @FXML
-    private TextField searchField;
-
-    @FXML
-    private Label statusLabel;
+    @FXML private VBox cardContainer;
+    @FXML private TextField searchField;
+    @FXML private Label statusLabel;
 
     private String lecturerId;
-
     private final MarksDAO dao = new MarksDAO();
 
     public void setLecturerId(String id) {
@@ -72,18 +66,21 @@ public class LecturerMarksGroupController {
             return;
         }
 
-        String keyword = searchField.getText() == null ? "" : searchField.getText().trim().toLowerCase();
+        String keyword = searchField.getText() == null
+                ? ""
+                : searchField.getText().trim().toLowerCase();
 
         List<MarksGroup> list = dao.getGroups(lecturerId);
 
         if (!keyword.isEmpty()) {
             list = list.stream()
                     .filter(g ->
-                            g.getCourseId().toLowerCase().contains(keyword) ||
-                                    g.getExamType().toLowerCase().contains(keyword) ||
-                                    g.getSemester().toLowerCase().contains(keyword) ||
-                                    g.getYear().toLowerCase().contains(keyword) ||
-                                    g.getAcademicYear().toLowerCase().contains(keyword)
+                            safe(g.getCourseId()).contains(keyword) ||
+                                    safe(g.getExamType()).contains(keyword) ||
+                                    safe(g.getSemester()).contains(keyword) ||
+                                    safe(g.getYear()).contains(keyword) ||
+                                    safe(g.getAcademicYear()).contains(keyword) ||
+                                    safe(g.getExamDate()).contains(keyword)
                     )
                     .collect(Collectors.toList());
         }
@@ -127,13 +124,16 @@ public class LecturerMarksGroupController {
         topForm.setVgap(8);
 
         TextField courseIdField = new TextField();
-        ComboBox<String> yearBox = new ComboBox<>();
-        ComboBox<String> semesterBox = new ComboBox<>();
-        TextField academicYearField = new TextField();
-        ComboBox<String> examTypeBox = new ComboBox<>();
 
+        ComboBox<String> yearBox = new ComboBox<>();
         yearBox.getItems().addAll("1", "2", "3", "4");
+
+        ComboBox<String> semesterBox = new ComboBox<>();
         semesterBox.getItems().addAll("1", "2");
+
+        TextField academicYearField = new TextField();
+
+        ComboBox<String> examTypeBox = new ComboBox<>();
         examTypeBox.getItems().addAll(
                 "Quiz 1",
                 "Quiz 2",
@@ -143,6 +143,8 @@ public class LecturerMarksGroupController {
                 "Final Theory",
                 "Final Practical"
         );
+
+        DatePicker examDatePicker = new DatePicker();
 
         Label courseError = new Label();
         courseError.setStyle("-fx-text-fill:red; -fx-font-size:11px;");
@@ -179,6 +181,9 @@ public class LecturerMarksGroupController {
         topForm.add(new Label("Exam Type:"), 0, 5);
         topForm.add(examTypeBox, 1, 5);
 
+        topForm.add(new Label("Exam Date:"), 0, 6);
+        topForm.add(examDatePicker, 1, 6);
+
         Separator separator = new Separator();
 
         GridPane entryForm = new GridPane();
@@ -191,13 +196,16 @@ public class LecturerMarksGroupController {
 
         Label regError = new Label();
         regError.setStyle("-fx-text-fill:red; -fx-font-size:11px;");
+
         Label markError = new Label();
         markError.setStyle("-fx-text-fill:red; -fx-font-size:11px;");
 
         entryForm.add(new Label("Reg No:"), 0, 0);
         entryForm.add(regNoField, 1, 0);
+
         entryForm.add(new Label("Mark:"), 2, 0);
         entryForm.add(markField, 3, 0);
+
         entryForm.add(addBtn, 4, 0);
         entryForm.add(regError, 1, 1);
         entryForm.add(markError, 3, 1);
@@ -222,8 +230,8 @@ public class LecturerMarksGroupController {
             regError.setText("");
             markError.setText("");
 
-            String regNo = regNoField.getText().trim();
-            String markText = markField.getText().trim();
+            String regNo = regNoField.getText() == null ? "" : regNoField.getText().trim();
+            String markText = markField.getText() == null ? "" : markField.getText().trim();
 
             if (regNo.isEmpty()) {
                 regError.setText("Enter reg no.");
@@ -236,18 +244,23 @@ public class LecturerMarksGroupController {
             }
 
             double mark;
+
             try {
                 mark = Double.parseDouble(markText);
+
                 if (mark < 0 || mark > 100) {
                     markError.setText("Mark must be 0 to 100.");
                     return;
                 }
+
             } catch (NumberFormatException ex) {
                 markError.setText("Enter valid mark.");
                 return;
             }
 
-            boolean alreadyAdded = rows.stream().anyMatch(r -> r.getRegNo().equalsIgnoreCase(regNo));
+            boolean alreadyAdded = rows.stream()
+                    .anyMatch(r -> r.getRegNo().equalsIgnoreCase(regNo));
+
             if (alreadyAdded) {
                 regError.setText("This reg no is already added.");
                 return;
@@ -264,14 +277,23 @@ public class LecturerMarksGroupController {
         Optional<ButtonType> result = dialog.showAndWait();
 
         if (result.isPresent() && result.get() == finishButton) {
-            String courseId = courseIdField.getText().trim();
+            String courseId = courseIdField.getText() == null ? "" : courseIdField.getText().trim();
             String year = yearBox.getValue();
             String semester = semesterBox.getValue();
-            String academicYear = academicYearField.getText().trim();
+            String academicYear = academicYearField.getText() == null ? "" : academicYearField.getText().trim();
             String examType = examTypeBox.getValue();
+            String examDate = examDatePicker.getValue() == null
+                    ? null
+                    : examDatePicker.getValue().toString();
 
-            if (courseId.isEmpty() || year == null || semester == null || academicYear.isEmpty() || examType == null) {
-                statusLabel.setText("Please fill exam details.");
+            if (courseId.isEmpty()
+                    || year == null
+                    || semester == null
+                    || academicYear.isEmpty()
+                    || examType == null
+                    || examDate == null) {
+
+                statusLabel.setText("Please fill exam details including exam date.");
                 return;
             }
 
@@ -290,7 +312,17 @@ public class LecturerMarksGroupController {
                 return;
             }
 
-            MarksGroup group = new MarksGroup(0, courseId, year, semester, academicYear, examType, lecturerId);
+            MarksGroup group = new MarksGroup(
+                    0,
+                    courseId,
+                    year,
+                    semester,
+                    academicYear,
+                    examType,
+                    lecturerId,
+                    examDate
+            );
+
             int groupId = dao.createGroupAndReturnId(group);
 
             if (groupId == -1) {
@@ -299,9 +331,11 @@ public class LecturerMarksGroupController {
             }
 
             boolean allSaved = true;
+
             for (MarkRow row : rows) {
                 double mark = Double.parseDouble(row.getMark());
                 boolean ok = dao.addMark(groupId, row.getRegNo(), mark);
+
                 if (!ok) {
                     allSaved = false;
                 }
@@ -309,21 +343,28 @@ public class LecturerMarksGroupController {
 
             if (allSaved) {
                 statusLabel.setText("Marks saved successfully.");
-                loadCards();
             } else {
                 statusLabel.setText("Group created, but some marks failed to save.");
-                loadCards();
             }
+
+            loadCards();
         }
     }
 
     private HBox createCard(MarksGroup g) {
         HBox card = new HBox(20);
         card.setAlignment(Pos.CENTER_LEFT);
-        card.setStyle("-fx-background-color:white; -fx-padding:20; -fx-border-color:#d9e2ec; -fx-border-radius:10; -fx-background-radius:10;");
-        card.setPrefHeight(130);
+        card.setStyle("""
+                -fx-background-color:white;
+                -fx-padding:20;
+                -fx-border-color:#d9e2ec;
+                -fx-border-radius:10;
+                -fx-background-radius:10;
+                """);
+        card.setPrefHeight(145);
 
         VBox details = new VBox(6);
+
         Label title = new Label(g.getExamType());
         title.setStyle("-fx-font-size:18px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;");
 
@@ -331,7 +372,8 @@ public class LecturerMarksGroupController {
                 title,
                 new Label("Course: " + g.getCourseId()),
                 new Label("Year: " + g.getYear() + " | Semester: " + g.getSemester()),
-                new Label("Academic Year: " + g.getAcademicYear())
+                new Label("Academic Year: " + g.getAcademicYear()),
+                new Label("Exam Date: " + (g.getExamDate() == null ? "-" : g.getExamDate()))
         );
 
         Region space = new Region();
@@ -372,7 +414,8 @@ public class LecturerMarksGroupController {
                 "Course ID: " + g.getCourseId() + "\n" +
                         "Year: " + g.getYear() + "\n" +
                         "Semester: " + g.getSemester() + "\n" +
-                        "Academic Year: " + g.getAcademicYear()
+                        "Academic Year: " + g.getAcademicYear() + "\n" +
+                        "Exam Date: " + (g.getExamDate() == null ? "-" : g.getExamDate())
         );
 
         TableView<MarkRow> table = new TableView<>();
@@ -392,5 +435,9 @@ public class LecturerMarksGroupController {
         box.getChildren().addAll(info, table);
         dialog.getDialogPane().setContent(box);
         dialog.showAndWait();
+    }
+
+    private String safe(String value) {
+        return value == null ? "" : value.toLowerCase();
     }
 }

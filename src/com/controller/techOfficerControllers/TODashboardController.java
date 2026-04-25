@@ -30,8 +30,24 @@ public class TODashboardController {
 
             Object controller = loader.getController();
 
+            if (controller instanceof TOAttendanceController attendanceController) {
+                attendanceController.setDashboardController(this);
+            }
+
+            if (controller instanceof AddAttendanceController addAttendanceController) {
+                addAttendanceController.setDashboardController(this);
+            }
+
+            if (controller instanceof AddSessionController addSessionController) {
+                addSessionController.setDashboardController(this);
+            }
+
             if (controller instanceof TONoticeController noticeController) {
                 noticeController.setEmpId(loggedInUser);
+            }
+
+            if (controller instanceof TOProfileController profileController) {
+                profileController.setEmpId(loggedInUser);
             }
 
             contentArea.getChildren().setAll(root);
@@ -40,6 +56,10 @@ public class TODashboardController {
             e.printStackTrace();
             showAlert("Page Load Error", "Cannot load: " + fxmlPath);
         }
+    }
+
+    public void loadContent(String fxmlPath) {
+        loadPage(fxmlPath);
     }
 
     @FXML
@@ -77,10 +97,6 @@ public class TODashboardController {
         loadPage("/com/view/techOfficer/to_timetable.fxml");
     }
 
-    public void loadContent(String fxmlPath) {
-        loadPage(fxmlPath);
-    }
-
     @FXML
     private void handleMarks() {
         loadPage("/com/view/techOfficer/to_marks.fxml");
@@ -88,22 +104,7 @@ public class TODashboardController {
 
     @FXML
     private void handleProfile() {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/com/view/techOfficer/to_profile.fxml")
-            );
-
-            Parent root = loader.load();
-
-            TOProfileController controller = loader.getController();
-            controller.setEmpId(loggedInUser);
-
-            contentArea.getChildren().setAll(root);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert("Profile Load Error", "Cannot load Technical Officer profile.");
-        }
+        loadPage("/com/view/techOfficer/to_profile.fxml");
     }
 
     @FXML
@@ -111,7 +112,6 @@ public class TODashboardController {
         logout();
     }
 
-    @FXML
     private void logout() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/com/view/Login.fxml"));
@@ -122,7 +122,6 @@ public class TODashboardController {
             stage.setResizable(false);
 
             Scene scene = new Scene(root, 900, 600);
-
             stage.setScene(scene);
             stage.setTitle("Login");
             stage.setWidth(900);

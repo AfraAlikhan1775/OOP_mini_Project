@@ -1,9 +1,6 @@
 package com.model;
 
-/**
- * User class implementing IAuthenticated
- * Demonstrates: Interface Implementation, Encapsulation
- */
+
 public class User implements IAuthenticated {
 
     private int userId;
@@ -11,6 +8,7 @@ public class User implements IAuthenticated {
     private String password;
     private String role;
     private String profPic;
+    private String refId;
 
     public User() {
     }
@@ -20,52 +18,27 @@ public class User implements IAuthenticated {
         this.password = password;
         this.role = role;
         this.profPic = profPic;
+        this.refId = userName;
     }
 
-    public int getUserId() {
-        return userId;
-    }
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+    public String getUserName() { return userName; }
+    public void setUserName(String userName) { this.userName = userName; }
 
-    public String getUserName() {
-        return userName;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 
-    public String getPassword() {
-        return password;
-    }
+    public String getProfPic() { return profPic; }
+    public void setProfPic(String profPic) { this.profPic = profPic; }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public String getRefId() { return refId; }
+    public void setRefId(String refId) { this.refId = refId; }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getProfPic() {
-        return profPic;
-    }
-
-    public void setProfPic(String profPic) {
-        this.profPic = profPic;
-    }
-
-    /**
-     * Interface implementation - IAuthenticated
-     * Delegates to getUserName() for consistency
-     */
     @Override
     public String getUsername() {
         return getUserName();

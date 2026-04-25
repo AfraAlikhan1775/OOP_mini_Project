@@ -8,13 +8,16 @@
       style="-fx-padding:25; -fx-background-color:#eaf1f8;"
       xmlns="http://javafx.com/javafx/25"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.controller.admin.ViewLecturerController">
+      fx:controller="com.controller.admin.ViewTechnicalOfficerController">
 
-    <Label text="Lecturer Details"
+    <Label text="Technical Officer Details"
            style="-fx-font-size:24; -fx-font-weight:bold; -fx-text-fill:#0b1f36;"/>
 
     <HBox spacing="25">
-        <ImageView fx:id="profileImage" fitWidth="130" fitHeight="150" preserveRatio="true"/>
+        <ImageView fx:id="profileImage"
+                   fitWidth="130"
+                   fitHeight="150"
+                   preserveRatio="true"/>
 
         <GridPane hgap="20" vgap="12">
             <Label text="First Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
@@ -24,7 +27,7 @@
             <Label fx:id="lastNameLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
             <Label text="Employee ID:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <Label fx:id="employeeIdLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Label fx:id="empIdLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
             <Label text="NIC:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
             <Label fx:id="nicLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
@@ -44,32 +47,20 @@
             <Label text="Phone:" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
             <Label fx:id="phoneLabel" GridPane.rowIndex="8" GridPane.columnIndex="1"/>
 
-            <Label text="Emergency Contact:" GridPane.rowIndex="9" GridPane.columnIndex="0"/>
-            <Label fx:id="emergencyContactLabel" GridPane.rowIndex="9" GridPane.columnIndex="1"/>
+            <Label text="Address:" GridPane.rowIndex="9" GridPane.columnIndex="0"/>
+            <Label fx:id="addressLabel" GridPane.rowIndex="9" GridPane.columnIndex="1"/>
 
-            <Label text="Address:" GridPane.rowIndex="10" GridPane.columnIndex="0"/>
-            <Label fx:id="addressLabel" GridPane.rowIndex="10" GridPane.columnIndex="1"/>
+            <Label text="Department:" GridPane.rowIndex="10" GridPane.columnIndex="0"/>
+            <Label fx:id="departmentLabel" GridPane.rowIndex="10" GridPane.columnIndex="1"/>
 
-            <Label text="Department:" GridPane.rowIndex="11" GridPane.columnIndex="0"/>
-            <Label fx:id="departmentLabel" GridPane.rowIndex="11" GridPane.columnIndex="1"/>
+            <Label text="Position:" GridPane.rowIndex="11" GridPane.columnIndex="0"/>
+            <Label fx:id="positionLabel" GridPane.rowIndex="11" GridPane.columnIndex="1"/>
 
-            <Label text="Lecturer Type:" GridPane.rowIndex="12" GridPane.columnIndex="0"/>
-            <Label fx:id="lecturerTypeLabel" GridPane.rowIndex="12" GridPane.columnIndex="1"/>
+            <Label text="Shift Type:" GridPane.rowIndex="12" GridPane.columnIndex="0"/>
+            <Label fx:id="shiftTypeLabel" GridPane.rowIndex="12" GridPane.columnIndex="1"/>
 
-            <Label text="Appointment Date:" GridPane.rowIndex="13" GridPane.columnIndex="0"/>
-            <Label fx:id="appointmentDateLabel" GridPane.rowIndex="13" GridPane.columnIndex="1"/>
-
-            <Label text="Specialization:" GridPane.rowIndex="14" GridPane.columnIndex="0"/>
-            <Label fx:id="specializationLabel" GridPane.rowIndex="14" GridPane.columnIndex="1"/>
-
-            <Label text="Experience:" GridPane.rowIndex="15" GridPane.columnIndex="0"/>
-            <Label fx:id="experienceLabel" GridPane.rowIndex="15" GridPane.columnIndex="1"/>
-
-            <Label text="Status:" GridPane.rowIndex="16" GridPane.columnIndex="0"/>
-            <Label fx:id="statusLabel" GridPane.rowIndex="16" GridPane.columnIndex="1"/>
-
-            <Label text="Degrees:" GridPane.rowIndex="17" GridPane.columnIndex="0"/>
-            <Label fx:id="degreesLabel" wrapText="true" GridPane.rowIndex="17" GridPane.columnIndex="1"/>
+            <Label text="Assigned Lab:" GridPane.rowIndex="13" GridPane.columnIndex="0"/>
+            <Label fx:id="assignedLabLabel" GridPane.rowIndex="13" GridPane.columnIndex="1"/>
         </GridPane>
     </HBox>
 

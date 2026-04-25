@@ -95,22 +95,7 @@ public class stuMedicalController {
                 new SimpleStringProperty(cellData.getValue().getType()));
     }
 
-    @FXML
-    private void handleMedicalTypeChange() {
-        boolean isExam = "EXAM".equalsIgnoreCase(medicalTypeBox.getValue());
 
-        attendanceMedicalBox.setVisible(!isExam);
-        attendanceMedicalBox.setManaged(!isExam);
-
-        examMedicalBox.setVisible(isExam);
-        examMedicalBox.setManaged(isExam);
-
-        if (messageLabel != null) {
-            messageLabel.setText(isExam
-                    ? "Exam medical selected. Select course, exam type and exam date."
-                    : "Attendance medical selected. Load absent sessions.");
-        }
-    }
 
     @FXML
     private void handleShowAddMedical() {
@@ -158,16 +143,24 @@ public class stuMedicalController {
             return;
         }
 
-        List<MedicalSession> sessions = medicalDAO.getSessionsForDateGap(regNo, start, end);
+        String medicalType = medicalTypeBox.getValue();
+
+        List<MedicalSession> sessions;
+
+        if ("EXAM".equalsIgnoreCase(medicalType)) {
+            sessions = medicalDAO.getAbsentExamsForDateGap(regNo, start, end);
+        } else {
+            sessions = medicalDAO.getSessionsForDateGap(regNo, start, end);
+        }
+
         sessionTable.setItems(FXCollections.observableArrayList(sessions));
 
         if (sessions.isEmpty()) {
-            messageLabel.setText("No absent sessions found for this date range.");
+            messageLabel.setText("No absent " + medicalType.toLowerCase() + " records found for this date range.");
         } else {
-            messageLabel.setText("Select absent sessions covered by your medical.");
+            messageLabel.setText("Select absent " + medicalType.toLowerCase() + " records covered by your medical.");
         }
     }
-
     private void loadExamCourses() {
         String regNo = StudentSession.getUsername();
 
@@ -260,37 +253,25 @@ public class stuMedicalController {
     }
 
     private boolean submitExamMedical(String regNo) {
-        ExamMedicalCourse course = examCourseBox.getValue();
-        String examType = examTypeBox.getValue();
-        LocalDate examDate = examDatePicker.getValue();
+        List<MedicalSession> selectedSessions = sessionTable.getItems()
+                .stream()
+                .filter(MedicalSession::isSelected)
+                .toList();
 
-        if (course == null) {
-            messageLabel.setText("Please select course.");
+        if (selectedSessions.isEmpty()) {
+            messageLabel.setText("Please select at least one absent exam.");
             return false;
         }
 
-        if (examType == null || examType.isBlank()) {
-            messageLabel.setText("Please select exam type.");
-            return false;
-        }
-
-        if (examDate == null) {
-            messageLabel.setText("Please select exam date.");
-            return false;
-        }
-
-        return medicalDAO.submitExamMedical(
+        return medicalDAO.submitMedical(
                 regNo,
                 selectedFile.getAbsolutePath(),
                 startDatePicker.getValue(),
                 endDatePicker.getValue(),
                 reasonArea.getText().trim(),
-                course.getCourseId(),
-                examType,
-                examDate
+                selectedSessions
         );
     }
-
     private void clearForm() {
         selectedFile = null;
         fileLabel.setText("No file selected");
@@ -373,6 +354,25 @@ public class stuMedicalController {
         return card;
     }
 
+    @FXML
+    private void handleMedicalTypeChange() {
+        boolean isExam = "EXAM".equalsIgnoreCase(medicalTypeBox.getValue());
+
+        attendanceMedicalBox.setVisible(true);
+        attendanceMedicalBox.setManaged(true);
+
+        examMedicalBox.setVisible(false);
+        examMedicalBox.setManaged(false);
+
+        sessionTable.getItems().clear();
+
+        if (messageLabel != null) {
+            messageLabel.setText(isExam
+                    ? "Exam medical selected. Select date gap and click Load Sessions."
+                    : "Attendance medical selected. Select date gap and click Load Sessions.");
+        }
+    }
+
     private String getStatusStyle(String status) {
         String base = "-fx-padding: 4 10 4 10; -fx-background-radius: 20; -fx-font-weight: bold;";
 
@@ -390,4 +390,6 @@ public class stuMedicalController {
     private String safe(String value) {
         return value == null || value.isBlank() ? "-" : value;
     }
+
+
 }

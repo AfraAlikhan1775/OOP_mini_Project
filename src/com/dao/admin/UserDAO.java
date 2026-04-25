@@ -3,15 +3,13 @@ package com.dao.admin;
 import com.database.DatabaseInitializer;
 import com.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class UserDAO {
 
     public UserDAO() {
         createTable();
+        ensureRefIdColumn();
         insertDefaultAdmin();
     }
 
@@ -22,7 +20,8 @@ public class UserDAO {
                     username VARCHAR(50) UNIQUE NOT NULL,
                     password VARCHAR(255) NOT NULL,
                     role ENUM('Admin', 'Lecturer', 'Student', 'Technical Officer') NOT NULL,
-                    profile_pic VARCHAR(255)
+                    profile_pic VARCHAR(255),
+                    ref_id VARCHAR(100)
                 )
                 """;
 
@@ -34,11 +33,40 @@ public class UserDAO {
         }
     }
 
+    private void ensureRefIdColumn() {
+        try (Connection conn = DatabaseInitializer.getConnection()) {
+            if (!columnExists(conn, "users", "ref_id")) {
+                try (Statement st = conn.createStatement()) {
+                    st.execute("ALTER TABLE users ADD COLUMN ref_id VARCHAR(100)");
+                }
+            }
+
+            try (Statement st = conn.createStatement()) {
+                st.executeUpdate("UPDATE users SET ref_id = username WHERE ref_id IS NULL OR ref_id = ''");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean columnExists(Connection conn, String table, String column) throws SQLException {
+        DatabaseMetaData metaData = conn.getMetaData();
+
+        try (ResultSet rs = metaData.getColumns(null, null, table, column)) {
+            if (rs.next()) return true;
+        }
+
+        try (ResultSet rs = metaData.getColumns(null, null, table.toUpperCase(), column.toUpperCase())) {
+            return rs.next();
+        }
+    }
+
     public void insertDefaultAdmin() {
         String checkSql = "SELECT COUNT(*) FROM users WHERE username = ?";
         String insertSql = """
-                INSERT INTO users (username, password, role, profile_pic)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO users (username, password, role, profile_pic, ref_id)
+                VALUES (?, ?, ?, ?, ?)
                 """;
 
         try (Connection conn = DatabaseInitializer.getConnection();
@@ -53,6 +81,7 @@ public class UserDAO {
                     insertPst.setString(2, "admin");
                     insertPst.setString(3, "Admin");
                     insertPst.setString(4, null);
+                    insertPst.setString(5, "admin");
                     insertPst.executeUpdate();
                 }
             }
@@ -62,30 +91,10 @@ public class UserDAO {
         }
     }
 
-    public boolean existsByUsername(String username) {
-        String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
-
-        try (Connection conn = DatabaseInitializer.getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
-
-            pst.setString(1, username);
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
     public boolean saveUser(User u) {
         String sql = """
-                INSERT INTO users (username, password, role, profile_pic)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO users (username, password, role, profile_pic, ref_id)
+                VALUES (?, ?, ?, ?, ?)
                 """;
 
         try (Connection conn = DatabaseInitializer.getConnection();
@@ -102,6 +111,9 @@ public class UserDAO {
             }
 
             pst.setString(4, u.getProfPic());
+            pst.setString(5, u.getRefId() == null || u.getRefId().isBlank()
+                    ? u.getUserName()
+                    : u.getRefId());
 
             pst.executeUpdate();
             return true;
@@ -130,6 +142,7 @@ public class UserDAO {
                 user.setPassword(rs.getString("password"));
                 user.setRole(rs.getString("role"));
                 user.setProfPic(rs.getString("profile_pic"));
+                user.setRefId(rs.getString("ref_id"));
                 return user;
             }
 
@@ -146,13 +159,8 @@ public class UserDAO {
         try (Connection conn = DatabaseInitializer.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
-            if ("admin".equalsIgnoreCase(username)) {
-                pst.setString(1, username);
-                pst.setString(2, "admin");
-            } else {
-                pst.setString(1, username);
-                pst.setString(2, "12345");
-            }
+            pst.setString(1, username);
+            pst.setString(2, "admin".equalsIgnoreCase(username) ? "admin" : "12345");
 
             ResultSet rs = pst.executeQuery();
             return rs.next();
@@ -204,13 +212,34 @@ public class UserDAO {
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setString(1, password);
-            ResultSet rs = pst.executeQuery();
 
+            ResultSet rs = pst.executeQuery();
             return rs.next() && rs.getInt(1) > 0;
 
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean existsByUsername(String username) {
+        String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, username);
+
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

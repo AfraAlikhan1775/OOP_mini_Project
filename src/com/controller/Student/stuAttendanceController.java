@@ -9,14 +9,14 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 import java.util.List;
 
 public class stuAttendanceController {
 
     @FXML private VBox mainAttendancePane;
+    @FXML private VBox detailPane;
     @FXML private VBox eligibilityPane;
 
     @FXML private VBox subjectCardBox;
@@ -45,20 +45,17 @@ public class stuAttendanceController {
     public void initialize() {
         setupAttendanceTable();
         setupEligibilityTable();
-        showAttendancePage();
+        showCardPage();
         loadSubjects();
     }
 
     private void setupAttendanceTable() {
         idCol.setCellValueFactory(data ->
                 new SimpleStringProperty(String.valueOf(data.getValue().getAttendanceId())));
-
         dateCol.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getDate()));
-
         sessionCol.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getSessionId()));
-
         statusCol.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getStatus()));
     }
@@ -66,41 +63,18 @@ public class stuAttendanceController {
     private void setupEligibilityTable() {
         courseCodeCol.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getCourseCode()));
-
         eligibilityStatusCol.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getStatus()));
-
-        eligibilityStatusCol.setCellFactory(column -> new TableCell<>() {
-            @Override
-            protected void updateItem(String status, boolean empty) {
-                super.updateItem(status, empty);
-
-                if (empty || status == null) {
-                    setText(null);
-                    setStyle("");
-                    return;
-                }
-
-                setText(status);
-
-                if ("EL".equalsIgnoreCase(status)) {
-                    setStyle("-fx-text-fill:#198754; -fx-font-weight:bold;");
-                } else {
-                    setStyle("-fx-text-fill:#dc3545; -fx-font-weight:bold;");
-                }
-            }
-        });
     }
 
     private void loadSubjects() {
         subjectCardBox.getChildren().clear();
 
         String regNo = StudentSession.getUsername();
-
         List<StudentSubjectAttendance> subjects = dao.getStudentSubjects(regNo);
 
         if (subjects.isEmpty()) {
-            subjectCardBox.getChildren().add(new Label("No attendance records found for this student."));
+            subjectCardBox.getChildren().add(new Label("No attendance records found."));
             return;
         }
 
@@ -110,10 +84,10 @@ public class stuAttendanceController {
     }
 
     private VBox createSubjectCard(StudentSubjectAttendance s) {
-        VBox card = new VBox(7);
+        VBox card = new VBox(8);
         card.setStyle("""
                 -fx-background-color:white;
-                -fx-padding:16;
+                -fx-padding:18;
                 -fx-background-radius:12;
                 -fx-border-color:#d9e2ec;
                 -fx-border-radius:12;
@@ -121,18 +95,39 @@ public class stuAttendanceController {
                 """);
 
         Label course = new Label(s.getCourseId() + " - " + s.getCourseName());
-        course.setStyle("-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;");
+        course.setStyle("-fx-font-size:17px; -fx-font-weight:bold; -fx-text-fill:#0b1f36;");
 
         Label type = new Label("Type: " + s.getType());
         Label percent = new Label(String.format("Attendance: %.1f%%", s.getPercentage()));
+        Label hint = new Label("Click to view details →");
+        hint.setStyle("-fx-text-fill:#0d6efd; -fx-font-weight:bold;");
 
-        card.getChildren().addAll(course, type, percent);
-        card.setOnMouseClicked(e -> showSubjectDetails(s));
+        card.getChildren().addAll(course, type, percent, hint);
+
+        card.setOnMouseClicked(e -> openDetailsPage(s));
+
+        card.setOnMouseEntered(e -> card.setStyle("""
+                -fx-background-color:#f8fbff;
+                -fx-padding:18;
+                -fx-background-radius:12;
+                -fx-border-color:#0d6efd;
+                -fx-border-radius:12;
+                -fx-cursor:hand;
+                """));
+
+        card.setOnMouseExited(e -> card.setStyle("""
+                -fx-background-color:white;
+                -fx-padding:18;
+                -fx-background-radius:12;
+                -fx-border-color:#d9e2ec;
+                -fx-border-radius:12;
+                -fx-cursor:hand;
+                """));
 
         return card;
     }
 
-    private void showSubjectDetails(StudentSubjectAttendance s) {
+    private void openDetailsPage(StudentSubjectAttendance s) {
         titleLabel.setText(s.getCourseId() + " - " + s.getCourseName() + " (" + s.getType() + ")");
         percentageLabel.setText(String.format("%.1f%%", s.getPercentage()));
 
@@ -144,10 +139,18 @@ public class stuAttendanceController {
         drawBar(s);
 
         String regNo = StudentSession.getUsername();
-
         detailTable.setItems(FXCollections.observableArrayList(
                 dao.getAttendanceDetails(regNo, s.getCourseId(), s.getType())
         ));
+
+        mainAttendancePane.setVisible(false);
+        mainAttendancePane.setManaged(false);
+
+        eligibilityPane.setVisible(false);
+        eligibilityPane.setManaged(false);
+
+        detailPane.setVisible(true);
+        detailPane.setManaged(true);
     }
 
     private void drawBar(StudentSubjectAttendance s) {
@@ -160,28 +163,34 @@ public class stuAttendanceController {
             return;
         }
 
-        addBarPart("Attend", s.getPresent(), total, "#198754");
-        addBarPart("Medical", s.getMedical(), total, "#0dcaf0");
-        addBarPart("Rejected", s.getRejectedMedical(), total, "#fd7e14");
-        addBarPart("Absent", s.getAbsent(), total, "#dc3545");
+        addBarPart("Present " + s.getPresent(), s.getPresent(), total, "#198754");
+        addBarPart("Medical " + s.getMedical(), s.getMedical(), total, "#0dcaf0");
+        addBarPart("Rejected " + s.getRejectedMedical(), s.getRejectedMedical(), total, "#fd7e14");
+        addBarPart("Absent " + s.getAbsent(), s.getAbsent(), total, "#dc3545");
     }
 
     private void addBarPart(String text, int count, int total, String color) {
         if (count <= 0) return;
 
-        double width = Math.max(70, (count * 520.0) / total);
+        double percent = (double) count / total;
 
-        Label part = new Label(text + " " + count);
-        part.setMinWidth(width);
+        Label part = new Label(text);
+        part.setMaxWidth(Double.MAX_VALUE);
         part.setStyle(
                 "-fx-background-color:" + color + ";" +
                         "-fx-text-fill:white;" +
                         "-fx-alignment:center;" +
-                        "-fx-padding:8;" +
+                        "-fx-padding:10;" +
                         "-fx-font-weight:bold;"
         );
 
+        part.prefWidthProperty().bind(barBox.widthProperty().multiply(percent));
         barBox.getChildren().add(part);
+    }
+
+    @FXML
+    private void handleBackFromDetails() {
+        showCardPage();
     }
 
     @FXML
@@ -195,18 +204,24 @@ public class stuAttendanceController {
         mainAttendancePane.setVisible(false);
         mainAttendancePane.setManaged(false);
 
+        detailPane.setVisible(false);
+        detailPane.setManaged(false);
+
         eligibilityPane.setVisible(true);
         eligibilityPane.setManaged(true);
     }
 
     @FXML
     private void handleBackFromEligibility() {
-        showAttendancePage();
+        showCardPage();
     }
 
-    private void showAttendancePage() {
+    private void showCardPage() {
         mainAttendancePane.setVisible(true);
         mainAttendancePane.setManaged(true);
+
+        detailPane.setVisible(false);
+        detailPane.setManaged(false);
 
         eligibilityPane.setVisible(false);
         eligibilityPane.setManaged(false);

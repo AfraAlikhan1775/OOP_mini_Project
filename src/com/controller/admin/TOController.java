@@ -168,26 +168,27 @@ public class TOController {
     }
 
     private void handleView(TechnicalOfficer officer) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Technical Officer Details");
-        alert.setHeaderText(value(officer.getFirstName()) + " " + value(officer.getLastName()));
-        alert.setContentText(
-                "Employee ID: " + value(officer.getEmpId()) + "\n" +
-                        "NIC: " + value(officer.getNic()) + "\n" +
-                        "DOB: " + (officer.getDob() == null ? "" : officer.getDob()) + "\n" +
-                        "Gender: " + value(officer.getGender()) + "\n" +
-                        "District: " + value(officer.getDistrict()) + "\n\n" +
-                        "Email: " + value(officer.getEmail()) + "\n" +
-                        "Phone: " + value(officer.getPhone()) + "\n" +
-                        "Address: " + value(officer.getAddress()) + "\n\n" +
-                        "Department: " + value(officer.getDepartment()) + "\n" +
-                        "Position: " + value(officer.getPosition()) + "\n" +
-                        "Shift Type: " + value(officer.getShiftType()) + "\n" +
-                        "Assigned Lab: " + value(officer.getAssignedLab())
-        );
-        alert.showAndWait();
-    }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/admin/view_technicalofficer.fxml"));
+            Parent root = loader.load();
 
+            ViewTechnicalOfficerController controller = loader.getController();
+            controller.setTechnicalOfficer(officer);
+
+            Stage stage = new Stage();
+            stage.setTitle("Technical Officer Details");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+
+            loadTechnicalOfficers();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Cannot open technical officer details page.");
+        }
+    }
     private void handleRemove(TechnicalOfficer officer) {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Remove Technical Officer");

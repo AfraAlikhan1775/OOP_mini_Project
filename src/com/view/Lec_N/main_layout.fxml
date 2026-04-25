@@ -1,92 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0"
+<BorderPane prefHeight="800.0"
+            prefWidth="1200.0"
+            style="-fx-background-color:#f8fafc;"
             xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.controller.Lecturer.MainController">
 
-    <children>
-        <BorderPane AnchorPane.bottomAnchor="0.0"
-                    AnchorPane.leftAnchor="0.0"
-                    AnchorPane.rightAnchor="0.0"
-                    AnchorPane.topAnchor="0.0">
+    <top>
+        <HBox alignment="CENTER_LEFT"
+              spacing="12"
+              style="-fx-background-color:#0b1f36; -fx-padding:14 20 14 20;">
 
-            <left>
-                <VBox prefWidth="180.0" spacing="5"
-                      style="-fx-background-color:#2c3e50; -fx-padding:10;">
+            <Label text="Lecturer Dashboard"
+                   style="-fx-text-fill:white; -fx-font-size:22px; -fx-font-weight:bold;"/>
 
-                    <Button text="Dashboard" maxWidth="Infinity" prefHeight="40"
-                            style="-fx-background-color:transparent; -fx-text-fill:white;"
-                            onAction="#handleDashboard"/>
+            <Region HBox.hgrow="ALWAYS"/>
 
-                    <Button text="My Courses" maxWidth="Infinity" prefHeight="40"
-                            style="-fx-background-color:transparent; -fx-text-fill:white;"
-                            onAction="#handleCourses"/>
+            <Label text="Lecturer:"
+                   style="-fx-text-fill:#cbd5e1; -fx-font-size:13px;"/>
 
-                    <Button text="Materials" maxWidth="Infinity" prefHeight="40"
-                            style="-fx-background-color:transparent; -fx-text-fill:white;"
-                            onAction="#handleMaterials"/>
+            <Label fx:id="lecturerNameLabel"
+                   text="-"
+                   style="-fx-text-fill:white; -fx-font-size:14px; -fx-font-weight:bold;"/>
+        </HBox>
+    </top>
 
-                    <Button text="Upload Marks" maxWidth="Infinity" prefHeight="40"
-                            style="-fx-background-color:transparent; -fx-text-fill:white;"
-                            onAction="#handleMarks"/>
+    <left>
+        <VBox prefWidth="240"
+              spacing="10"
+              style="-fx-background-color:#102a43; -fx-padding:20;">
 
-                    <Button text="Student Details" maxWidth="Infinity" prefHeight="40"
-                            style="-fx-background-color:transparent; -fx-text-fill:white;"
-                            onAction="#handleStudents"/>
+            <Button text="🏠 Dashboard"
+                    onAction="#handleDashboard"
+                    maxWidth="Infinity"
+                    style="-fx-background-color:#1e3a5f; -fx-text-fill:white; -fx-font-weight:bold; -fx-alignment:center-left; -fx-padding:12;"/>
 
-                    <Button text="Attendance" maxWidth="Infinity" prefHeight="40"
-                            style="-fx-background-color:transparent; -fx-text-fill:white;"
-                            onAction="#handleAttendance"/>
+            <Button text="👤 My Profile"
+                    onAction="#handleProfile"
+                    maxWidth="Infinity"
+                    style="-fx-background-color:#1e3a5f; -fx-text-fill:white; -fx-font-weight:bold; -fx-alignment:center-left; -fx-padding:12;"/>
 
-                    <Button text="Medical Requests" maxWidth="Infinity" prefHeight="40"
-                            style="-fx-background-color:transparent; -fx-text-fill:white;"
-                            onAction="#handleMedical"/>
+            <Button text="📅 Timetable"
+                    onAction="#handleTimetable"
+                    maxWidth="Infinity"
+                    style="-fx-background-color:#1e3a5f; -fx-text-fill:white; -fx-font-weight:bold; -fx-alignment:center-left; -fx-padding:12;"/>
 
-                    <Button text="Notices" maxWidth="Infinity" prefHeight="40"
-                            style="-fx-background-color:transparent; -fx-text-fill:white;"
-                            onAction="#handleNotices"/>
+            <Button text="📢 Notices"
+                    onAction="#handleNotice"
+                    maxWidth="Infinity"
+                    style="-fx-background-color:#1e3a5f; -fx-text-fill:white; -fx-font-weight:bold; -fx-alignment:center-left; -fx-padding:12;"/>
 
-                    <Button text="Timetable" maxWidth="Infinity" prefHeight="40"
-                            style="-fx-background-color:transparent; -fx-text-fill:white;"
-                            onAction="#handleTimetable"/>
+            <Button text="📝 Marks"
+                    onAction="#handleMarks"
+                    maxWidth="Infinity"
+                    style="-fx-background-color:#1e3a5f; -fx-text-fill:white; -fx-font-weight:bold; -fx-alignment:center-left; -fx-padding:12;"/>
 
-                    <Button text="My Profile" maxWidth="Infinity" prefHeight="40"
-                            style="-fx-background-color:transparent; -fx-text-fill:white;"
-                            onAction="#handleProfile"/>
+            <Button text="📊 Student Results"
+                    onAction="#handleResults"
+                    maxWidth="Infinity"
+                    style="-fx-background-color:#1e3a5f; -fx-text-fill:white; -fx-font-weight:bold; -fx-alignment:center-left; -fx-padding:12;"/>
 
-                </VBox>
-            </left>
+            <Button text="✅ Attendance"
+                    onAction="#handleAttendance"
+                    maxWidth="Infinity"
+                    style="-fx-background-color:#1e3a5f; -fx-text-fill:white; -fx-font-weight:bold; -fx-alignment:center-left; -fx-padding:12;"/>
+            <Button text="🏥 Medical Requests"
+                    onAction="#handleMedical"
+                    maxWidth="Infinity"
+                    style="-fx-background-color:#1e3a5f; -fx-text-fill:white; -fx-font-weight:bold; -fx-alignment:center-left; -fx-padding:12;"/>
 
-            <top>
-                <BorderPane style="-fx-background-color:#34495e; -fx-padding:10;">
-                    <center>
-                        <Label text="Lecturer Dashboard" textFill="white">
-                            <font>
-                                <Font size="20"/>
-                            </font>
-                        </Label>
-                    </center>
+            <Button text="↩ Logout"
+                    onAction="#handleLogout"
+                    prefWidth="210"
+                    style="-fx-background-color:#8b1e1e; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:5; -fx-padding:12;"/>
 
-                    <right>
-                        <HBox alignment="CENTER_RIGHT" spacing="10">
-                            <Label text="Welcome, Lecturer" textFill="white"/>
-                            <Button text="Logout"
-                                    style="-fx-background-color:#e74c3c; -fx-text-fill:white;"/>
-                        </HBox>
-                    </right>
-                </BorderPane>
-            </top>
+            <Region VBox.vgrow="ALWAYS"/>
 
-            <center>
-                <StackPane fx:id="contentArea"
-                           style="-fx-background-color:#ecf0f1;"/>
-            </center>
+            <Label text="Faculty Management System"
+                   style="-fx-text-fill:#94a3b8; -fx-font-size:12px;"/>
+        </VBox>
+    </left>
 
-        </BorderPane>
-    </children>
-</AnchorPane>
+    <center>
+        <StackPane fx:id="contentArea"
+                   style="-fx-background-color:#f8fafc;">
+            <padding>
+                <Insets top="0" right="0" bottom="0" left="0"/>
+            </padding>
+        </StackPane>
+    </center>
+
+</BorderPane>

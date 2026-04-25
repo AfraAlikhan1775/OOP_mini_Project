@@ -107,6 +107,28 @@ public class LecturerController {
 
         renderLecturers(lecturerDAO.searchLecturers(keyword.trim()));
     }
+    private void openViewLecturer(Lecturer lecturer) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/admin/view_lecturer.fxml"));
+            Parent root = loader.load();
+
+            ViewLecturerController controller = loader.getController();
+            controller.setLecturer(lecturer);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.setTitle("Lecturer Details");
+            stage.showAndWait();
+
+            loadLecturers();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Cannot open lecturer details page.");
+        }
+    }
 
     @FXML
     private void handleFilter() {
@@ -195,28 +217,6 @@ public class LecturerController {
         return card;
     }
 
-    private void openViewLecturer(Lecturer lecturer) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/view/admin/view_lecturer.fxml"));
-            Parent root = loader.load();
-
-//            ViewLecturerController controller = loader.getController();
-//            controller.setLecturer(lecturer);
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setResizable(false);
-            stage.setTitle("Lecturer Details");
-            stage.showAndWait();
-
-            loadLecturers();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Cannot open lecturer details page.");
-        }
-    }
 
     private void handleRemoveLecturer(Lecturer lecturer) {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
@@ -269,5 +269,6 @@ public class LecturerController {
 
         return true;
     }
+
 
 }
